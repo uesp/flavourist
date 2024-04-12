@@ -1,5 +1,14 @@
-# Flutter Flavorizr
+# Flavourist
 
+A Dart utility that generates native app flavours for our mobile apps. Based off of [Angelo Cassano's](https://angelocassano.it/) [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr). 
+
+## Why fork?
+
+Upstream didn't have an easy way to configure/customise the output directory of the generated ``main_flavor.dart`` files. For our purposes, we wanted to have ``main.dart`` in the root directory of our app, and all other flavour runpoints under ``lib/config/``. 
+
+Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ideal for us, as we had custom logic there.
+
+# Original Readme
 A flutter utility to easily create flavors in your flutter application
 
 [![Pub](https://img.shields.io/pub/v/flutter_flavorizr.svg)](https://pub.dev/packages/flutter_flavorizr)
