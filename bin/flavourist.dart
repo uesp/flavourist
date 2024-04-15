@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/flutter_flavorizr.dart';
+import 'package:flavourist/flavourist.dart';
 
 void main(List<String> args) {
   execute(args);
