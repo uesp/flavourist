@@ -23,8 +23,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/processors/commons/abstract_processor.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 
 abstract class StringProcessor extends AbstractProcessor<String> {
   String? input;

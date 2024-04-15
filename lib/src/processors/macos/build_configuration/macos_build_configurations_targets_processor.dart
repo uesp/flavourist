@@ -23,12 +23,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/parser/mixins/build_settings_mixin.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavors/flavor.dart';
-import 'package:flutter_flavorizr/src/processors/commons/queue_processor.dart';
-import 'package:flutter_flavorizr/src/processors/darwin/build_configuration/darwin_build_configurations_processor.dart';
-import 'package:flutter_flavorizr/src/processors/darwin/xcodeproj_processor.dart';
+import 'package:flavourist/src/parser/mixins/build_settings_mixin.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavors/flavor.dart';
+import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/processors/darwin/build_configuration/darwin_build_configurations_processor.dart';
+import 'package:flavourist/src/processors/darwin/xcodeproj_processor.dart';
 
 class MacOSBuildConfigurationsTargetsProcessor extends QueueProcessor {
   MacOSBuildConfigurationsTargetsProcessor(

@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
 
 abstract class AbstractProcessor<T> {
   final Flavorizr config;

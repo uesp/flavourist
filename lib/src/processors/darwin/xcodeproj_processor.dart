@@ -1,4 +1,4 @@
-import 'package:flutter_flavorizr/src/processors/commons/shell_processor.dart';
+import 'package:flavourist/src/processors/commons/shell_processor.dart';
 
 class XcodeprojProcessor extends ShellProcessor {
   XcodeprojProcessor({

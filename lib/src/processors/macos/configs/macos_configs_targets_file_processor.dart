@@ -23,10 +23,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/processors/commons/queue_processor.dart';
-import 'package:flutter_flavorizr/src/processors/darwin/xcodeproj_processor.dart';
-import 'package:flutter_flavorizr/src/processors/macos/configs/macos_configs_file_processor.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/processors/darwin/xcodeproj_processor.dart';
+import 'package:flavourist/src/processors/macos/configs/macos_configs_file_processor.dart';
 
 class MacOSConfigsTargetsFileProcessor extends QueueProcessor {
   MacOSConfigsTargetsFileProcessor(

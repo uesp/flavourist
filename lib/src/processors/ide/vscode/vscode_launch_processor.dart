@@ -23,11 +23,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/extensions/extensions_string.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavors/darwin/enums.dart';
-import 'package:flutter_flavorizr/src/processors/commons/string_processor.dart';
-import 'package:flutter_flavorizr/src/processors/ide/vscode/models/configuration.dart';
-import 'package:flutter_flavorizr/src/processors/ide/vscode/models/launch.dart';
+import 'package:flavourist/src/extensions/extensions_string.dart';
+import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
+import 'package:flavourist/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/processors/ide/vscode/models/configuration.dart';
+import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
 
 class VSCodeLaunchProcessor extends StringProcessor {
   VSCodeLaunchProcessor({

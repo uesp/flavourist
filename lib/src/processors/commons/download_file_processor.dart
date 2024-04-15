@@ -25,7 +25,7 @@
 
 import 'dart:io';
 
-import 'package:flutter_flavorizr/src/processors/commons/abstract_file_processor.dart';
+import 'package:flavourist/src/processors/commons/abstract_file_processor.dart';
 
 class DownloadFileProcessor extends AbstractFileProcessor {
   final String _url;

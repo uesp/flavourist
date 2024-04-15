@@ -23,8 +23,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/processors/commons/abstract_file_processor.dart';
-import 'package:flutter_flavorizr/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/processors/commons/abstract_file_processor.dart';
+import 'package:flavourist/src/processors/commons/string_processor.dart';
 
 abstract class AbstractFileStringProcessor extends AbstractFileProcessor {
   StringProcessor processor;

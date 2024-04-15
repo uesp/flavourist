@@ -23,12 +23,12 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/processors/android/google/firebase/android_firebase_processor.dart';
-import 'package:flutter_flavorizr/src/processors/commons/queue_processor.dart';
-import 'package:flutter_flavorizr/src/processors/darwin/xcodeproj_processor.dart';
-import 'package:flutter_flavorizr/src/processors/ios/google/firebase/ios_targets_firebase_processor.dart';
-import 'package:flutter_flavorizr/src/processors/macos/google/firebase/macos_targets_firebase_processor.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/processors/android/google/firebase/android_firebase_processor.dart';
+import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/processors/darwin/xcodeproj_processor.dart';
+import 'package:flavourist/src/processors/ios/google/firebase/ios_targets_firebase_processor.dart';
+import 'package:flavourist/src/processors/macos/google/firebase/macos_targets_firebase_processor.dart';
 
 class FirebaseProcessor extends QueueProcessor {
   FirebaseProcessor({

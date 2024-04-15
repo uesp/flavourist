@@ -23,8 +23,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/exception/file_not_found_exception.dart';
-import 'package:flutter_flavorizr/src/processors/commons/abstract_file_string_processor.dart';
+import 'package:flavourist/src/exception/file_not_found_exception.dart';
+import 'package:flavourist/src/processors/commons/abstract_file_string_processor.dart';
 
 class RuntimeFileStringProcessor extends AbstractFileStringProcessor {
   RuntimeFileStringProcessor(

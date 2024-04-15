@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/processors/commons/string_processor.dart';
 
 class ReplaceStringProcessor extends StringProcessor {
   final Pattern _find;

@@ -23,9 +23,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/processors/commons/queue_processor.dart';
-import 'package:flutter_flavorizr/src/processors/macos/dummy_assets/macos_dummy_assets_processor.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/processors/macos/dummy_assets/macos_dummy_assets_processor.dart';
 
 class MacOSDummyAssetsTargetsProcessor extends QueueProcessor {
   MacOSDummyAssetsTargetsProcessor(

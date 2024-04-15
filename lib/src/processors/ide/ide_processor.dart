@@ -1,9 +1,9 @@
-import 'package:flutter_flavorizr/src/parser/models/enums.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/processors/commons/abstract_processor.dart';
-import 'package:flutter_flavorizr/src/processors/ide/idea/idea_run_configurations_processor.dart';
-import 'package:flutter_flavorizr/src/processors/ide/vscode/vscode_launch_file_processor.dart';
-import 'package:flutter_flavorizr/src/utils/constants.dart';
+import 'package:flavourist/src/parser/models/enums.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
+import 'package:flavourist/src/processors/ide/idea/idea_run_configurations_processor.dart';
+import 'package:flavourist/src/processors/ide/vscode/vscode_launch_file_processor.dart';
+import 'package:flavourist/src/utils/constants.dart';
 
 class IDEProcessor extends AbstractProcessor {
   final AbstractProcessor? _processor;

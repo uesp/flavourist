@@ -25,12 +25,12 @@
 
 import 'dart:convert';
 
-import 'package:flutter_flavorizr/src/extensions/extensions_string.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavors/darwin/enums.dart';
-import 'package:flutter_flavorizr/src/processors/commons/queue_processor.dart';
-import 'package:flutter_flavorizr/src/processors/commons/shell_processor.dart';
-import 'package:flutter_flavorizr/src/utils/darwin_utils.dart' as utils;
+import 'package:flavourist/src/extensions/extensions_string.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
+import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/processors/commons/shell_processor.dart';
+import 'package:flavourist/src/utils/darwin_utils.dart' as utils;
 
 class DarwinBuildConfigurationsProcessor extends QueueProcessor {
   DarwinBuildConfigurationsProcessor(

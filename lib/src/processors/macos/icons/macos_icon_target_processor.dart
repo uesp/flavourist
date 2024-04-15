@@ -23,9 +23,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/processors/commons/image_resizer_processor.dart';
-import 'package:flutter_flavorizr/src/processors/darwin/icons/darwin_icon_target_processor.dart';
-import 'package:flutter_flavorizr/src/utils/constants.dart';
+import 'package:flavourist/src/processors/commons/image_resizer_processor.dart';
+import 'package:flavourist/src/processors/darwin/icons/darwin_icon_target_processor.dart';
+import 'package:flavourist/src/utils/constants.dart';
 
 class MacOSIconTargetProcessor extends DarwinIconTargetProcessor {
   static const _entries = {

@@ -26,9 +26,9 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:flutter_flavorizr/src/parser/models/flavorizr.dart';
-import 'package:flutter_flavorizr/src/parser/parser.dart';
-import 'package:flutter_flavorizr/src/processors/processor.dart';
+import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/parser.dart';
+import 'package:flavourist/src/processors/processor.dart';
 
 /// A common entry point to parse command line arguments and execute the process
 ///

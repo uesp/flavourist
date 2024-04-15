@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/processors/commons/string_processor.dart';
 import 'package:xml/xml.dart';
 
 class IdeaLaunchProcessor extends StringProcessor {

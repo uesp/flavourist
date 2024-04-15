@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flutter_flavorizr/src/extensions/extensions_map.dart';
+import 'package:flavourist/src/extensions/extensions_map.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:checked_yaml/checked_yaml.dart';
 
@@ -45,7 +45,7 @@ class Flavorizr {
 
   @JsonKey(
       defaultValue:
-          'https://github.com/AngeloAvv/flutter_flavorizr/releases/download/v2.2.3/assets.zip')
+          'https://github.com/AngeloAvv/flavourist/releases/download/v2.2.3/assets.zip')
   final String assetsUrl;
 
   @JsonKey()
