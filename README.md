@@ -8,6 +8,10 @@ Upstream didn't have an easy way to configure/customise the output directory of 
 
 Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ideal for us, as we had custom logic there.
 
+## Changes from Original
+
+- Flavours are now defined in a more neutral, root-level flavours.yaml file.
+
 # Original ReadMe
 A flutter utility to easily create flavors in your flutter application
 
@@ -73,7 +77,7 @@ flavors.
 
 ### Example
 
-Create a new file named flavorizr.yaml and define the name of the
+Create a new file named flavours.yaml and define the name of the
 flavors, in our example *apple* and *banana*. For each flavor you have
 to specify the *app name*, the *applicationId* and the *bundleId*.
 
