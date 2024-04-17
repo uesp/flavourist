@@ -43,7 +43,7 @@ class Launch {
 
   @override
   String toString() {
-	JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+	JsonEncoder encoder = const JsonEncoder.withIndent('	');
   	String prettyString = encoder.convert(toJson());
 	return prettyString;
   }

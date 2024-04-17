@@ -13,6 +13,7 @@ Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ide
 Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr)
 
 - Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
+- VSCode launch profiles are pretty-printed in launch.json
 
 # Original ReadMe
 A flutter utility to easily create flavors in your flutter application
