@@ -43,8 +43,10 @@ void execute(List<String> args) {
 
   Parser parser = const Parser(
     pubspecPath: 'pubspec.yaml',
-    flavorizrPath: 'flavours.yaml',
+    flavorizrPath: 'flavors.yaml',
   );
+
+  print(parser.flavorizrPath.toString());
 
   Flavorizr? flavorizr;
   try {

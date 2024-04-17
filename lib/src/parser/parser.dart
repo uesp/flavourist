@@ -45,6 +45,8 @@ class Parser {
     File pubspecFile = File(pubspecPath);
     File flavorizrFile = File(flavorizrPath);
 
+	print(flavorizrFile.absolute);
+
     final pubspecFileExists = pubspecFile.existsSync();
     final flavorizrFileExists = flavorizrFile.existsSync();
 

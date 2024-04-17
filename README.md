@@ -10,7 +10,7 @@ Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ide
 
 ## Changes from Original
 
-- Flavours are now defined in a more neutral, root-level flavours.yaml file.
+- Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
 
 # Original ReadMe
 A flutter utility to easily create flavors in your flutter application
