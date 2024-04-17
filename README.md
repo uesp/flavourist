@@ -1,6 +1,6 @@
 # Flavourist
 
-A Dart utility that generates native app flavours for our mobile apps. Based off of [Angelo Cassano's](https://angelocassano.it/) [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr). 
+Flavourist is a custom Dart utility that generates native app flavours for our mobile apps. Based off of [Angelo Cassano's](https://angelocassano.it/) [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr). 
 
 ## Why fork?
 
@@ -161,7 +161,6 @@ flavorizr:
 | android:icons           | Android       | Creates a set of icons for each flavor according to the icon directive  |
 | flutter:flavors         | Flutter       | Creates the flutter flavor configuration file                           |
 | flutter:app             | Flutter       | Creates the app.dart entry                                              |
-| flutter:pages           | Flutter       | Creates a set of default pages for the app                              |
 | flutter:main            | Flutter       | Creates the main target to run the app                                  |
 | flutter:targets         | Flutter       | Creates a set of targets for each flavor instance                       |
 | google:firebase         | Google        | Adds Google Firebase configurations for Android and iOS for each flavor |
@@ -442,7 +441,6 @@ By default, when you do not specify a custom set of processors by appending the 
 * android:icons
 * flutter:flavors
 * flutter:app
-* flutter:pages
 * flutter:main
 * flutter:targets
 * ios:podfile

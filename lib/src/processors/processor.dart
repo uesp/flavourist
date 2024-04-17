@@ -80,7 +80,6 @@ class Processor extends AbstractProcessor<void> {
     // Flutter
     'flutter:flavors',
     'flutter:app',
-    'flutter:pages',
     'flutter:main',
     'flutter:targets',
 
