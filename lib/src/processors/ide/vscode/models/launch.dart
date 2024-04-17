@@ -32,12 +32,10 @@ part 'launch.g.dart';
 
 @JsonSerializable(createFactory: false, explicitToJson: true)
 class Launch {
-  final String version;
 
   final List<Configuration> configurations;
 
   Launch({
-    required this.version,
     required this.configurations,
   });
 

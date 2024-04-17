@@ -36,7 +36,6 @@ class VSCodeLaunchProcessor extends StringProcessor {
 
   @override
   execute() => Launch(
-        version: '0.2.0',
         configurations: config.flavors.keys
             .expand(
               (flavorName) => Target.values.map(
@@ -49,7 +48,7 @@ class VSCodeLaunchProcessor extends StringProcessor {
                     '--flavor',
                     flavorName,
                   ],
-                  program: 'lib/main_$flavorName.dart',
+                  program: 'lib/configs/$flavorName/main.dart',
                 ),
               ),
             )
