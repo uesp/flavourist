@@ -32,17 +32,14 @@ import 'package:flavourist/src/processors/android/android_manifest_processor.dar
 import 'package:flavourist/src/processors/android/icons/android_icons_processor.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/copy_file_processor.dart';
-import 'package:flavourist/src/processors/commons/copy_folder_processor.dart';
 import 'package:flavourist/src/processors/commons/delete_file_processor.dart';
 import 'package:flavourist/src/processors/commons/download_file_processor.dart';
 import 'package:flavourist/src/processors/commons/dynamic_file_string_processor.dart';
 import 'package:flavourist/src/processors/commons/existing_file_string_processor.dart';
-import 'package:flavourist/src/processors/commons/new_file_string_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/commons/unzip_file_processor.dart';
 import 'package:flavourist/src/processors/darwin/darwin_schemas_processor.dart';
 import 'package:flavourist/src/processors/darwin/podfile_processor.dart';
-import 'package:flavourist/src/processors/flutter/flutter_flavors_processor.dart';
 import 'package:flavourist/src/processors/flutter/target/flutter_targets_file_processor.dart';
 import 'package:flavourist/src/processors/google/firebase/firebase_processor.dart';
 import 'package:flavourist/src/processors/huawei/agconnect/agconnect_processor.dart';
