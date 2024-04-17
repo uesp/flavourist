@@ -45,12 +45,14 @@ class Flavor {
   @JsonKey(required: false, disallowNullValue: true)
   final Darwin? macos;
 
-  const Flavor({
+  final String applicationID;
+
+  Flavor({
     required this.app,
     this.android,
     this.ios,
     this.macos,
-  });
+  }) : applicationID = android!.applicationId;
 
   factory Flavor.fromJson(Map<String, dynamic> json) => _$FlavorFromJson(json);
 }

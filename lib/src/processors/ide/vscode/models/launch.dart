@@ -42,5 +42,10 @@ class Launch {
   Map<String, dynamic> toJson() => _$LaunchToJson(this);
 
   @override
-  String toString() => jsonEncode(toJson());
+  String toString() {
+	JsonEncoder encoder = const JsonEncoder.withIndent('  ');
+  	String prettyString = encoder.convert(toJson());
+	return prettyString;
+  }
+
 }

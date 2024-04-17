@@ -35,26 +35,26 @@ class VSCodeLaunchProcessor extends StringProcessor {
   });
 
   @override
-  execute() => Launch(
+  execute() {
+	print(config.flavors.entries.first.value.app.name);
+	return Launch(
         configurations: config.flavors.keys
             .expand(
               (flavorName) => Target.values.map(
                 (target) => Configuration(
-                  name: '$flavorName ${target.name.capitalize}',
+                  name: '$flavorName (${target.name.capitalize})',
                   flutterMode: target.name.toLowerCase(),
                   request: 'launch',
                   type: 'dart',
-                  args: [
-                    '--flavor',
-                    flavorName,
-                  ],
+                  args: [ '--flavor', flavorName ],
                   program: 'lib/configs/$flavorName/main.dart',
                 ),
               ),
             )
             .toList(),
       ).toString();
-
+  }
+	
   @override
   String toString() => "VSCodeLaunchProcessor";
 }

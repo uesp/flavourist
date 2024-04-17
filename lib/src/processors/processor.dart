@@ -100,12 +100,6 @@ class Processor extends AbstractProcessor<void> {
     'macos:icons',
     'macos:plist',
 
-    // Google
-    'google:firebase',
-
-    // Huawei
-    'huawei:agconnect',
-
     // Cleanup
     'assets:clean',
 
