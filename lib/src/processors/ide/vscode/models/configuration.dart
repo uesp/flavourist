@@ -37,8 +37,6 @@ class Configuration {
 
   final String flutterMode;
 
-  List<String>? args;
-
   final String program;
 
   Configuration({
@@ -46,7 +44,6 @@ class Configuration {
     required this.request,
     required this.type,
     required this.flutterMode,
-    this.args,
     required this.program,
   });
 
