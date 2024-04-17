@@ -209,11 +209,6 @@ class Processor extends AbstractProcessor<void> {
             K.flutterAppPath,
             config: flavorizr,
           ),
-      'flutter:pages': () => CopyFolderProcessor(
-            K.tempFlutterPagesPath,
-            K.flutterPagesPath,
-            config: flavorizr,
-          ),
       'flutter:main': () => CopyFileProcessor(
             K.tempFlutterMainPath,
             K.flutterMainPath,

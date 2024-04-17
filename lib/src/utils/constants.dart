@@ -53,10 +53,6 @@ class K {
 
   static String flutterMainPath = '$flutterPath/main.dart';
 
-  static String flutterPagesPath = '$flutterPath/pages';
-
-  static String flutterMainPagePath = '$flutterPagesPath/my_home_page.dart';
-
   static String iOSPath = 'ios';
 
   static String iOSFlutterPath = '$iOSPath/Flutter';
