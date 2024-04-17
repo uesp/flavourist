@@ -47,8 +47,6 @@ class K {
 
   static String flutterPath = 'lib';
 
-  static String flutterFlavorPath = '$flutterPath/flavors.dart';
-
   static String flutterAppPath = '$flutterPath/app.dart';
 
   static String flutterMainPath = '$flutterPath/main.dart';

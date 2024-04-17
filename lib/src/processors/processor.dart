@@ -189,11 +189,6 @@ class Processor extends AbstractProcessor<void> {
           ),
 
       //Flutter
-      'flutter:flavors': () => NewFileStringProcessor(
-            K.flutterFlavorPath,
-            FlutterFlavorsProcessor(config: flavorizr),
-            config: flavorizr,
-          ),
       'flutter:app': () => CopyFileProcessor(
             K.tempFlutterAppPath,
             K.flutterAppPath,
