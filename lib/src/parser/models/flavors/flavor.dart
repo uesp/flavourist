@@ -46,6 +46,8 @@ class Flavor {
   final Darwin? macos;
 
   final String applicationID;
+//   final String name;
+//   final String displayName;
 
   Flavor({
     required this.app,

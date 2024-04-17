@@ -30,31 +30,39 @@ import 'package:flavourist/src/processors/ide/vscode/models/configuration.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
 
 class VSCodeLaunchProcessor extends StringProcessor {
-  VSCodeLaunchProcessor({
-    required super.config,
-  });
+	VSCodeLaunchProcessor({ required super.config });
+  
+//   @override
+//   execute() => Launch(
+//         configurations: config.flavors.keys
+//             .expand(
+//               (flavorName) => Target.values.map(
+//                 (target) => Configuration(
+//                   name: '$flavorName (${target.name.capitalize})',
+//                   flutterMode: target.name.toLowerCase(),
+//                   request: 'launch',
+//                   type: 'dart',
+//                   args: [ '--flavor', flavorName ],
+//                   program: 'lib/configs/$flavorName/main.dart',
+//                 ),
+//               ),
 
-  @override
-  execute() {
-	print(config.flavors.entries.first.value.app.name);
-	return Launch(
-        configurations: config.flavors.keys
-            .expand(
-              (flavorName) => Target.values.map(
-                (target) => Configuration(
-                  name: '$flavorName (${target.name.capitalize})',
-                  flutterMode: target.name.toLowerCase(),
-                  request: 'launch',
-                  type: 'dart',
-                  args: [ '--flavor', flavorName ],
-                  program: 'lib/configs/$flavorName/main.dart',
-                ),
-              ),
-            )
-            .toList(),
-      ).toString();
-  }
-	
-  @override
-  String toString() => "VSCodeLaunchProcessor";
+//             ).toList(),).toString();
+
+	@override
+  	execute() => Launch(configurations: config.flavors.entries.expand(
+		(entry) => Target.values.map(
+      		(target) => Configuration(
+        		name: '${entry.value.app.name} (${target.name == "debug" ? "Dev" : target.name.capitalize})',
+        		flutterMode: target.name,
+        		request: 'launch',
+        		type: 'dart',
+        		args: [ '--flavor', entry.key ],
+        		program: 'lib/configs/${entry.key}/main.dart',
+     		)
+		)
+	).toList()).toString();
+
+	@override
+	String toString() => "VSCodeLaunchProcessor";
 }
