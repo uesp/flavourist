@@ -78,9 +78,6 @@ class Processor extends AbstractProcessor<void> {
     'android:adaptiveIcons',
 
     // Flutter
-    'flutter:flavors',
-    'flutter:app',
-    'flutter:main',
     'flutter:targets',
 
     // iOS

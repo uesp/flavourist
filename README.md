@@ -10,6 +10,8 @@ Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ide
 
 ## Changes from Original
 
+Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr)
+
 - Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
 
 # Original ReadMe
@@ -158,10 +160,7 @@ flavorizr:
 | android:buildGradle     | Android       | Adds the flavors to the Android build.gradle file                       |
 | android:androidManifest | Android       | Changes the reference of the app name in the AndroidManifest.xml        |
 | android:dummyAssets     | Android       | Generates some default icons for your custom flavors                    |
-| android:icons           | Android       | Creates a set of icons for each flavor according to the icon directive  |
-| flutter:flavors         | Flutter       | Creates the flutter flavor configuration file                           |
-| flutter:app             | Flutter       | Creates the app.dart entry                                              |
-| flutter:main            | Flutter       | Creates the main target to run the app                                  |
+| android:icons           | Android       | Creates a set of icons for each flavor according to the icon
 | flutter:targets         | Flutter       | Creates a set of targets for each flavor instance                       |
 | google:firebase         | Google        | Adds Google Firebase configurations for Android and iOS for each flavor |
 | huawei:agconnect        | Huawei        | Adds Huawei AGConnect configurations for Android for each flavor        |
