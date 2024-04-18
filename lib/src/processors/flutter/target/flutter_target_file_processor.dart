@@ -29,7 +29,7 @@ import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/commons/replace_string_processor.dart';
 import 'package:flavourist/src/processors/commons/runtime_file_string_processor.dart';
 
-class FlutterTargetFileProcessor extends QueueProcessor {
+class FlutterTargetFileProcessor extends QueueProcessor { 
   FlutterTargetFileProcessor(
     String source,
     String destination,
