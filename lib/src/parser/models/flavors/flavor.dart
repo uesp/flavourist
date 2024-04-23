@@ -33,28 +33,39 @@ part 'flavor.g.dart';
 
 @JsonSerializable(anyMap: true, createToJson: false)
 class Flavor {
-  @JsonKey(required: true, disallowNullValue: true)
-  final App app;
+	// @JsonKey(required: true, disallowNullValue: true)
+	// final App app;
 
-  @JsonKey(required: false, disallowNullValue: true)
-  final Android? android;
+	@JsonKey(required: true, disallowNullValue: true)
+  	final String? applicationID; // applicationID, used for identifying app
 
-  @JsonKey(required: false, disallowNullValue: true)
-  final Darwin? ios;
+	@JsonKey(required: true, disallowNullValue: true)
+	final String? name; // flavour display name
 
-  @JsonKey(required: false, disallowNullValue: true)
-  final Darwin? macos;
+	@JsonKey(required: false, disallowNullValue: false) //optional
+	final String? icon; // flavour app icon path
 
-  final String applicationID;
-//   final String name;
-//   final String displayName;
+	@JsonKey(required: false, disallowNullValue: false) // optional
+	final List<String>? platforms; // which platforms to generate for this flavour
 
-  Flavor({
-    required this.app,
-    this.android,
-    this.ios,
-    this.macos,
-  }) : applicationID = android!.applicationId;
+	@JsonKey(required: false, disallowNullValue: true)
+	final Android? android;
 
-  factory Flavor.fromJson(Map<String, dynamic> json) => _$FlavorFromJson(json);
+	@JsonKey(required: false, disallowNullValue: true)
+	final Darwin? ios;
+
+	@JsonKey(required: false, disallowNullValue: true)
+	final Darwin? macos;
+
+	Flavor({
+		this.applicationID,
+		this.name,
+		this.icon,
+		this.platforms,
+		this.android,
+		this.ios,
+		this.macos,
+	});
+
+	factory Flavor.fromJson(Map<String, dynamic> json) => _$FlavorFromJson(json);
 }

@@ -53,7 +53,7 @@ class VSCodeLaunchProcessor extends StringProcessor {
   	execute() => Launch(configurations: config.flavors.entries.expand(
 		(entry) => Target.values.map(
       		(target) => Configuration(
-        		name: '${entry.value.app.name} (${target.name == "debug" ? "Dev" : target.name.capitalize})',
+        		name: '${entry.value.name} (${target.name == "debug" ? "Dev" : target.name.capitalize})',
         		flutterMode: target.name,
         		request: 'launch',
         		type: 'dart',

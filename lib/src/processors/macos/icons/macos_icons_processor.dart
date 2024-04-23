@@ -34,12 +34,12 @@ class MacOSIconsProcessor extends QueueProcessor {
   }) : super(
           config.macosFlavors
               .where((_, flavor) =>
-                  flavor.app.icon != null || flavor.macos?.icon != null)
+                  flavor.icon != null || flavor.macos?.icon != null)
               .map(
                 (flavorName, flavor) => MapEntry(
                   flavorName,
                   MacOSIconTargetProcessor(
-                    flavor.macos!.icon ?? flavor.app.icon ?? '',
+                    flavor.macos!.icon ?? flavor.icon ?? '',
                     flavorName,
                     config: config,
                   ),

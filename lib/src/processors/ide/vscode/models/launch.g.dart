@@ -7,5 +7,5 @@ part of 'launch.dart';
 // **************************************************************************
 
 Map<String, dynamic> _$LaunchToJson(Launch instance) => <String, dynamic>{
-    'configurations': instance.configurations.map((e) => e.toJson()).toList(),
-};
+      'configurations': instance.configurations.map((e) => e.toJson()).toList(),
+    };

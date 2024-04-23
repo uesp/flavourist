@@ -9,11 +9,21 @@ part of 'flavor.dart';
 Flavor _$FlavorFromJson(Map json) {
   $checkKeys(
     json,
-    requiredKeys: const ['app'],
-    disallowNullValues: const ['app', 'android', 'ios', 'macos'],
+    requiredKeys: const ['applicationID', 'name'],
+    disallowNullValues: const [
+      'applicationID',
+      'name',
+      'android',
+      'ios',
+      'macos'
+    ],
   );
   return Flavor(
-    app: App.fromJson(Map<String, dynamic>.from(json['app'] as Map)),
+    applicationID: json['applicationID'] as String?,
+    name: json['name'] as String?,
+    icon: json['icon'] as String?,
+    platforms:
+        (json['platforms'] as List<dynamic>?)?.map((e) => e as String).toList(),
     android: json['android'] == null
         ? null
         : Android.fromJson(Map<String, dynamic>.from(json['android'] as Map)),

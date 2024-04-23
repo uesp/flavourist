@@ -34,12 +34,12 @@ class IOSIconsProcessor extends QueueProcessor {
   }) : super(
           config.iosFlavors
               .where((_, flavor) =>
-                  flavor.app.icon != null || flavor.ios?.icon != null)
+                  flavor.icon != null || flavor.ios?.icon != null)
               .map(
                 (flavorName, flavor) => MapEntry(
                   flavorName,
                   IOSIconTargetProcessor(
-                    flavor.ios!.icon ?? flavor.app.icon ?? '',
+                    flavor.ios!.icon ?? flavor.icon ?? '',
                     flavorName,
                     config: config,
                   ),
