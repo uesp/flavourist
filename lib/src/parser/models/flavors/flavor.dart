@@ -36,10 +36,10 @@ class Flavor {
 	// @JsonKey(required: true, disallowNullValue: true)
 	// final App app;
 
-	@JsonKey(required: true, disallowNullValue: true)
+	@JsonKey(required: true, disallowNullValue: true) // required
   	final String? applicationID; // applicationID, used for identifying app
 
-	@JsonKey(required: true, disallowNullValue: true)
+	@JsonKey(required: true, disallowNullValue: true) // required
 	final String? name; // flavour display name
 
 	@JsonKey(required: false, disallowNullValue: false) //optional
