@@ -46,8 +46,6 @@ void execute(List<String> args) {
     flavorizrPath: 'flavors.yaml',
   );
 
-  print(parser.flavorizrPath.toString());
-
   Flavorizr? flavorizr;
   try {
     flavorizr = parser.parse();

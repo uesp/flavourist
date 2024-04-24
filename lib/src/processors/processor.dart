@@ -117,18 +117,24 @@ class Processor extends AbstractProcessor<void> {
       ..removeWhere((instruction) =>
           !_flavorizr.macosFlavorsAvailable && instruction.startsWith('macos'));
 
+	stdout.writeln('🔵 Generating flavours...\n');
+
     for (String instruction in instructions) {
-      stdout.writeln('Executing task $instruction');
+      stdout.writeln('⭕️ Executing task $instruction...');
 
       AbstractProcessor? processor = _availableProcessors[instruction]?.call();
       if (processor == null) {
-        stderr.writeln('Cannot execute processor $instruction');
+        stderr.writeln('🔴 Cannot execute processor $instruction');
       }
 
       await processor?.execute();
 
-      stdout.writeln();
+	  if (processor != null) {
+        stdout.writeln('🟢 Task completed! \n');
+      }
+
     }
+	stdout.writeln('✅ Files generated!');
   }
 
   static Map<String, AbstractProcessor<void> Function()>

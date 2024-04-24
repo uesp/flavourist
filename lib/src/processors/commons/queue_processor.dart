@@ -29,22 +29,22 @@ import 'package:flavourist/src/parser/models/flavorizr.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 
 class QueueProcessor extends AbstractProcessor {
-  Iterable<AbstractProcessor> processors;
+  	Iterable<AbstractProcessor> processors;
 
-  QueueProcessor(
-    this.processors, {
-    required Flavorizr config,
-  }) : super(config);
+	QueueProcessor(
+		this.processors, {
+		required Flavorizr config,
+	}) : super(config);
 
-  @override
-  void execute() {
-    for (AbstractProcessor processor in processors) {
-      stdout.writeln("Running $processor");
+	@override
+	void execute() {
+		for (AbstractProcessor processor in processors) {
+		stdout.writeln(">>  Running $processor");
 
-      processor.execute();
-    }
-  }
+		processor.execute();
+		}
+	}
 
-  @override
-  String toString() => 'QueueProcessor';
+	@override
+	String toString() => 'QueueProcessor';
 }

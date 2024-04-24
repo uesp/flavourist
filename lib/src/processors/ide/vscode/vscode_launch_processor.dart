@@ -31,37 +31,22 @@ import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
 
 class VSCodeLaunchProcessor extends StringProcessor {
 	VSCodeLaunchProcessor({ required super.config });
-  
-//   @override
-//   execute() => Launch(
-//         configurations: config.flavors.keys
-//             .expand(
-//               (flavorName) => Target.values.map(
-//                 (target) => Configuration(
-//                   name: '$flavorName (${target.name.capitalize})',
-//                   flutterMode: target.name.toLowerCase(),
-//                   request: 'launch',
-//                   type: 'dart',
-//                   args: [ '--flavor', flavorName ],
-//                   program: 'lib/configs/$flavorName/main.dart',
-//                 ),
-//               ),
-
-//             ).toList(),).toString();
 
 	@override
-  	execute() => Launch(configurations: config.flavors.entries.expand(
-		(entry) => Target.values.map(
-      		(target) => Configuration(
-        		name: '${entry.value.name} (${target.name == "debug" ? "Dev" : target.name.capitalize})',
-        		flutterMode: target.name,
-        		request: 'launch',
-        		type: 'dart',
-        		program: 'lib/configs/${entry.key}/main.dart',
-        		args: [ '--flavor', entry.key, "--target", "lib/configs/${entry.key}/main.dart" ],
-     		)
-		)
-	).toList()).toString();
+  	execute() {
+		final flavors = config.flavors.entries;
+		return Launch(configurations: flavors.expand(
+			(flavor) => Target.values.map(
+				(target) => Configuration(
+					name: '${flavor.value.name} (${target.name == "debug" ? "Dev" : target.name.capitalize})',
+					flutterMode: target.name,
+					request: 'launch',
+					type: 'dart',
+					program: 'lib/configs/${flavor.value.id}/main.dart',
+					args: [ '--flavor', flavor.value.id!, "--target", "lib/configs/${flavor.value.id}/main.dart" ],
+				)
+		)).toList()).toString();
+	}
 
 	@override
 	String toString() => "VSCodeLaunchProcessor";

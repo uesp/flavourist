@@ -17,7 +17,7 @@ Flavorizr _$FlavorizrFromJson(Map json) {
         : App.fromJson(Map<String, dynamic>.from(json['app'] as Map)),
     flavors: (json['flavors'] as Map).map(
       (k, e) => MapEntry(
-          k as String, Flavor.fromJson(Map<String, dynamic>.from(e as Map))),
+          k as String, Flavor.fromJson(k, Map<String, dynamic>.from(e as Map))),
     ),
     instructions: (json['instructions'] as List<dynamic>?)
         ?.map((e) => e as String)

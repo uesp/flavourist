@@ -33,8 +33,8 @@ part 'flavor.g.dart';
 
 @JsonSerializable(anyMap: true, createToJson: false)
 class Flavor {
-	// @JsonKey(required: true, disallowNullValue: true)
-	// final App app;
+
+	String? id;
 
 	@JsonKey(required: true, disallowNullValue: true) // required
   	final String? applicationID; // applicationID, used for identifying app
@@ -48,6 +48,8 @@ class Flavor {
 	@JsonKey(required: false, disallowNullValue: false) // optional
 	final List<String>? platforms; // which platforms to generate for this flavour
 
+	// platform-specific properties
+
 	@JsonKey(required: false, disallowNullValue: true)
 	final Android? android;
 
@@ -58,14 +60,21 @@ class Flavor {
 	final Darwin? macos;
 
 	Flavor({
+		this.id,
 		this.applicationID,
 		this.name,
 		this.icon,
 		this.platforms,
+
 		this.android,
 		this.ios,
 		this.macos,
 	});
 
-	factory Flavor.fromJson(Map<String, dynamic> json) => _$FlavorFromJson(json);
+	factory Flavor.fromJson(String id, Map<String, dynamic> json) {
+		var flavor = _$FlavorFromJson(json);
+		flavor.id = id;
+		print(flavor.id);
+		return flavor;
+	}
 }
