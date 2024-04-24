@@ -24,14 +24,14 @@
  */
 
 import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/android/google/firebase/android_target_firebase_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 
 class AndroidFirebaseProcessor extends QueueProcessor {
   AndroidFirebaseProcessor({
     required String destination,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.androidFlavors
               .where((flavorName, flavor) => flavor.android?.firebase != null)

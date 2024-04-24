@@ -14,6 +14,8 @@ Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/Angel
 
 - Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
 - VSCode launch profiles are pretty-printed in launch.json
+- Default platforms are now defined in a root-level "platforms" key in ``flavors.yaml``
+- ``flavors.yaml`` is now streamlined, with each platform implied from the platform array above.
 
 # Original ReadMe
 A flutter utility to easily create flavors in your flutter application

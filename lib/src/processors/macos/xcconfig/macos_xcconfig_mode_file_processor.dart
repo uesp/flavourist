@@ -24,7 +24,7 @@
  */
 
 import 'package:flavourist/src/extensions/extensions_string.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/processors/commons/new_file_string_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -35,7 +35,7 @@ class MacOSXCConfigModeFileProcessor extends QueueProcessor {
     String path,
     String flavorName,
     Target target, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             NewFileStringProcessor(

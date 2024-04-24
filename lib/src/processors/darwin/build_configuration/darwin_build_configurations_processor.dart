@@ -26,7 +26,7 @@
 import 'dart:convert';
 
 import 'package:flavourist/src/extensions/extensions_string.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/commons/shell_processor.dart';
@@ -40,7 +40,7 @@ class DarwinBuildConfigurationsProcessor extends QueueProcessor {
     String file,
     String flavorName,
     Map<String, dynamic> buildConfigurations, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           Target.values.map(
             (target) => ShellProcessor(

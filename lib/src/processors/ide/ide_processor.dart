@@ -1,5 +1,5 @@
 import 'package:flavourist/src/parser/models/enums.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/ide/idea/idea_run_configurations_processor.dart';
 import 'package:flavourist/src/processors/ide/vscode/vscode_launch_file_processor.dart';
@@ -9,7 +9,7 @@ class IDEProcessor extends AbstractProcessor {
   final AbstractProcessor? _processor;
 
   IDEProcessor({
-    required Flavorizr config,
+    required Flavourist config,
   })  : _processor = initProcessor(config),
         super(config);
 
@@ -23,7 +23,7 @@ class IDEProcessor extends AbstractProcessor {
     return 'IDEProcessor: ${config.ide == null ? 'Skipping IDE file generation' : super.toString()}';
   }
 
-  static initProcessor(Flavorizr config) {
+  static initProcessor(Flavourist config) {
     if (config.ide != null) {
       switch (config.ide) {
         case IDE.idea:

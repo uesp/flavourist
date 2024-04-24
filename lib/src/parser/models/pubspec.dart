@@ -24,7 +24,7 @@
  */
 
 import 'package:checked_yaml/checked_yaml.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'pubspec.g.dart';
@@ -32,7 +32,7 @@ part 'pubspec.g.dart';
 @JsonSerializable(anyMap: true, createToJson: false)
 class Pubspec {
   @JsonKey(required: true)
-  final Flavorizr flavorizr;
+  final Flavourist flavorizr;
 
   const Pubspec({required this.flavorizr});
 

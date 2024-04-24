@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/darwin/xcodeproj_processor.dart';
 import 'package:flavourist/src/processors/ios/xcconfig/ios_xcconfig_file_processor.dart';
@@ -34,7 +34,7 @@ class IOSXCConfigTargetsFileProcessor extends QueueProcessor {
     String script,
     String project,
     String path, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             XcodeprojProcessor(config: config),

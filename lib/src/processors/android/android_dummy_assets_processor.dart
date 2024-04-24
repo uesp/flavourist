@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/dummy_assets_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -32,7 +32,7 @@ class AndroidDummyAssetsProcessor extends QueueProcessor {
   AndroidDummyAssetsProcessor(
     String source,
     String destination, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.androidFlavors
               .map(

@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/commons/shell_processor.dart';
 import 'package:flavourist/src/processors/darwin/xcodeproj_processor.dart';
@@ -33,7 +33,7 @@ class DarwinSchemasProcessor extends QueueProcessor {
     String process,
     String script,
     String path, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             XcodeprojProcessor(config: config),

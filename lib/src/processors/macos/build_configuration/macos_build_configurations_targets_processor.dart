@@ -24,7 +24,7 @@
  */
 
 import 'package:flavourist/src/parser/mixins/build_settings_mixin.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/darwin/build_configuration/darwin_build_configurations_processor.dart';
@@ -36,7 +36,7 @@ class MacOSBuildConfigurationsTargetsProcessor extends QueueProcessor {
     String script,
     String project,
     String file, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             XcodeprojProcessor(config: config),

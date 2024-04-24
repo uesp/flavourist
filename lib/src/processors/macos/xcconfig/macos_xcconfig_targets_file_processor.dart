@@ -23,14 +23,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/macos/xcconfig/macos_xcconfig_file_processor.dart';
 
 class MacOSXCConfigTargetsFileProcessor extends QueueProcessor {
   MacOSXCConfigTargetsFileProcessor(
     String path, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.macosFlavors
               .map(

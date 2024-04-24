@@ -1,4 +1,4 @@
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/image_resizer_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
@@ -17,7 +17,7 @@ class AndroidAdaptiveIconProcessor extends QueueProcessor {
     this.flavorName,
     this.folder,
     this.size, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super([
           ImageResizerProcessor(
             foregroundSource,

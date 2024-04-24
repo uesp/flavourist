@@ -25,7 +25,7 @@
 
 import 'dart:io';
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_file_processor.dart';
 
 class CopyFileProcessor extends AbstractFileProcessor {
@@ -36,7 +36,7 @@ class CopyFileProcessor extends AbstractFileProcessor {
   CopyFileProcessor(
     this._source,
     this._destination, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(_source, config: config);
 
   @override

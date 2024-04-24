@@ -24,7 +24,7 @@
  */
 
 import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/android/icons/android_adaptive_icons_processor.dart';
 import 'package:flavourist/src/processors/android/icons/android_adaptive_icon_xml_processor.dart';
 import 'package:flavourist/src/processors/android/icons/android_icon_processor.dart';
@@ -32,7 +32,7 @@ import 'package:flavourist/src/processors/commons/queue_processor.dart';
 
 class AndroidIconsProcessor extends QueueProcessor {
   AndroidIconsProcessor({
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             ...config.androidFlavors

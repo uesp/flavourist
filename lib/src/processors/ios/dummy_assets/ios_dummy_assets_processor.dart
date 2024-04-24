@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin.dart';
 import 'package:flavourist/src/processors/commons/dummy_assets_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -34,7 +34,7 @@ class IOSDummyAssetsProcessor extends QueueProcessor {
     String destination,
     String flavorName,
     Darwin os, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             DummyAssetsProcessor(

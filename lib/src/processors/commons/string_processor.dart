@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 
 abstract class StringProcessor extends AbstractProcessor<String> {
@@ -31,7 +31,7 @@ abstract class StringProcessor extends AbstractProcessor<String> {
 
   StringProcessor({
     this.input,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(config);
 
   @override

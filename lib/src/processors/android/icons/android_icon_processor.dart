@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/image_resizer_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
@@ -41,7 +41,7 @@ class AndroidIconProcessor extends QueueProcessor {
   AndroidIconProcessor(
     String source,
     String flavorName, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           _entries
               .map(

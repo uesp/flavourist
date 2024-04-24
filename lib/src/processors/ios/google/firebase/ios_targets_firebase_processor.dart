@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/empty_file_processor.dart';
 import 'package:flavourist/src/processors/commons/new_file_string_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -40,7 +40,7 @@ class IOSTargetsFirebaseProcessor extends QueueProcessor {
     required String runnerProject,
     required String firebaseScript,
     required String generatedFirebaseScriptPath,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             ...config.iosFirebaseFlavors

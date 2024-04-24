@@ -147,4 +147,6 @@ class K {
   static String vsCodeLaunchPath = '$vsCodePath/launch.json';
 
   const K._();
+
+  static List<String> defaultPlatforms = [ "android", "ios", "macos" ];
 }

@@ -26,7 +26,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/parser.dart';
 import 'package:flavourist/src/processors/processor.dart';
 
@@ -46,7 +46,7 @@ void execute(List<String> args) {
     flavorizrPath: 'flavors.yaml',
   );
 
-  Flavorizr? flavorizr;
+  Flavourist? flavorizr;
   try {
     flavorizr = parser.parse();
   } catch (e) {

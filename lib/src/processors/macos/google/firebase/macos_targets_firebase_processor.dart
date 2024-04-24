@@ -24,7 +24,7 @@
  */
 
 import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/empty_file_processor.dart';
 import 'package:flavourist/src/processors/commons/new_file_string_processor.dart';
@@ -42,7 +42,7 @@ class MacOSTargetsFirebaseProcessor extends QueueProcessor {
     required String runnerProject,
     required String firebaseScript,
     required String generatedFirebaseScriptPath,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             ..._filteredFlavors(config)
@@ -96,7 +96,7 @@ class MacOSTargetsFirebaseProcessor extends QueueProcessor {
   @override
   String toString() => 'IOSTargetsFirebaseProcessor';
 
-  static Map<String, Flavor> _filteredFlavors(Flavorizr config) =>
+  static Map<String, Flavor> _filteredFlavors(Flavourist config) =>
       config.macosFlavors
           .where((flavorName, flavor) => flavor.macos?.firebase != null);
 }

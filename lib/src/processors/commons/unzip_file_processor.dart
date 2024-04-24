@@ -27,7 +27,7 @@ import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_file_processor.dart';
 
 class UnzipFileProcessor extends AbstractFileProcessor {
@@ -37,7 +37,7 @@ class UnzipFileProcessor extends AbstractFileProcessor {
   UnzipFileProcessor(
     this._source,
     this._destination, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(_source, config: config);
 
   @override

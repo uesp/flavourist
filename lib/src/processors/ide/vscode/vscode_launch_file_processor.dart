@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/new_file_string_processor.dart';
 import 'package:flavourist/src/processors/commons/new_folder_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -32,7 +32,7 @@ import 'package:flavourist/src/utils/constants.dart';
 
 class VSCodeLaunchFileProcessor extends QueueProcessor {
   VSCodeLaunchFileProcessor({
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             NewFolderProcessor(K.vsCodePath, config: config),

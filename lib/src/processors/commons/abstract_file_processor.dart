@@ -25,7 +25,7 @@
 
 import 'dart:io';
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 
 abstract class AbstractFileProcessor extends AbstractProcessor<void> {
@@ -34,7 +34,7 @@ abstract class AbstractFileProcessor extends AbstractProcessor<void> {
 
   AbstractFileProcessor(
     this.path, {
-    required Flavorizr config,
+    required Flavourist config,
   })  : file = File(path),
         super(config);
 }

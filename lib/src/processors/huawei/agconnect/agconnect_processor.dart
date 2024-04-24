@@ -23,14 +23,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/android/huawei/agconnect/android_agconnect_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 
 class AGConnectProcessor extends QueueProcessor {
   AGConnectProcessor({
     required String destination,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             if (config.androidAGConnectFlavorsAvailable)

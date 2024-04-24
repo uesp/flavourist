@@ -28,7 +28,7 @@ import 'dart:io';
 import 'package:flavourist/src/exception/file_not_found_exception.dart';
 import 'package:flavourist/src/exception/missing_required_fields_exception.dart';
 import 'package:flavourist/src/exception/null_fields_exception.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/pubspec.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -41,11 +41,9 @@ class Parser {
     required this.flavorizrPath,
   });
 
-  Flavorizr parse() {
+  Flavourist parse() {
     File pubspecFile = File(pubspecPath);
     File flavorizrFile = File(flavorizrPath);
-
-	print(flavorizrFile.absolute);
 
     final pubspecFileExists = pubspecFile.existsSync();
     final flavorizrFileExists = flavorizrFile.existsSync();
@@ -61,7 +59,7 @@ class Parser {
     try {
       if (flavorizrFileExists) {
         final yaml = flavorizrFile.readAsStringSync();
-        return Flavorizr.parse(yaml);
+        return Flavourist.parse(yaml);
       } else {
         final yaml = pubspecFile.readAsStringSync();
         return Pubspec.parse(yaml).flavorizr;

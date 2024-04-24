@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ios/dummy_assets/ios_dummy_assets_processor.dart';
 
@@ -31,7 +31,7 @@ class IOSDummyAssetsTargetsProcessor extends QueueProcessor {
   IOSDummyAssetsTargetsProcessor(
     String source,
     String destination, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.iosFlavors
               .map(

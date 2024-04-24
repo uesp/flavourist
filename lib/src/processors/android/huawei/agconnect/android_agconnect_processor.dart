@@ -24,14 +24,14 @@
  */
 
 import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/android/huawei/agconnect/android_target_agconnect_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 
 class AndroidAGConnectProcessor extends QueueProcessor {
   AndroidAGConnectProcessor({
     required String destination,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.androidFlavors
               .where((flavorName, flavor) => flavor.android?.agconnect != null)

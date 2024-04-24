@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/macos/xcconfig/macos_xcconfig_mode_file_processor.dart';
@@ -32,7 +32,7 @@ class MacOSXCConfigFileProcessor extends QueueProcessor {
   MacOSXCConfigFileProcessor(
     String path,
     String flavorName, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           Target.values.map(
             (target) => MacOSXCConfigModeFileProcessor(

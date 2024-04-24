@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/copy_file_processor.dart';
 import 'package:flavourist/src/processors/commons/new_folder_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -33,7 +33,7 @@ class AndroidTargetAGConnectProcessor extends QueueProcessor {
     String source,
     String destination,
     String flavorName, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           [
             NewFolderProcessor(

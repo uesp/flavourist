@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/image_resizer_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:sprintf/sprintf.dart';
@@ -34,7 +34,7 @@ abstract class DarwinIconTargetProcessor extends QueueProcessor {
     required String flavorName,
     required Map<String, Size> iconSet,
     required String appIconPath,
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           iconSet
               .map(

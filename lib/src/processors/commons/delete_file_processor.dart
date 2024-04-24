@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_file_processor.dart';
 
 class DeleteFileProcessor extends AbstractFileProcessor {
@@ -31,7 +31,7 @@ class DeleteFileProcessor extends AbstractFileProcessor {
 
   DeleteFileProcessor(
     this._source, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           _source,
           config: config,

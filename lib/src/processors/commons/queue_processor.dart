@@ -25,7 +25,7 @@
 
 import 'dart:io';
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 
 class QueueProcessor extends AbstractProcessor {
@@ -33,7 +33,7 @@ class QueueProcessor extends AbstractProcessor {
 
 	QueueProcessor(
 		this.processors, {
-		required Flavorizr config,
+		required Flavourist config,
 	}) : super(config);
 
 	@override

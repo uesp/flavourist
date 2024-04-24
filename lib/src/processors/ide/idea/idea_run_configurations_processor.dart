@@ -23,14 +23,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ide/idea/idea_launch_file_processor.dart';
 
 class IdeaRunConfigurationsProcessor extends QueueProcessor {
   IdeaRunConfigurationsProcessor(
     String path, {
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.flavors.keys.map(
             (flavorName) => IdeaLaunchFileProcessor(

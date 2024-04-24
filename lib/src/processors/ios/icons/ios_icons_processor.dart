@@ -24,13 +24,13 @@
  */
 
 import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavorizr.dart';
+import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ios/icons/ios_icon_target_processor.dart';
 
 class IOSIconsProcessor extends QueueProcessor {
   IOSIconsProcessor({
-    required Flavorizr config,
+    required Flavourist config,
   }) : super(
           config.iosFlavors
               .where((_, flavor) =>

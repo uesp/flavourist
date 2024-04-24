@@ -34,6 +34,7 @@ part 'flavor.g.dart';
 @JsonSerializable(anyMap: true, createToJson: false)
 class Flavor {
 
+	@JsonKey(required: true, includeFromJson: false)
 	String? id;
 
 	@JsonKey(required: true, disallowNullValue: true) // required
@@ -74,7 +75,6 @@ class Flavor {
 	factory Flavor.fromJson(String id, Map<String, dynamic> json) {
 		var flavor = _$FlavorFromJson(json);
 		flavor.id = id;
-		print(flavor.id);
 		return flavor;
 	}
 }

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'flavorizr.dart';
+part of 'flavourist.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
