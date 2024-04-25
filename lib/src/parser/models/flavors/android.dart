@@ -27,44 +27,36 @@ import 'package:flavourist/src/parser/models/flavors/android/adaptive_icon.dart'
 import 'package:flavourist/src/parser/models/flavors/android/build_config_field.dart';
 import 'package:flavourist/src/parser/models/flavors/android/res_value.dart';
 import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
-import 'package:flavourist/src/parser/models/flavors/google/firebase/firebase.dart';
-import 'package:flavourist/src/parser/models/flavors/huawei/agconnect/agconnect.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'android.g.dart';
 
 @JsonSerializable(anyMap: true, createToJson: false)
 class Android extends OS {
-  @JsonKey(required: true, disallowNullValue: true)
-  final String applicationId;
+	@JsonKey(required: true, disallowNullValue: true)
+	final String applicationId;
 
-  @JsonKey(disallowNullValue: true, defaultValue: {})
-  final Map<String, dynamic> customConfig;
+	@JsonKey(disallowNullValue: true, defaultValue: {})
+	final Map<String, dynamic> customConfig;
 
-  @JsonKey(disallowNullValue: true, defaultValue: {})
-  final Map<String, ResValue> resValues;
+	@JsonKey(disallowNullValue: true, defaultValue: {})
+	final Map<String, ResValue> resValues;
 
-  @JsonKey(disallowNullValue: true, defaultValue: {})
-  final Map<String, BuildConfigField> buildConfigFields;
+	@JsonKey(disallowNullValue: true, defaultValue: {})
+	final Map<String, BuildConfigField> buildConfigFields;
 
-  @JsonKey(disallowNullValue: true)
-  final AGConnect? agconnect;
+	@JsonKey(disallowNullValue: true)
+	final AdaptiveIcon? adaptiveIcon;
 
-  @JsonKey(disallowNullValue: true)
-  final AdaptiveIcon? adaptiveIcon;
+	Android({
+		required this.applicationId,
+		this.customConfig = const {},
+		this.resValues = const {},
+		this.buildConfigFields = const {},
+		super.generateDummyAssets,
+		super.icon,
+		this.adaptiveIcon,
+	});
 
-  Android({
-    required this.applicationId,
-    this.customConfig = const {},
-    this.resValues = const {},
-    this.buildConfigFields = const {},
-    this.agconnect,
-    super.generateDummyAssets,
-    super.firebase,
-    super.icon,
-    this.adaptiveIcon,
-  });
-
-  factory Android.fromJson(Map<String, dynamic> json) =>
-      _$AndroidFromJson(json);
+  	factory Android.fromJson(Map<String, dynamic> json) => _$AndroidFromJson(json);
 }

@@ -23,22 +23,17 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavors/google/firebase/firebase.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class OS {
-  @JsonKey(defaultValue: true)
-  final bool generateDummyAssets;
+	@JsonKey(defaultValue: true)
+	final bool generateDummyAssets;
 
-  @JsonKey(disallowNullValue: true)
-  final Firebase? firebase;
+	@JsonKey(disallowNullValue: true)
+	final String? icon;
 
-  @JsonKey(disallowNullValue: true)
-  final String? icon;
-
-  const OS({
-    this.generateDummyAssets = true,
-    this.firebase,
-    this.icon,
-  });
+	const OS({
+		this.generateDummyAssets = true,
+		this.icon,
+	});
 }

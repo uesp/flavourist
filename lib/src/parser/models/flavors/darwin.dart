@@ -26,7 +26,6 @@
 import 'package:flavourist/src/parser/mixins/build_settings_mixin.dart';
 import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
-import 'package:flavourist/src/parser/models/flavors/google/firebase/firebase.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'darwin.g.dart';
@@ -44,7 +43,6 @@ class Darwin extends OS with BuildSettingsMixin {
     this.variables = const {},
     Map<String, dynamic> buildSettings = const {},
     super.generateDummyAssets,
-    super.firebase,
     super.icon,
   }) {
     this.buildSettings = {
