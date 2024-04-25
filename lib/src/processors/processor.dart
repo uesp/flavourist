@@ -41,8 +41,6 @@ import 'package:flavourist/src/processors/commons/unzip_file_processor.dart';
 import 'package:flavourist/src/processors/darwin/darwin_schemas_processor.dart';
 import 'package:flavourist/src/processors/darwin/podfile_processor.dart';
 import 'package:flavourist/src/processors/flutter/target/flutter_targets_file_processor.dart';
-import 'package:flavourist/src/processors/google/firebase/firebase_processor.dart';
-import 'package:flavourist/src/processors/huawei/agconnect/agconnect_processor.dart';
 import 'package:flavourist/src/processors/ide/ide_processor.dart';
 import 'package:flavourist/src/processors/ios/build_configuration/ios_build_configurations_targets_processor.dart';
 import 'package:flavourist/src/processors/ios/dummy_assets/ios_dummy_assets_targets_processor.dart';
@@ -295,27 +293,6 @@ class Processor extends AbstractProcessor<void> {
 		'macos:plist': () => ExistingFileStringProcessor(
 				Constants.macOSPlistPath,
 				MacOSPListProcessor(config: flavourist),
-				config: flavourist,
-			),
-
-		// Google
-		'google:firebase': () => FirebaseProcessor(
-				process: 'ruby',
-				androidDestination: Constants.androidSrcPath,
-				iosDestination: Constants.iOSRunnerPath,
-				macosDestination: Constants.macOSRunnerPath,
-				addFileScript: Constants.tempDarwinAddFileScriptPath,
-				iosRunnerProject: Constants.iOSRunnerProjectPath,
-				macosRunnerProject: Constants.macOSRunnerProjectPath,
-				firebaseScript: Constants.tempDarwinAddFirebaseBuildPhaseScriptPath,
-				iosGeneratedFirebaseScriptPath: Constants.iOSFirebaseScriptPath,
-				macosGeneratedFirebaseScriptPath: Constants.macOSFirebaseScriptPath,
-				config: flavourist,
-			),
-
-		// Huawei
-		'huawei:agconnect': () => AGConnectProcessor(
-				destination: Constants.androidSrcPath,
 				config: flavourist,
 			),
 
