@@ -26,7 +26,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'android.dart';
-import 'app.dart';
 import 'darwin.dart';
 
 part 'flavor.g.dart';
@@ -34,8 +33,8 @@ part 'flavor.g.dart';
 @JsonSerializable(anyMap: true, createToJson: false)
 class Flavor {
 
-	@JsonKey(required: true, includeFromJson: false)
-	String? id;
+	@JsonKey(required: false, includeFromJson: false)
+	late String id;
 
 	@JsonKey(required: true, disallowNullValue: true) // required
   	final String? applicationID; // applicationID, used for identifying app
@@ -47,10 +46,9 @@ class Flavor {
 	final String? icon; // flavour app icon path
 
 	@JsonKey(required: false, disallowNullValue: false) // optional
-	final List<String>? platforms; // which platforms to generate for this flavour
+	final List<String>? platforms; // which hplatforms to generate for this flavour
 
 	// platform-specific properties
-
 	@JsonKey(required: false, disallowNullValue: true)
 	final Android? android;
 
@@ -61,7 +59,6 @@ class Flavor {
 	final Darwin? macos;
 
 	Flavor({
-		this.id,
 		this.applicationID,
 		this.name,
 		this.icon,
@@ -72,9 +69,9 @@ class Flavor {
 		this.macos,
 	});
 
-	factory Flavor.fromJson(String id, Map<String, dynamic> json) {
+	factory Flavor.fromJson(Map<String, dynamic> json) {
 		var flavor = _$FlavorFromJson(json);
-		flavor.id = id;
+		// flavor.id = id;
 		return flavor;
 	}
 }

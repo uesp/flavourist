@@ -6,18 +6,18 @@ part of 'flavourist.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Flavorizr _$FlavorizrFromJson(Map json) {
+Flavourist _$FlavouristFromJson(Map json) {
   $checkKeys(
     json,
     requiredKeys: const ['flavors'],
   );
-  return Flavorizr(
+  return Flavourist(
     app: json['app'] == null
         ? null
         : App.fromJson(Map<String, dynamic>.from(json['app'] as Map)),
     flavors: (json['flavors'] as Map).map(
       (k, e) => MapEntry(
-          k as String, Flavor.fromJson(k, Map<String, dynamic>.from(e as Map))),
+          k as String, Flavor.fromJson(Map<String, dynamic>.from(e as Map))),
     ),
     instructions: (json['instructions'] as List<dynamic>?)
         ?.map((e) => e as String)
@@ -25,6 +25,10 @@ Flavorizr _$FlavorizrFromJson(Map json) {
     assetsUrl: json['assetsUrl'] as String? ??
         'https://github.com/AngeloAvv/flutter_flavorizr/releases/download/v2.2.3/assets.zip',
     ide: $enumDecodeNullable(_$IDEEnumMap, json['ide']),
+    platforms: (json['platforms'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        ['android', 'ios', 'macos'],
   );
 }
 

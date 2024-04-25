@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-class K {
+class Constants {
   static String androidAppPath = 'android/app';
 
   static String androidSrcPath = '$androidAppPath/src';
@@ -146,7 +146,7 @@ class K {
 
   static String vsCodeLaunchPath = '$vsCodePath/launch.json';
 
-  const K._();
+  const Constants._();
 
-  static List<String> defaultPlatforms = [ "android", "ios", "macos" ];
+  static const List<String> defaultPlatforms = [ "android", "ios", "macos" ];
 }

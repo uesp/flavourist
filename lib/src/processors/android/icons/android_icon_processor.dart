@@ -49,7 +49,7 @@ class AndroidIconProcessor extends QueueProcessor {
                   folder,
                   ImageResizerProcessor(
                     source,
-                    sprintf(K.androidIconPath, [flavorName, folder]),
+                    sprintf(Constants.androidIconPath, [flavorName, folder]),
                     size,
                     config: config,
                   ),

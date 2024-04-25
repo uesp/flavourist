@@ -35,9 +35,9 @@ class VSCodeLaunchFileProcessor extends QueueProcessor {
     required Flavourist config,
   }) : super(
           [
-            NewFolderProcessor(K.vsCodePath, config: config),
+            NewFolderProcessor(Constants.vsCodePath, config: config),
             NewFileStringProcessor(
-              K.vsCodeLaunchPath,
+              Constants.vsCodeLaunchPath,
               VSCodeLaunchProcessor(config: config),
               config: config,
             )

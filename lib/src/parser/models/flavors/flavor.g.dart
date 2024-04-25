@@ -18,7 +18,6 @@ Flavor _$FlavorFromJson(Map json) {
       'macos'
     ],
   );
-
   return Flavor(
     applicationID: json['applicationID'] as String?,
     name: json['name'] as String?,

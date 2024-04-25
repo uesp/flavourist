@@ -21,13 +21,13 @@ class AndroidAdaptiveIconProcessor extends QueueProcessor {
   }) : super([
           ImageResizerProcessor(
             foregroundSource,
-            sprintf(K.androidAdaptiveIconForegroundPath, [flavorName, folder]),
+            sprintf(Constants.androidAdaptiveIconForegroundPath, [flavorName, folder]),
             size,
             config: config,
           ),
           ImageResizerProcessor(
             backgroundSource,
-            sprintf(K.androidAdaptiveIconBackgroundPath, [flavorName, folder]),
+            sprintf(Constants.androidAdaptiveIconBackgroundPath, [flavorName, folder]),
             size,
             config: config,
           ),

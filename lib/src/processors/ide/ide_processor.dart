@@ -28,7 +28,7 @@ class IDEProcessor extends AbstractProcessor {
       switch (config.ide) {
         case IDE.idea:
           return IdeaRunConfigurationsProcessor(
-            K.ideaLaunchpath,
+            Constants.ideaLaunchpath,
             config: config,
           );
         case IDE.vscode:

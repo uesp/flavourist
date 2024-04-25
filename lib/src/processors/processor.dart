@@ -139,22 +139,22 @@ class Processor extends AbstractProcessor<void> {
 		return {
 		// Commons
 		'assets:download': () => DownloadFileProcessor(
-				K.assetsZipPath,
+				Constants.assetsZipPath,
 				config: flavourist,
 			),
 		'assets:extract': () => UnzipFileProcessor(
-				K.assetsZipPath,
-				K.tempPath,
+				Constants.assetsZipPath,
+				Constants.tempPath,
 				config: flavourist,
 			),
 		'assets:clean': () => QueueProcessor(
 				[
 				DeleteFileProcessor(
-					K.assetsZipPath,
+					Constants.assetsZipPath,
 					config: flavourist,
 				),
 				DeleteFileProcessor(
-					K.tempPath,
+					Constants.tempPath,
 					config: flavourist,
 				),
 				],
@@ -163,20 +163,20 @@ class Processor extends AbstractProcessor<void> {
 
 		// Android
 		'android:androidManifest': () => ExistingFileStringProcessor(
-				K.androidManifestPath,
+				Constants.androidManifestPath,
 				AndroidManifestProcessor(config: flavourist),
 				config: flavourist,
 			),
 		'android:buildGradle': () => ExistingFileStringProcessor(
-				K.androidBuildGradlePath,
+				Constants.androidBuildGradlePath,
 				AndroidBuildGradleProcessor(
 				config: flavourist,
 				),
 				config: flavourist,
 			),
 		'android:dummyAssets': () => AndroidDummyAssetsProcessor(
-				K.tempAndroidResPath,
-				K.androidSrcPath,
+				Constants.tempAndroidResPath,
+				Constants.androidSrcPath,
 				config: flavourist,
 			),
 		'android:icons': () => AndroidIconsProcessor(
@@ -185,24 +185,24 @@ class Processor extends AbstractProcessor<void> {
 
 		//Flutter
 		'flutter:app': () => CopyFileProcessor(
-				K.tempFlutterAppPath,
-				K.flutterAppPath,
+				Constants.tempFlutterAppPath,
+				Constants.flutterAppPath,
 				config: flavourist,
 			),
 		'flutter:main': () => CopyFileProcessor(
-				K.tempFlutterMainPath,
-				K.flutterMainPath,
+				Constants.tempFlutterMainPath,
+				Constants.flutterMainPath,
 				config: flavourist,
 			),
 		'flutter:targets': () => FlutterTargetsFileProcessor(
-				K.tempFlutterMainTargetPath,
-				K.flutterPath,
+				Constants.tempFlutterMainTargetPath,
+				Constants.flutterPath,
 				config: flavourist,
 			),
 
 		//iOS
 		'ios:podfile': () => DynamicFileStringProcessor(
-				K.iOSPodfilePath,
+				Constants.iOSPodfilePath,
 				PodfileProcessor(
 				flavors: flavourist.iosFlavors.keys.toList(growable: false),
 				config: flavourist,
@@ -211,49 +211,49 @@ class Processor extends AbstractProcessor<void> {
 			),
 		'ios:xcconfig': () => IOSXCConfigTargetsFileProcessor(
 				'ruby',
-				K.tempDarwinAddFileScriptPath,
-				K.iOSRunnerProjectPath,
-				K.iOSFlutterPath,
+				Constants.tempDarwinAddFileScriptPath,
+				Constants.iOSRunnerProjectPath,
+				Constants.iOSFlutterPath,
 				config: flavourist,
 			),
 		'ios:buildTargets': () => IOSBuildConfigurationsTargetsProcessor(
 				'ruby',
-				K.tempDarwinAddBuildConfigurationScriptPath,
-				K.iOSRunnerProjectPath,
-				K.iOSFlutterPath,
+				Constants.tempDarwinAddBuildConfigurationScriptPath,
+				Constants.iOSRunnerProjectPath,
+				Constants.iOSFlutterPath,
 				config: flavourist,
 			),
 		'ios:schema': () => DarwinSchemasProcessor(
 				'ruby',
-				K.tempDarwinCreateSchemeScriptPath,
-				K.iOSRunnerProjectPath,
+				Constants.tempDarwinCreateSchemeScriptPath,
+				Constants.iOSRunnerProjectPath,
 				config: flavourist,
 			),
 		'ios:dummyAssets': () => IOSDummyAssetsTargetsProcessor(
-				K.tempiOSAssetsPath,
-				K.iOSAssetsPath,
+				Constants.tempiOSAssetsPath,
+				Constants.iOSAssetsPath,
 				config: flavourist,
 			),
 		'ios:icons': () => IOSIconsProcessor(
 				config: flavourist,
 			),
 		'ios:plist': () => ExistingFileStringProcessor(
-				K.iOSPListPath,
+				Constants.iOSPListPath,
 				IOSPListProcessor(config: flavourist),
 				config: flavourist,
 			),
 		'ios:launchScreen': () => IOSTargetsLaunchScreenFileProcessor(
 				'ruby',
-				K.tempDarwinAddFileScriptPath,
-				K.iOSRunnerProjectPath,
-				K.tempiOSLaunchScreenPath,
-				K.iOSRunnerPath,
+				Constants.tempDarwinAddFileScriptPath,
+				Constants.iOSRunnerProjectPath,
+				Constants.tempiOSLaunchScreenPath,
+				Constants.iOSRunnerPath,
 				config: flavourist,
 			),
 
 		// MacOS
 		'macos:podfile': () => DynamicFileStringProcessor(
-				K.macOSPodfilePath,
+				Constants.macOSPodfilePath,
 				PodfileProcessor(
 				flavors: flavourist.macosFlavors.keys.toList(growable: false),
 				config: flavourist,
@@ -261,39 +261,39 @@ class Processor extends AbstractProcessor<void> {
 				config: flavourist,
 			),
 		'macos:xcconfig': () => MacOSXCConfigTargetsFileProcessor(
-				K.macOSFlutterPath,
+				Constants.macOSFlutterPath,
 				config: flavourist,
 			),
 		'macos:configs': () => MacOSConfigsTargetsFileProcessor(
 				'ruby',
-				K.tempDarwinAddFileScriptPath,
-				K.macOSRunnerProjectPath,
-				K.macOSConfigsPath,
+				Constants.tempDarwinAddFileScriptPath,
+				Constants.macOSRunnerProjectPath,
+				Constants.macOSConfigsPath,
 				config: flavourist,
 			),
 		'macos:buildTargets': () => MacOSBuildConfigurationsTargetsProcessor(
 				'ruby',
-				K.tempDarwinAddBuildConfigurationScriptPath,
-				K.macOSRunnerProjectPath,
-				K.macOSConfigsPath,
+				Constants.tempDarwinAddBuildConfigurationScriptPath,
+				Constants.macOSRunnerProjectPath,
+				Constants.macOSConfigsPath,
 				config: flavourist,
 			),
 		'macos:schema': () => DarwinSchemasProcessor(
 				'ruby',
-				K.tempDarwinCreateSchemeScriptPath,
-				K.macOSRunnerProjectPath,
+				Constants.tempDarwinCreateSchemeScriptPath,
+				Constants.macOSRunnerProjectPath,
 				config: flavourist,
 			),
 		'macos:dummyAssets': () => MacOSDummyAssetsTargetsProcessor(
-				K.tempMacOSAssetsPath,
-				K.macOSAssetsPath,
+				Constants.tempMacOSAssetsPath,
+				Constants.macOSAssetsPath,
 				config: flavourist,
 			),
 		'macos:icons': () => MacOSIconsProcessor(
 				config: flavourist,
 			),
 		'macos:plist': () => ExistingFileStringProcessor(
-				K.macOSPlistPath,
+				Constants.macOSPlistPath,
 				MacOSPListProcessor(config: flavourist),
 				config: flavourist,
 			),
@@ -301,21 +301,21 @@ class Processor extends AbstractProcessor<void> {
 		// Google
 		'google:firebase': () => FirebaseProcessor(
 				process: 'ruby',
-				androidDestination: K.androidSrcPath,
-				iosDestination: K.iOSRunnerPath,
-				macosDestination: K.macOSRunnerPath,
-				addFileScript: K.tempDarwinAddFileScriptPath,
-				iosRunnerProject: K.iOSRunnerProjectPath,
-				macosRunnerProject: K.macOSRunnerProjectPath,
-				firebaseScript: K.tempDarwinAddFirebaseBuildPhaseScriptPath,
-				iosGeneratedFirebaseScriptPath: K.iOSFirebaseScriptPath,
-				macosGeneratedFirebaseScriptPath: K.macOSFirebaseScriptPath,
+				androidDestination: Constants.androidSrcPath,
+				iosDestination: Constants.iOSRunnerPath,
+				macosDestination: Constants.macOSRunnerPath,
+				addFileScript: Constants.tempDarwinAddFileScriptPath,
+				iosRunnerProject: Constants.iOSRunnerProjectPath,
+				macosRunnerProject: Constants.macOSRunnerProjectPath,
+				firebaseScript: Constants.tempDarwinAddFirebaseBuildPhaseScriptPath,
+				iosGeneratedFirebaseScriptPath: Constants.iOSFirebaseScriptPath,
+				macosGeneratedFirebaseScriptPath: Constants.macOSFirebaseScriptPath,
 				config: flavourist,
 			),
 
 		// Huawei
 		'huawei:agconnect': () => AGConnectProcessor(
-				destination: K.androidSrcPath,
+				destination: Constants.androidSrcPath,
 				config: flavourist,
 			),
 

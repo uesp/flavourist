@@ -26,6 +26,7 @@
 import 'package:flavourist/src/extensions/extensions_map.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:checked_yaml/checked_yaml.dart';
+import 'package:flavourist/src/utils/constants.dart';
 
 import 'config/app.dart';
 import 'enums.dart';
@@ -43,10 +44,11 @@ class Flavourist {
 	@JsonKey()
 	List<String>? instructions;
 
-	@JsonKey(
-		defaultValue:
-			'https://github.com/AngeloAvv/flutter_flavorizr/releases/download/v2.2.3/assets.zip')
+	@JsonKey(defaultValue: 'https://github.com/AngeloAvv/flutter_flavorizr/releases/download/v2.2.3/assets.zip')
 	final String assetsUrl;
+
+	@JsonKey(defaultValue: Constants.defaultPlatforms, required: false)
+	final List<String>? platforms;
 
 	@JsonKey()
 	final IDE? ide;
@@ -60,38 +62,18 @@ class Flavourist {
 	@JsonKey(includeFromJson: false)
 	late Map<String, Flavor> macosFlavors;
 
-	@JsonKey(includeFromJson: false)
-	late Map<String, Flavor> androidFirebaseFlavors;
-
-	@JsonKey(includeFromJson: false)
-	late Map<String, Flavor> androidAGConnectFlavors;
-
-	@JsonKey(includeFromJson: false)
-	late Map<String, Flavor> iosFirebaseFlavors;
-
-	@JsonKey(includeFromJson: false)
-	late Map<String, Flavor> macosFirebaseFlavors;
-
 	Flavourist({
 		this.app,
 		required this.flavors,
 		this.instructions,
 		required this.assetsUrl,
 		this.ide,
-	})  : androidFlavors = flavors.where((_, flavor) => flavor.android != null),
-			iosFlavors = flavors.where((_, flavor) => flavor.ios != null),
-			macosFlavors = flavors.where((_, flavor) => flavor.macos != null),
-			androidFirebaseFlavors =
-				flavors.where((_, flavor) => flavor.android?.firebase != null),
-			androidAGConnectFlavors =
-				flavors.where((_, flavor) => flavor.android?.agconnect != null),
-			iosFirebaseFlavors =
-				flavors.where((_, flavor) => flavor.ios?.firebase != null),
-			macosFirebaseFlavors =
-				flavors.where((_, flavor) => flavor.macos?.firebase != null);
+		this.platforms,
+	})  :   androidFlavors = flavors.where((_, flavor) => (flavor.platforms != null && flavor.platforms!.contains("android")) || flavor.android != null || platforms!.contains("android")),
+		    iosFlavors = flavors.where((_, flavor) => (flavor.platforms != null && flavor.platforms!.contains("ios")) || flavor.ios != null || platforms!.contains("ios")),
+		    macosFlavors = flavors.where((_, flavor) => (flavor.platforms != null && flavor.platforms!.contains("macos")) || flavor.macos != null || platforms!.contains("macos"));
 
-
-	factory Flavourist.fromJson(Map json) => _$FlavorizrFromJson(json);
+	factory Flavourist.fromJson(Map json) => _$FlavouristFromJson(json);
 
 	factory Flavourist.parse(String yaml) => checkedYamlDecode(yaml, (o) => Flavourist.fromJson(o ?? {}));
 
@@ -101,11 +83,4 @@ class Flavourist {
 
 	bool get macosFlavorsAvailable => macosFlavors.isNotEmpty;
 
-	bool get androidFirebaseFlavorsAvailable => androidFirebaseFlavors.isNotEmpty;
-
-	bool get androidAGConnectFlavorsAvailable => androidAGConnectFlavors.isNotEmpty;
-
-	bool get iosFirebaseFlavorsAvailable => iosFirebaseFlavors.isNotEmpty;
-
-	bool get macosFirebaseFlavorsAvailable => macosFirebaseFlavors.isNotEmpty;
 }

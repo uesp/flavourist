@@ -12,7 +12,7 @@ class AndroidAdaptiveIconXmlProcessor extends QueueProcessor {
   }) : super(
           [
             NewFileStringProcessor(
-              sprintf(K.androidAdaptiveIconXmlPath, [flavorName]),
+              sprintf(Constants.androidAdaptiveIconXmlPath, [flavorName]),
               AndroidGenerateIclauncherXmlProcessor(config: config),
               config: config,
             ),
