@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 /*
  * Copyright (c) 2024 Angelo Cassano
  *
@@ -23,6 +25,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:flavourist/src/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'android.dart';
@@ -33,45 +36,35 @@ part 'flavor.g.dart';
 @JsonSerializable(anyMap: true, createToJson: false)
 class Flavor {
 
-	@JsonKey(required: false, includeFromJson: false)
-	late String id;
+	@JsonKey(required: true, disallowNullValue: true) // required
+  	final String applicationID; // applicationID, used for identifying app
 
 	@JsonKey(required: true, disallowNullValue: true) // required
-  	final String? applicationID; // applicationID, used for identifying app
-
-	@JsonKey(required: true, disallowNullValue: true) // required
-	final String? name; // flavour display name
+	final String name; // flavour display name
 
 	@JsonKey(required: false, disallowNullValue: false) //optional
 	final String? icon; // flavour app icon path
 
-	@JsonKey(required: false, disallowNullValue: false) // optional
-	final List<String>? platforms; // which hplatforms to generate for this flavour
+	@JsonKey(required: false, disallowNullValue: false, defaultValue: Constants.defaultPlatforms) // optional
+	final List<String>? platforms; // which platforms to generate for this flavour
 
 	// platform-specific properties
 	@JsonKey(required: false, disallowNullValue: true)
-	final Android? android;
+	Android? android;
 
 	@JsonKey(required: false, disallowNullValue: true)
-	final Darwin? ios;
+	Darwin? ios;
 
 	@JsonKey(required: false, disallowNullValue: true)
-	final Darwin? macos;
+	Darwin? macos;
 
-	Flavor({
-		this.applicationID,
-		this.name,
-		this.icon,
-		this.platforms,
-
-		this.android,
-		this.ios,
-		this.macos,
-	});
-
-	factory Flavor.fromJson(Map<String, dynamic> json) {
-		var flavor = _$FlavorFromJson(json);
-		// flavor.id = id;
-		return flavor;
+	// constructor
+	Flavor({required this.applicationID, required this.name, this.icon, this.platforms, this.android, this.ios, this.macos, } ) {
+		android  ??= platforms!.contains("android") ? Android(applicationId: applicationID) : null;
+		ios 	 ??= platforms!.contains("ios") ? Darwin(bundleId: applicationID) : null;
+		macos 	 ??= platforms!.contains("macos") ? Darwin(bundleId: applicationID) : null;
 	}
+
+	factory Flavor.fromJson(Map<String, dynamic> json) => _$FlavorFromJson(json);
+
 }

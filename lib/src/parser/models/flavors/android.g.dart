@@ -11,13 +11,11 @@ Android _$AndroidFromJson(Map json) {
     json,
     requiredKeys: const ['applicationId'],
     disallowNullValues: const [
-      'firebase',
       'icon',
       'applicationId',
       'customConfig',
       'resValues',
       'buildConfigFields',
-      'agconnect',
       'adaptiveIcon'
     ],
   );
@@ -37,14 +35,7 @@ Android _$AndroidFromJson(Map json) {
               BuildConfigField.fromJson(Map<String, dynamic>.from(e as Map))),
         ) ??
         {},
-    agconnect: json['agconnect'] == null
-        ? null
-        : AGConnect.fromJson(
-            Map<String, dynamic>.from(json['agconnect'] as Map)),
     generateDummyAssets: json['generateDummyAssets'] as bool? ?? true,
-    firebase: json['firebase'] == null
-        ? null
-        : Firebase.fromJson(Map<String, dynamic>.from(json['firebase'] as Map)),
     icon: json['icon'] as String?,
     adaptiveIcon: json['adaptiveIcon'] == null
         ? null

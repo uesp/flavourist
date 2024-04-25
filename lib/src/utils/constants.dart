@@ -67,8 +67,6 @@ class Constants {
 
   static String iOSAppIconPath = '$iOSAssetsPath/%sAppIcon.appiconset/%s';
 
-  static String iOSFirebaseScriptPath = '$iOSPath/firebaseScript.sh';
-
   static String macOSPath = 'macos';
 
   static String macOSRunnerPath = '$macOSPath/Runner';
@@ -86,8 +84,6 @@ class Constants {
   static String macOSConfigsPath = '$macOSRunnerPath/Configs';
 
   static String macOSFlutterPath = '$macOSPath/Flutter';
-
-  static String macOSFirebaseScriptPath = '$macOSPath/firebaseScript.sh';
 
   static String assetsZipPath = 'assets.tmp.zip';
 
@@ -134,9 +130,6 @@ class Constants {
 
   static String tempDarwinAddBuildConfigurationScriptPath =
       '$tempDarwinScriptsPath/add_build_configuration.rb';
-
-  static String tempDarwinAddFirebaseBuildPhaseScriptPath =
-      '$tempDarwinScriptsPath/add_firebase_build_phase.rb';
 
   static String ideaPath = '.idea';
 
