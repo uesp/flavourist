@@ -132,7 +132,7 @@ class AndroidBuildGradleProcessor extends StringProcessor {
       final Map<String, ResValue> resValues = LinkedHashMap.from({
         'app_name': ResValue(
           type: 'string',
-          value: flavor.name!,
+          value: flavor.name,
         )
       })
         ..addAll(config.app?.android?.resValues ?? {})
