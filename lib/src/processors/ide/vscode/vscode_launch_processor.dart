@@ -23,7 +23,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/extensions/extensions_string.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/processors/commons/string_processor.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/configuration.dart';
