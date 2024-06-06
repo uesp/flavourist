@@ -25,7 +25,6 @@
 
 enum Target {
   debug('debug'),
-  profile('release'),
   release('release');
 
   final String darwinTarget;
