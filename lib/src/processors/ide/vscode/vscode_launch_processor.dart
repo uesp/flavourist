@@ -41,8 +41,8 @@ class VSCodeLaunchProcessor extends StringProcessor {
 					flutterMode: target.name,
 					request: 'launch',
 					type: 'dart',
-					program: 'lib/configs/${flavor.key}/main.dart',
-					args: [ '--flavor', flavor.key, "--target", "lib/configs/${flavor.key}/main.dart" ],
+					program: 'lib/res/configs/${flavor.key}/main.dart',
+					args: [ '--flavor', flavor.key, "--target", "lib/res/configs/${flavor.key}/main.dart" ],
 				)
 		)).toList()).toString();
 	}
