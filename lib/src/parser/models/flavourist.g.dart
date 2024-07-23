@@ -1,0 +1,38 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'flavourist.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Flavourist _$FlavouristFromJson(Map json) {
+  $checkKeys(
+    json,
+    requiredKeys: const ['flavors'],
+  );
+  return Flavourist(
+    app: json['app'] == null
+        ? null
+        : App.fromJson(Map<String, dynamic>.from(json['app'] as Map)),
+    flavors: (json['flavors'] as Map).map(
+      (k, e) => MapEntry(
+          k as String, Flavor.fromJson(Map<String, dynamic>.from(e as Map))),
+    ),
+    instructions: (json['instructions'] as List<dynamic>?)
+        ?.map((e) => e as String)
+        .toList(),
+    assetsUrl: json['assetsUrl'] as String? ??
+        'https://github.com/AngeloAvv/flutter_flavorizr/releases/download/v2.2.3/assets.zip',
+    ide: $enumDecodeNullable(_$IDEEnumMap, json['ide']),
+    platforms: (json['platforms'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        ['android', 'ios', 'macos'],
+  );
+}
+
+const _$IDEEnumMap = {
+  IDE.idea: 'idea',
+  IDE.vscode: 'vscode',
+};
