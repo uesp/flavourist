@@ -23,7 +23,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/processors/commons/string_processor.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/configuration.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
@@ -35,10 +34,10 @@ class VSCodeLaunchProcessor extends StringProcessor {
   	execute() {
 		final flavors = config.flavors.entries;
 		return Launch(configurations: flavors.expand(
-			(flavor) => Target.values.map(
-				(target) => Configuration(
-					name: '${flavor.value.name} ${target.name == "debug" ? "(Dev)" : ""}',
-					flutterMode: target.name,
+			(flavor) => [ 'debug', 'profile', 'release' ].map(
+				(flutterMode) => Configuration(
+					name: '${flavor.value.name} ${_launchLabel(flutterMode)}',
+					flutterMode: flutterMode,
 					request: 'launch',
 					type: 'dart',
 					program: 'lib/res/configs/${flavor.key}/main.dart',
@@ -49,4 +48,15 @@ class VSCodeLaunchProcessor extends StringProcessor {
 
 	@override
 	String toString() => "VSCodeLaunchProcessor";
+
+	String _launchLabel(String flutterMode) {
+		switch (flutterMode) {
+			case 'debug':
+				return '(Dev)';
+			case 'profile':
+				return '(Beta)';
+			default:
+				return '';
+		}
+	}
 }
