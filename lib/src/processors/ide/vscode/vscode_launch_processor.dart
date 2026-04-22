@@ -30,18 +30,30 @@ import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
 class VSCodeLaunchProcessor extends StringProcessor {
 	VSCodeLaunchProcessor({ required super.config });
 
+	static const Map<String, String> _buildTypes = {
+		'debug': '--dart-define=BUILD_TYPE=debug',
+		'beta': '--dart-define=BUILD_TYPE=beta',
+		'release': '--dart-define=BUILD_TYPE=release',
+	};
+
 	@override
   	execute() {
 		final flavors = config.flavors.entries;
 		return Launch(configurations: flavors.expand(
-			(flavor) => [ 'debug', 'profile', 'release' ].map(
-				(flutterMode) => Configuration(
-					name: '${flavor.value.name} ${_launchLabel(flutterMode)}',
-					flutterMode: flutterMode,
+			(flavor) => [ 'debug', 'beta', 'release' ].map(
+				(mode) => Configuration(
+					name: '${flavor.value.name} ${_buildLabel(mode)}',
+					flutterMode: mode == 'beta' ? 'release' : mode,
 					request: 'launch',
 					type: 'dart',
 					program: 'lib/res/configs/${flavor.key}/main.dart',
-					args: [ '--flavor', flavor.key, "--target", "lib/res/configs/${flavor.key}/main.dart" ],
+					args: [
+						'--flavor',
+						flavor.key,
+						"--target",
+						"lib/res/configs/${flavor.key}/main.dart",
+						_buildTypes[mode] ?? _buildTypes['release']!,
+					],
 				)
 		)).toList()).toString();
 	}
@@ -49,11 +61,11 @@ class VSCodeLaunchProcessor extends StringProcessor {
 	@override
 	String toString() => "VSCodeLaunchProcessor";
 
-	String _launchLabel(String flutterMode) {
-		switch (flutterMode) {
+	String _buildLabel(String mode) {
+		switch (mode) {
 			case 'debug':
 				return '(Dev)';
-			case 'profile':
+			case 'beta':
 				return '(Beta)';
 			default:
 				return '';
