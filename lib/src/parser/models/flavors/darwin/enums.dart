@@ -31,4 +31,9 @@ enum Target {
   final String darwinTarget;
 
   const Target(this.darwinTarget);
+
+  /// CocoaPods `project 'Runner', { ... }` must use only `:debug` and `:release`
+  /// (Xcodeproj `PROJECT_DEFAULT_BUILD_SETTINGS`); `:profile` crashes pod install.
+  String get cocoapodsProjectMapping =>
+      this == Target.profile ? 'release' : darwinTarget;
 }

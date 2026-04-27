@@ -67,7 +67,7 @@ class PodfileProcessor extends StringProcessor {
     for (final flavor in flavors) {
       for (final target in Target.values) {
         buffer.writeln(
-            '  \'${target.name.capitalize}-$flavor\' => :${target.darwinTarget},');
+            '  \'${target.name.capitalize}-$flavor\' => :${target.cocoapodsProjectMapping},');
       }
     }
   }
