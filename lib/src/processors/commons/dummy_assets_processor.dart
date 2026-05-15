@@ -24,23 +24,38 @@
  */
 
 import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
+import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/copy_folder_processor.dart';
+import 'package:flavourist/src/utils/icon_resolver.dart';
 
 class DummyAssetsProcessor extends CopyFolderProcessor {
   final OS _os;
+  final Flavor? _flavor;
+  final bool _ios;
 
   DummyAssetsProcessor(
     super.source,
     super.destination,
     this._os, {
     required super.config,
-  });
+    Flavor? flavor,
+    bool ios = false,
+  })  : _flavor = flavor,
+        _ios = ios;
 
   @override
   void execute() {
-    if (_os.generateDummyAssets) {
-      super.execute();
+    if (!_os.generateDummyAssets) {
+      return;
     }
+    if (_flavor != null) {
+      const resolver = IconResolver();
+      if (resolver.hasIconConfig(_flavor!) &&
+          resolver.iconSourcesReady(_flavor!, ios: _ios)) {
+        return;
+      }
+    }
+    super.execute();
   }
 
   @override

@@ -40,6 +40,9 @@ class Constants {
   static String androidAdaptiveIconXmlPath =
       '$androidAppPath/src/%s/res/mipmap-anydpi-v26/ic_launcher.xml';
 
+  static String androidMonochromePath =
+      '$androidAppPath/src/%s/res/%s/ic_launcher_monochrome.png';
+
   static String androidManifestPath =
       '$androidSrcPath/main/AndroidManifest.xml';
 

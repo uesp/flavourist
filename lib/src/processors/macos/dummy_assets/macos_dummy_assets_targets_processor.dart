@@ -42,6 +42,7 @@ class MacOSDummyAssetsTargetsProcessor extends QueueProcessor {
                     destination,
                     flavorName,
                     flavor.macos!,
+                    flavor: flavor,
                     config: config,
                   ),
                 ),

@@ -1,0 +1,57 @@
+---
+description: Flavourist icon YAML, platform gating, and icon processors
+globs:
+  - "**/*.dart"
+  - "**/flavors.yaml"
+alwaysApply: false
+---
+
+# Flavourist icons
+
+## Config source
+
+Consumer apps use root **`flavors.yaml`** (not pubspec `flavorizr:`). Parser: `lib/src/parser/parser.dart` with `flavorizrPath: flavors.yaml`.
+
+## `icon:` schema
+
+```yaml
+icon:
+    foreground: path/to/foreground.png   # Android adaptive (usually transparent)
+    background: path/to/background.png
+    monochrome: path/to/monochrome.png   # optional, Android 13+
+```
+
+- Legacy **`icon: path`** string → `foreground` only.
+- Platform overrides: **`ios.icon`**, **`macos.icon`** (optional flat PNG paths).
+
+## IDs
+
+- Flavor **`applicationID`** → Android `applicationId`; default **ios/macos** `bundleId` when platform blocks omitted.
+- Use **`ios.applicationID`** / **`macos.applicationID`** in YAML (not `bundleId`); parser maps in `darwin_json.dart`.
+
+## Platform gating
+
+One `icon:` block per flavor. Processors run only for platforms in that flavor’s **`platforms`** list (`androidFlavors` / `iosFlavors` / `macosFlavors` on `Flavourist`).
+
+| Instruction | Output |
+|-------------|--------|
+| `android:icons` | Adaptive drawables + legacy mipmaps + optional monochrome |
+| `ios:icons` | `ios/Runner/Assets.xcassets/<flavor>AppIcon.appiconset/` |
+| `macos:icons` | `macos/Runner/Assets.xcassets/<flavor>AppIcon.appiconset/` |
+
+## Asset roles
+
+- **`foreground` / `background`**: Android adaptive layers — not the Darwin launcher master alone.
+- **Darwin legacy `AppIcon`**: composed square via `lib/src/utils/icon_compose.dart` (background resized to canvas; foreground at source size, centered), unless `ios.icon` / `macos.icon` override.
+- **iOS 26+ layered icons (phase 2)**: use separate layers; do not flatten for Icon Composer.
+
+## Implementation
+
+- Resolve paths in **`IconResolver`** (`lib/src/utils/icon_resolver.dart`); do not duplicate logic in processors.
+- Adaptive Android XML: `AndroidGenerateIclauncherXmlProcessor` adds `<monochrome>` only when `icon.monochrome` is set.
+- After parser/model changes: `dart run build_runner build` in flavourist; consumers run `dart run flavourist`.
+- Do not remove `android:buildGradle` magic comments.
+
+## Out of scope
+
+Store listing icons, splash screens (separate future work).

@@ -21,7 +21,7 @@ Flavor _$FlavorFromJson(Map json) {
   return Flavor(
     applicationID: json['applicationID'] as String,
     name: json['name'] as String,
-    icon: json['icon'] as String?,
+    icon: flavorIconFromJson(json['icon']),
     platforms: (json['platforms'] as List<dynamic>?)
             ?.map((e) => e as String)
             .toList() ??

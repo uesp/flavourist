@@ -23,62 +23,82 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavourist.dart';
-import 'package:flavourist/src/processors/android/icons/android_adaptive_icons_processor.dart';
+import 'dart:io';
+
 import 'package:flavourist/src/processors/android/icons/android_adaptive_icon_xml_processor.dart';
+import 'package:flavourist/src/processors/android/icons/android_adaptive_icons_processor.dart';
 import 'package:flavourist/src/processors/android/icons/android_icon_processor.dart';
+import 'package:flavourist/src/processors/android/icons/android_monochrome_processor.dart';
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/utils/icon_resolver.dart';
 
-class AndroidIconsProcessor extends QueueProcessor {
-  AndroidIconsProcessor({
-    required Flavourist config,
-  }) : super(
-          [
-            ...config.androidFlavors
-                .where((_, flavor) =>
-                    flavor.icon != null || flavor.android?.icon != null)
-                .map(
-                  (flavorName, flavor) => MapEntry(
-                    flavorName,
-                    AndroidIconProcessor(
-                      flavor.android!.icon ?? flavor.icon ?? '',
-                      flavorName,
-                      config: config,
-                    ),
-                  ),
-                )
-                .values,
-            ...config.androidFlavors
-                .where((_, flavor) => flavor.android!.adaptiveIcon != null)
-                .map(
-                  (flavorName, flavor) => MapEntry(
-                    flavorName,
-                    AndroidAdaptiveIconXmlProcessor(
-                      flavorName,
-                      config: config,
-                    ),
-                  ),
-                )
-                .values,
-            ...config.androidFlavors
-                .where((_, flavor) => flavor.android!.adaptiveIcon != null)
-                .map(
-                  (flavorName, flavor) => MapEntry(
-                    flavorName,
-                    AndroidAdaptiveIconsProcessor(
-                      flavor.android!.adaptiveIcon!.foreground,
-                      flavor.android!.adaptiveIcon!.background,
-                      flavorName,
-                      config: config,
-                    ),
-                  ),
-                )
-                .values,
-          ],
-          config: config,
-        );
+class AndroidIconsProcessor extends AbstractProcessor {
+	AndroidIconsProcessor(super.config);
 
-  @override
-  String toString() => 'AndroidIconsProcessor';
+	@override
+	void execute() {
+		const resolver = IconResolver();
+
+		for (final entry in config.androidFlavors.entries) {
+			final flavorName = entry.key;
+			final flavor = entry.value;
+			if (!resolver.hasIconConfig(flavor)) {
+				continue;
+			}
+			if (!resolver.iconSourcesReady(flavor, ios: false)) {
+				stdout.writeln(
+					'⚠️  Skipping android:icons for $flavorName: icon source files not found',
+				);
+				continue;
+			}
+
+			final layers = resolver.adaptiveLayers(flavor);
+			final legacySource = resolver.resolveFlatLauncherSource(
+				flavor,
+				flavorName: flavorName,
+				ios: false,
+			);
+
+			final processors = <AbstractProcessor>[
+				AndroidIconProcessor(
+					legacySource,
+					flavorName,
+					config: config,
+				),
+			];
+
+			if (layers != null) {
+				processors.addAll([
+					AndroidAdaptiveIconXmlProcessor(
+						flavorName,
+						includeMonochrome: resolver.monochromeSourceReady(flavor),
+						config: config,
+					),
+					AndroidAdaptiveIconsProcessor(
+						layers.foreground,
+						layers.background,
+						flavorName,
+						config: config,
+					),
+				]);
+			}
+
+			final monochrome = resolver.monochromePath(flavor);
+			if (monochrome != null && resolver.monochromeSourceReady(flavor)) {
+				processors.add(
+					AndroidMonochromeProcessor(
+						monochrome,
+						flavorName,
+						config: config,
+					),
+				);
+			}
+
+			QueueProcessor(processors, config: config).execute();
+		}
+	}
+
+	@override
+	String toString() => 'AndroidIconsProcessor';
 }

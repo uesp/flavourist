@@ -6,20 +6,24 @@ import 'package:flavourist/src/utils/constants.dart';
 import 'package:sprintf/sprintf.dart';
 
 class AndroidAdaptiveIconXmlProcessor extends QueueProcessor {
-  AndroidAdaptiveIconXmlProcessor(
-    String? flavorName, {
-    required Flavourist config,
-  }) : super(
-          [
-            NewFileStringProcessor(
-              sprintf(Constants.androidAdaptiveIconXmlPath, [flavorName]),
-              AndroidGenerateIclauncherXmlProcessor(config: config),
-              config: config,
-            ),
-          ],
-          config: config,
-        );
+	AndroidAdaptiveIconXmlProcessor(
+		String? flavorName, {
+		required bool includeMonochrome,
+		required Flavourist config,
+	}) : super(
+			[
+				NewFileStringProcessor(
+					sprintf(Constants.androidAdaptiveIconXmlPath, [flavorName]),
+					AndroidGenerateIclauncherXmlProcessor(
+						includeMonochrome: includeMonochrome,
+						config: config,
+					),
+					config: config,
+				),
+			],
+			config: config,
+		);
 
-  @override
-  String toString() => 'AndroidAdaptiveIconXmlProcessor';
+	@override
+	String toString() => 'AndroidAdaptiveIconXmlProcessor';
 }

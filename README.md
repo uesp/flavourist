@@ -17,6 +17,26 @@ Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/Angel
 - Default platforms are now defined in a root-level "platforms" key in ``flavors.yaml``
 - ``flavors.yaml`` is now streamlined, with each platform implied from the platform array above.
 
+## Icon configuration (`flavors.yaml`)
+
+Per-flavor ``icon:`` block (consumer apps such as wiki_app):
+
+```yaml
+icon:
+    foreground: assets/flavors/myflavor/icons/foreground.png   # Android adaptive layer
+    background: assets/flavors/myflavor/icons/background.png
+    monochrome: assets/flavors/myflavor/icons/monochrome.png   # optional, Android 13+
+```
+
+- **Android:** raw ``foreground`` / ``background`` in ``drawable-*``; legacy ``mipmap`` icons use a **composed** flat PNG when both layers exist.
+- **iOS / macOS:** ``AppIcon.appiconset`` from composed fg+bg (background fills canvas; foreground at source size, centered — not scaled). Optional ``ios.icon`` / ``macos.icon`` flat PNG overrides.
+- **IDs:** flavor ``applicationID`` mirrors to Android and default Darwin bundle IDs; use ``ios.applicationID`` / ``macos.applicationID`` (not ``bundleId``) to override per platform.
+- **Platforms:** icons generate only for platforms listed on the flavor (``platforms: [ android, ios, macos ]``).
+
+Legacy ``icon: path/to.png`` (string) is still supported (treated as ``foreground`` only).
+
+Run: ``dart run flavourist`` (icons are included in the default instruction set). To run only icon tasks: ``dart run flavourist -p android:icons,ios:icons,macos:icons``
+
 # Original ReadMe
 A flutter utility to easily create flavors in your flutter application
 

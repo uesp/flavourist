@@ -1,0 +1,12 @@
+---
+description: Flavourist agent conventions
+globs:
+  - "**/*"
+alwaysApply: false
+---
+
+# Flavourist agents
+
+Icon and splash YAML, platform gating, and processor rules: see **`flavourist-icons.mdc`**.
+
+When editing the fork, prefer extending **`FlavorIcon`** / **`IconResolver`** over ad hoc path logic in processors.

@@ -70,7 +70,6 @@ class Processor extends AbstractProcessor<void> {
 		'android:buildGradle',
 		'android:dummyAssets',
 		'android:icons',
-		'android:adaptiveIcons',
 
 		// iOS
 		'ios:podfile',
@@ -177,9 +176,7 @@ class Processor extends AbstractProcessor<void> {
 				Constants.androidSrcPath,
 				config: flavourist,
 			),
-		'android:icons': () => AndroidIconsProcessor(
-				config: flavourist,
-			),
+		'android:icons': () => AndroidIconsProcessor(flavourist),
 
 		//Flutter
 		'flutter:app': () => CopyFileProcessor(
@@ -232,9 +229,7 @@ class Processor extends AbstractProcessor<void> {
 				Constants.iOSAssetsPath,
 				config: flavourist,
 			),
-		'ios:icons': () => IOSIconsProcessor(
-				config: flavourist,
-			),
+		'ios:icons': () => IOSIconsProcessor(flavourist),
 		'ios:plist': () => ExistingFileStringProcessor(
 				Constants.iOSPListPath,
 				IOSPListProcessor(config: flavourist),
@@ -287,9 +282,7 @@ class Processor extends AbstractProcessor<void> {
 				Constants.macOSAssetsPath,
 				config: flavourist,
 			),
-		'macos:icons': () => MacOSIconsProcessor(
-				config: flavourist,
-			),
+		'macos:icons': () => MacOSIconsProcessor(flavourist),
 		'macos:plist': () => ExistingFileStringProcessor(
 				Constants.macOSPlistPath,
 				MacOSPListProcessor(config: flavourist),

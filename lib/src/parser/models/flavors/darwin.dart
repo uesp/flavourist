@@ -26,30 +26,25 @@
 import 'package:flavourist/src/parser/mixins/build_settings_mixin.dart';
 import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flavourist/src/parser/models/flavors/darwin_json.dart';
 
-part 'darwin.g.dart';
-
-@JsonSerializable(anyMap: true, createToJson: false)
 class Darwin extends OS with BuildSettingsMixin {
-  @JsonKey(required: true, disallowNullValue: true)
-  final String bundleId;
+	final String bundleId;
 
-  @JsonKey(disallowNullValue: true, defaultValue: {})
-  final Map<String, Variable> variables;
+	final Map<String, Variable> variables;
 
-  Darwin({
-    required this.bundleId,
-    this.variables = const {},
-    Map<String, dynamic> buildSettings = const {},
-    super.generateDummyAssets,
-    super.icon,
-  }) {
-    this.buildSettings = {
-      "PRODUCT_BUNDLE_IDENTIFIER": bundleId,
-    };
-    this.buildSettings.addAll(buildSettings);
-  }
+	Darwin({
+		required this.bundleId,
+		this.variables = const {},
+		Map<String, dynamic> buildSettings = const {},
+		super.generateDummyAssets,
+		super.icon,
+	}) {
+		this.buildSettings = {
+			"PRODUCT_BUNDLE_IDENTIFIER": bundleId,
+		};
+		this.buildSettings.addAll(buildSettings);
+	}
 
-  factory Darwin.fromJson(Map<String, dynamic> json) => _$DarwinFromJson(json);
+	factory Darwin.fromJson(Map<String, dynamic> json) => darwinFromJson(json);
 }

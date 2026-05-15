@@ -23,40 +23,37 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin.dart';
-import 'package:flavourist/src/parser/models/flavors/flavor.dart';
-import 'package:flavourist/src/processors/commons/dummy_assets_processor.dart';
-import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
 
-class IOSDummyAssetsProcessor extends QueueProcessor {
-  IOSDummyAssetsProcessor(
-    String source,
-    String destination,
-    String flavorName,
-    Darwin os, {
-    required Flavourist config,
-    Flavor? flavor,
-  }) : super(
-          [
-            DummyAssetsProcessor(
-              '$source/AppIcon.appiconset',
-              '$destination/${flavorName}AppIcon.appiconset',
-              os,
-              flavor: flavor,
-              ios: true,
-              config: config,
-            ),
-            DummyAssetsProcessor(
-              '$source/LaunchImage.imageset',
-              '$destination/${flavorName}LaunchImage.imageset',
-              os,
-              config: config,
-            ),
-          ],
-          config: config,
-        );
+/// Parses [Darwin] from YAML using `applicationID` (wiki_app) or legacy `bundleId`.
+Darwin darwinFromJson(Map<String, dynamic> json) {
+	final bundleId = json['applicationID'] as String? ??
+			json['bundleId'] as String?;
+	if (bundleId == null || bundleId.isEmpty) {
+		throw ArgumentError(
+			'Darwin requires "applicationID" or "bundleId" in flavors.yaml.',
+		);
+	}
 
-  @override
-  String toString() => 'IOSDummyAssetsProcessor';
+	final variables = (json['variables'] as Map?)?.map(
+				(k, e) => MapEntry(
+					k as String,
+					Variable.fromJson(Map<String, dynamic>.from(e as Map)),
+				),
+			) ??
+			<String, Variable>{};
+
+	final buildSettings = (json['buildSettings'] as Map?)?.map(
+			(k, e) => MapEntry(k as String, e),
+		) ??
+		<String, dynamic>{};
+
+	return Darwin(
+		bundleId: bundleId,
+		variables: variables,
+		buildSettings: Map<String, dynamic>.from(buildSettings),
+		generateDummyAssets: json['generateDummyAssets'] as bool? ?? true,
+		icon: json['icon'] as String?,
+	);
 }

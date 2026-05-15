@@ -23,32 +23,53 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavourist.dart';
+import 'dart:io';
+
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ios/icons/ios_icon_target_processor.dart';
+import 'package:flavourist/src/utils/icon_resolver.dart';
 
-class IOSIconsProcessor extends QueueProcessor {
-  IOSIconsProcessor({
-    required Flavourist config,
-  }) : super(
-          config.iosFlavors
-              .where((_, flavor) =>
-                  flavor.icon != null || flavor.ios?.icon != null)
-              .map(
-                (flavorName, flavor) => MapEntry(
-                  flavorName,
-                  IOSIconTargetProcessor(
-                    flavor.ios!.icon ?? flavor.icon ?? '',
-                    flavorName,
-                    config: config,
-                  ),
-                ),
-              )
-              .values,
-          config: config,
-        );
+class IOSIconsProcessor extends AbstractProcessor {
+	IOSIconsProcessor(super.config);
 
-  @override
-  String toString() => 'IOSIconsProcessor';
+	@override
+	void execute() {
+		const resolver = IconResolver();
+		final processors = <AbstractProcessor>[];
+
+		for (final entry in config.iosFlavors.entries) {
+			final flavorName = entry.key;
+			final flavor = entry.value;
+			if (!resolver.hasIconConfig(flavor)) {
+				continue;
+			}
+			if (!resolver.iconSourcesReady(flavor, ios: true)) {
+				stdout.writeln(
+					'⚠️  Skipping ios:icons for $flavorName: icon source files not found',
+				);
+				continue;
+			}
+
+			final source = resolver.resolveFlatLauncherSource(
+				flavor,
+				flavorName: flavorName,
+				ios: true,
+			);
+			processors.add(
+				IOSIconTargetProcessor(
+					source,
+					flavorName,
+					config: config,
+				),
+			);
+		}
+
+		if (processors.isNotEmpty) {
+			QueueProcessor(processors, config: config).execute();
+		}
+	}
+
+	@override
+	String toString() => 'IOSIconsProcessor';
 }

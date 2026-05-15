@@ -23,32 +23,53 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/extensions/extensions_map.dart';
-import 'package:flavourist/src/parser/models/flavourist.dart';
+import 'dart:io';
+
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/macos/icons/macos_icon_target_processor.dart';
+import 'package:flavourist/src/utils/icon_resolver.dart';
 
-class MacOSIconsProcessor extends QueueProcessor {
-  MacOSIconsProcessor({
-    required Flavourist config,
-  }) : super(
-          config.macosFlavors
-              .where((_, flavor) =>
-                  flavor.icon != null || flavor.macos?.icon != null)
-              .map(
-                (flavorName, flavor) => MapEntry(
-                  flavorName,
-                  MacOSIconTargetProcessor(
-                    flavor.macos!.icon ?? flavor.icon ?? '',
-                    flavorName,
-                    config: config,
-                  ),
-                ),
-              )
-              .values,
-          config: config,
-        );
+class MacOSIconsProcessor extends AbstractProcessor {
+	MacOSIconsProcessor(super.config);
 
-  @override
-  String toString() => 'MacOSIconsProcessor';
+	@override
+	void execute() {
+		const resolver = IconResolver();
+		final processors = <AbstractProcessor>[];
+
+		for (final entry in config.macosFlavors.entries) {
+			final flavorName = entry.key;
+			final flavor = entry.value;
+			if (!resolver.hasIconConfig(flavor)) {
+				continue;
+			}
+			if (!resolver.iconSourcesReady(flavor, ios: false)) {
+				stdout.writeln(
+					'⚠️  Skipping macos:icons for $flavorName: icon source files not found',
+				);
+				continue;
+			}
+
+			final source = resolver.resolveFlatLauncherSource(
+				flavor,
+				flavorName: flavorName,
+				ios: false,
+			);
+			processors.add(
+				MacOSIconTargetProcessor(
+					source,
+					flavorName,
+					config: config,
+				),
+			);
+		}
+
+		if (processors.isNotEmpty) {
+			QueueProcessor(processors, config: config).execute();
+		}
+	}
+
+	@override
+	String toString() => 'MacOSIconsProcessor';
 }

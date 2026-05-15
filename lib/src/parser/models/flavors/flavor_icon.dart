@@ -23,34 +23,46 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavourist.dart';
-import 'package:flavourist/src/parser/models/flavors/flavor.dart';
-import 'package:flavourist/src/processors/commons/dummy_assets_processor.dart';
-import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class AndroidDummyAssetsProcessor extends QueueProcessor {
-  AndroidDummyAssetsProcessor(
-    String source,
-    String destination, {
-    required Flavourist config,
-  }) : super(
-          config.androidFlavors
-              .map(
-                (String flavorName, Flavor flavor) => MapEntry(
-                  flavorName,
-                  DummyAssetsProcessor(
-                    source,
-                    '$destination/$flavorName/res',
-                    flavor.android!,
-                    flavor: flavor,
-                    config: config,
-                  ),
-                ),
-              )
-              .values,
-          config: config,
-        );
+part 'flavor_icon.g.dart';
 
-  @override
-  String toString() => 'AndroidDummyAssetsProcessor';
+/// Per-flavor launcher icon sources from [flavors.yaml] `icon:` block.
+@JsonSerializable(anyMap: true, createToJson: false)
+class FlavorIcon {
+	final String? foreground;
+	final String? background;
+	final String? monochrome;
+
+	const FlavorIcon({
+		this.foreground,
+		this.background,
+		this.monochrome,
+	});
+
+	factory FlavorIcon.fromJson(Map<String, dynamic> json) =>
+			_$FlavorIconFromJson(json);
+
+	bool get hasAdaptiveLayers =>
+			foreground != null &&
+			foreground!.isNotEmpty &&
+			background != null &&
+			background!.isNotEmpty;
+
+	bool get hasForeground =>
+			foreground != null && foreground!.isNotEmpty;
+}
+
+/// Parses `icon:` as a map or legacy single path (treated as [FlavorIcon.foreground]).
+FlavorIcon? flavorIconFromJson(Object? json) {
+	if (json == null) {
+		return null;
+	}
+	if (json is String) {
+		return FlavorIcon(foreground: json);
+	}
+	if (json is Map) {
+		return FlavorIcon.fromJson(Map<String, dynamic>.from(json));
+	}
+	return null;
 }
