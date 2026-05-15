@@ -50,6 +50,25 @@ profile:
 
 **Profile is not beta.** Store builds use **`--release`** only. Beta on iOS/macOS uses **`Beta-{flavor}`** via `xcodebuild` (Flutter has no `--beta` CLI mode).
 
+## Display names
+
+Base label is the flavor **`name:`** in `flavors.yaml`. Non-release builds append the build type **at the end**; release has **no suffix**.
+
+| Build type | Example |
+|------------|---------|
+| release | `UESPWiki` |
+| debug | `UESPWiki (Debug)` |
+| profile | `UESPWiki (Profile)` |
+| beta | `UESPWiki (Beta)` |
+
+- Use **`(Debug)`**, not `(Dev)`.
+- **`debug:` / `beta:` / `profile:`** YAML blocks are for nested **`icon:`** only — do not put per-variant `name:` there for labels.
+- Logic: **`lib/src/utils/flavor_display_name.dart`** (`displayNameForTarget`, `launchNameSuffixForMode`).
+- **Android:** `AndroidBuildGradleProcessor` → `flavorDisplayNames` / `app_name` resValue per variant.
+- **iOS / macOS:** `IOSXCConfigProcessor` / `MacOSConfigsProcessor` → `BUNDLE_NAME`, `BUNDLE_DISPLAY_NAME`, `PRODUCT_NAME` (macOS dock / `.app` name).
+- **macOS dock:** `MacOSPbxprojProductNameProcessor` sets Runner target `PRODUCT_NAME = "$(BUNDLE_NAME)"` (CocoaPods defaults to `Runner`).
+- **IDE:** `VSCodeLaunchProcessor` / `VSCodeTasksProcessor` → `.vscode/` and `.cursor/` `launch.json` + `tasks.json`. Per flavor, configs are ordered **release → beta → debug → profile** (`launchBuildModes` in `flavor_display_name.dart`).
+
 ## IDs
 
 - Flavor **`applicationID`** → Android `applicationId`; default **ios/macos** `bundleId` when platform blocks omitted.
@@ -75,6 +94,7 @@ One `icon:` block per flavor. Processors run only for platforms in that flavor�
 ## Implementation
 
 - Resolve paths in **`IconResolver`** (`lib/src/utils/icon_resolver.dart`); variants via **`IconVariant`** (`lib/src/utils/icon_variant.dart`).
+- Display names: **`flavor_display_name.dart`**; tests in **`test/utils/flavor_display_name_test.dart`**.
 - Adaptive Android XML: `AndroidGenerateIclauncherXmlProcessor` adds `<monochrome>` only when `icon.monochrome` is set.
 - After parser/model changes: `dart run build_runner build` in flavourist; consumers run `dart run flavourist`.
 - Wiki-app builds: **`scripts/build.sh`** supports `--release`, `--debug`, `--profile`, `--beta`.

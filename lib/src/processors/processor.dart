@@ -53,6 +53,7 @@ import 'package:flavourist/src/processors/macos/build_configuration/macos_build_
 import 'package:flavourist/src/processors/macos/configs/macos_configs_targets_file_processor.dart';
 import 'package:flavourist/src/processors/macos/dummy_assets/macos_dummy_assets_targets_processor.dart';
 import 'package:flavourist/src/processors/macos/icons/macos_icons_processor.dart';
+import 'package:flavourist/src/processors/macos/macos_pbxproj_product_name_processor.dart';
 import 'package:flavourist/src/processors/macos/macos_plist_processor.dart';
 import 'package:flavourist/src/processors/macos/xcconfig/macos_xcconfig_targets_file_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
@@ -87,6 +88,7 @@ class Processor extends AbstractProcessor<void> {
 		'macos:xcconfig',
 		'macos:configs',
 		'macos:buildTargets',
+		'macos:pbxprojProductName',
 		'macos:schema',
 		'macos:dummyAssets',
 		'macos:icons',
@@ -276,6 +278,11 @@ class Processor extends AbstractProcessor<void> {
 				Constants.tempDarwinAddBuildConfigurationScriptPath,
 				Constants.macOSRunnerProjectPath,
 				Constants.macOSConfigsPath,
+				config: flavourist,
+			),
+		'macos:pbxprojProductName': () => ExistingFileStringProcessor(
+				'${Constants.macOSRunnerProjectPath}/project.pbxproj',
+				MacOSPbxprojProductNameProcessor(config: flavourist),
 				config: flavourist,
 			),
 		'macos:schema': () => DarwinSchemasProcessor(

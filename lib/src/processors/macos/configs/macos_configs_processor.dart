@@ -31,6 +31,7 @@ import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/utils/flavor_display_name.dart';
 import 'package:flavourist/src/utils/icon_resolver.dart';
 
 class MacOSConfigsProcessor extends StringProcessor {
@@ -72,8 +73,15 @@ class MacOSConfigsProcessor extends StringProcessor {
           _target,
         ),
       ),
-      'BUNDLE_NAME': Variable(value: _flavor.name),
-      'BUNDLE_DISPLAY_NAME': Variable(value: _flavor.name),
+      'BUNDLE_NAME': Variable(
+        value: displayNameForTarget(_flavor.name, _target),
+      ),
+      'BUNDLE_DISPLAY_NAME': Variable(
+        value: displayNameForTarget(_flavor.name, _target),
+      ),
+      'PRODUCT_NAME': const Variable(
+        value: r'$(BUNDLE_NAME)',
+      ),
     })
       ..addAll(
         _flavor.macos?.variables.where((_, variable) =>

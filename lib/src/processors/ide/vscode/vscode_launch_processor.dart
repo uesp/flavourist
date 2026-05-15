@@ -24,6 +24,7 @@
  */
 
 import 'package:flavourist/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/utils/flavor_display_name.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/configuration.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
 
@@ -37,15 +38,13 @@ class VSCodeLaunchProcessor extends StringProcessor {
 		'release': '--dart-define=BUILD_TYPE=release',
 	};
 
-	static const _modes = ['debug', 'profile', 'beta', 'release'];
-
 	@override
   	execute() {
 		final flavors = config.flavors.entries;
 		return Launch(configurations: flavors.expand(
-			(flavor) => _modes.map(
+			(flavor) => launchBuildModes.map(
 				(mode) => Configuration(
-					name: '${flavor.value.name} ${_buildLabel(mode)}',
+					name: '${flavor.value.name}${launchNameSuffixForMode(mode)}',
 					flutterMode: _flutterMode(mode),
 					request: 'launch',
 					type: 'dart',
@@ -71,16 +70,4 @@ class VSCodeLaunchProcessor extends StringProcessor {
 		return mode;
 	}
 
-	String _buildLabel(String mode) {
-		switch (mode) {
-			case 'debug':
-				return '(Dev)';
-			case 'profile':
-				return '(Profile)';
-			case 'beta':
-				return '(Beta)';
-			default:
-				return '';
-		}
-	}
 }

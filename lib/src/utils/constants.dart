@@ -142,6 +142,14 @@ class Constants {
 
   static String vsCodeLaunchPath = '$vsCodePath/launch.json';
 
+  static String vsCodeTasksPath = '$vsCodePath/tasks.json';
+
+  static String cursorPath = '.cursor';
+
+  static String cursorLaunchPath = '$cursorPath/launch.json';
+
+  static String cursorTasksPath = '$cursorPath/tasks.json';
+
   const Constants._();
 
   static const List<String> defaultPlatforms = [ "android", "ios", "macos" ];

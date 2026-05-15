@@ -13,10 +13,11 @@ Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ide
 Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr)
 
 - Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
-- VSCode launch profiles are pretty-printed in ``launch.json`` (debug, profile, beta, release per flavor).
+- VS Code / Cursor launch profiles and build tasks in ``.vscode/`` and ``.cursor/`` (release, beta, debug, profile per flavor).
 - Default platforms are now defined in a root-level ``platforms`` key in ``flavors.yaml``.
 - ``flavors.yaml`` is now streamlined, with each platform implied from the platform array above.
 - **Icon overlays** and per-build-variant icons (**debug**, **beta**, **profile**) with separate Android source sets and Darwin asset catalogs.
+- **Display names** — build-type suffix at the end for non-release builds (e.g. ``UESPWiki (Debug)``); release keeps the base ``name:`` only.
 - **``Target.beta``** — ``Beta-{flavor}`` Xcode build configurations and ``{flavor}Beta.xcconfig`` (separate from Profile; not repurposed for beta builds).
 - Patched ``add_build_configuration.rb`` after assets extract so Beta configurations clone from Release.
 
@@ -86,16 +87,36 @@ When a variant ``icon:`` block is present, ``ASSET_PREFIX`` in the matching xcco
 - **IDs:** flavor ``applicationID`` mirrors to Android and default Darwin bundle IDs; use ``ios.applicationID`` / ``macos.applicationID`` (not ``bundleId``) to override per platform.
 - **Platforms:** icons generate only for platforms listed on the flavor (``platforms: [ android, ios, macos ]``).
 
+### Display names (home screen & IDE)
+
+The flavor **`name:`** field is the **base** display name (e.g. ``UESPWiki``). Flavourist appends the **build type at the end** for every non-release configuration:
+
+| Build type | Example display name |
+|------------|----------------------|
+| release | ``UESPWiki`` |
+| debug | ``UESPWiki (Debug)`` |
+| profile | ``UESPWiki (Profile)`` |
+| beta | ``UESPWiki (Beta)`` |
+
+Use **``(Debug)``**, not ``(Dev)``. Do not hand-edit per-variant ``name:`` under ``debug:`` / ``beta:`` / ``profile:`` for labels — those blocks are for **`icon:`** only; labels are generated in ``lib/src/utils/flavor_display_name.dart``.
+
+| Platform | Where it is written |
+|----------|---------------------|
+| **Android** | ``android:buildGradle`` → ``flavorDisplayNames`` block: ``applicationVariants.configureEach`` sets ``app_name`` ``resValue`` from build type |
+| **iOS** | ``ios:xcconfig`` → ``BUNDLE_NAME`` / ``BUNDLE_DISPLAY_NAME`` per ``{flavor}{Debug|Profile|Beta|Release}.xcconfig`` |
+| **macOS** | ``macos:configs`` → same bundle keys in ``macos/Runner/Configs/`` |
+| **VS Code / Cursor** | ``ide:config`` → ``.vscode/launch.json`` (and ``.cursor/launch.json`` when generated) launch ``name`` |
+
 ### VS Code launch configurations
 
-``ide:config`` generates four launch entries per flavor:
+``ide:config`` generates four launch entries per flavor, in this order: **release → beta → debug → profile**. The same order is used for the **Build (Interactive)** task ``buildMode`` picker (``scripts/build.sh`` flags).
 
-| Label suffix | ``flutterMode`` | ``BUILD_TYPE`` |
-|--------------|-----------------|----------------|
-| (Dev) | ``debug`` | ``debug`` |
-| (Profile) | ``profile`` | ``profile`` |
-| (Beta) | ``release`` | ``beta`` |
-| (no suffix) | ``release`` | ``release`` |
+| Launch name suffix | ``flutterMode`` | ``BUILD_TYPE`` |
+|--------------------|-----------------|----------------|
+| (none — base ``name:`` only) | ``release`` | ``release`` |
+| `` (Beta)`` | ``release`` | ``beta`` |
+| `` (Debug)`` | ``debug`` | ``debug`` |
+| `` (Profile)`` | ``profile`` | ``profile`` |
 
 Beta launches use ``flutterMode: release`` for Dart; the **home-screen icon** on iOS still requires a ``Beta-{flavor}`` native build (see below).
 

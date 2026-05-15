@@ -28,20 +28,38 @@ import 'package:flavourist/src/processors/commons/new_file_string_processor.dart
 import 'package:flavourist/src/processors/commons/new_folder_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ide/vscode/vscode_launch_processor.dart';
+import 'package:flavourist/src/processors/ide/vscode/vscode_tasks_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
 
-class VSCodeLaunchFileProcessor extends QueueProcessor {
-  VSCodeLaunchFileProcessor({
-    required Flavourist config,
-  }) : super(
-          [
-            NewFolderProcessor(Constants.vsCodePath, config: config),
-            NewFileStringProcessor(
-              Constants.vsCodeLaunchPath,
-              VSCodeLaunchProcessor(config: config),
-              config: config,
-            )
-          ],
-          config: config,
-        );
+/// Writes ``.vscode/`` and ``.cursor/`` launch + tasks (build script picker order).
+class VSCodeIDEConfigProcessor extends QueueProcessor {
+	VSCodeIDEConfigProcessor({
+		required Flavourist config,
+	}) : super(
+			[
+				NewFolderProcessor(Constants.vsCodePath, config: config),
+				NewFileStringProcessor(
+					Constants.vsCodeLaunchPath,
+					VSCodeLaunchProcessor(config: config),
+					config: config,
+				),
+				NewFileStringProcessor(
+					Constants.vsCodeTasksPath,
+					VSCodeTasksProcessor(config: config),
+					config: config,
+				),
+				NewFolderProcessor(Constants.cursorPath, config: config),
+				NewFileStringProcessor(
+					Constants.cursorLaunchPath,
+					VSCodeLaunchProcessor(config: config),
+					config: config,
+				),
+				NewFileStringProcessor(
+					Constants.cursorTasksPath,
+					VSCodeTasksProcessor(config: config),
+					config: config,
+				),
+			],
+			config: config,
+		);
 }

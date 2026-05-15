@@ -30,6 +30,7 @@ import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/utils/flavor_display_name.dart';
 import 'package:flavourist/src/utils/icon_resolver.dart';
 
 class IOSXCConfigProcessor extends StringProcessor {
@@ -71,8 +72,12 @@ class IOSXCConfigProcessor extends StringProcessor {
           _target,
         ),
       ),
-      'BUNDLE_NAME': Variable(value: _flavor.name),
-      'BUNDLE_DISPLAY_NAME': Variable(value: _flavor.name),
+      'BUNDLE_NAME': Variable(
+        value: displayNameForTarget(_flavor.name, _target),
+      ),
+      'BUNDLE_DISPLAY_NAME': Variable(
+        value: displayNameForTarget(_flavor.name, _target),
+      ),
     })
       ..addAll(
         _flavor.ios?.variables.where((_, variable) =>

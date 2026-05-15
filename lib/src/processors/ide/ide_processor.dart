@@ -2,7 +2,7 @@ import 'package:flavourist/src/parser/models/enums.dart';
 import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/ide/idea/idea_run_configurations_processor.dart';
-import 'package:flavourist/src/processors/ide/vscode/vscode_launch_file_processor.dart';
+import 'package:flavourist/src/processors/ide/vscode/vscode_ide_config_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
 
 class IDEProcessor extends AbstractProcessor {
@@ -32,7 +32,7 @@ class IDEProcessor extends AbstractProcessor {
             config: config,
           );
         case IDE.vscode:
-          return VSCodeLaunchFileProcessor(config: config);
+          return VSCodeIDEConfigProcessor(config: config);
         default:
           break;
       }

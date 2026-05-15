@@ -18,6 +18,7 @@ mixin BuildSettingsMixin {
     "FRAMEWORK_SEARCH_PATHS": ['\$(inherited)', '\$(PROJECT_DIR)/Flutter'],
     "LIBRARY_SEARCH_PATHS": ['\$(inherited)', '\$(PROJECT_DIR)/Flutter'],
     "INFOPLIST_FILE": "Runner/Info.plist",
+    "PRODUCT_NAME": "\$(BUNDLE_NAME)",
   };
 
   @JsonKey(defaultValue: {})
