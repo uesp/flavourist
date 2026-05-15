@@ -1,6 +1,7 @@
 import 'package:flavourist/src/parser/models/enums.dart';
 import 'package:flavourist/src/parser/models/flavourist.dart';
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
+import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ide/idea/idea_run_configurations_processor.dart';
 import 'package:flavourist/src/processors/ide/vscode/vscode_ide_config_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
@@ -20,22 +21,33 @@ class IDEProcessor extends AbstractProcessor {
 
   @override
   String toString() {
-    return 'IDEProcessor: ${config.ide == null ? 'Skipping IDE file generation' : super.toString()}';
+    return 'IDEProcessor: ${config.hasIdeTargets ? super.toString() : 'Skipping IDE file generation'}';
   }
 
-  static initProcessor(Flavourist config) {
-    if (config.ide != null) {
-      switch (config.ide) {
-        case IDE.idea:
-          return IdeaRunConfigurationsProcessor(
-            Constants.ideaLaunchpath,
-            config: config,
-          );
-        case IDE.vscode:
-          return VSCodeIDEConfigProcessor(config: config);
-        default:
-          break;
-      }
+  static AbstractProcessor? initProcessor(Flavourist config) {
+    final ides = config.ide;
+    if (ides == null || ides.isEmpty) {
+      return null;
     }
+
+    final processors = <AbstractProcessor>[];
+
+    if (ides.contains(IDE.idea)) {
+      processors.add(IdeaRunConfigurationsProcessor(
+        Constants.ideaLaunchpath,
+        config: config,
+      ));
+    }
+    if (ides.contains(IDE.vscode) || ides.contains(IDE.cursor)) {
+      processors.add(VSCodeIDEConfigProcessor(config: config));
+    }
+
+    if (processors.isEmpty) {
+      return null;
+    }
+    if (processors.length == 1) {
+      return processors.first;
+    }
+    return QueueProcessor(processors, config: config);
   }
 }

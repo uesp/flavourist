@@ -50,8 +50,8 @@ class Flavourist {
 	@JsonKey(defaultValue: Constants.defaultPlatforms, required: false)
 	final List<String>? platforms;
 
-	@JsonKey()
-	final IDE? ide;
+	@JsonKey(fromJson: _ideFromJson)
+	final List<IDE>? ide;
 
 	@JsonKey(includeFromJson: false)
 	late Map<String, Flavor> androidFlavors;
@@ -82,5 +82,24 @@ class Flavourist {
 	bool get iosFlavorsAvailable => iosFlavors.isNotEmpty;
 
 	bool get macosFlavorsAvailable => macosFlavors.isNotEmpty;
+
+	bool get hasIdeTargets => ide != null && ide!.isNotEmpty;
+
+	/// Parses ``ide`` as a single IDE name or a YAML list (e.g. ``[vscode, cursor]``).
+	static List<IDE>? _ideFromJson(dynamic json) {
+		if (json == null) {
+			return null;
+		}
+		final List<dynamic> items = json is String ? [json] : json as List;
+		return items.map((dynamic item) {
+			final name = item as String;
+			for (final ide in IDE.values) {
+				if (ide.name == name) {
+					return ide;
+				}
+			}
+			throw ArgumentError.value(name, 'ide', 'Unknown IDE. Use: ${IDE.values.map((e) => e.name).join(', ')}');
+		}).toList();
+	}
 
 }

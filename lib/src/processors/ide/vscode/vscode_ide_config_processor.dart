@@ -23,7 +23,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:flavourist/src/parser/models/enums.dart';
 import 'package:flavourist/src/parser/models/flavourist.dart';
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/new_file_string_processor.dart';
 import 'package:flavourist/src/processors/commons/new_folder_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
@@ -31,35 +33,54 @@ import 'package:flavourist/src/processors/ide/vscode/vscode_launch_processor.dar
 import 'package:flavourist/src/processors/ide/vscode/vscode_tasks_processor.dart';
 import 'package:flavourist/src/utils/constants.dart';
 
-/// Writes ``.vscode/`` and ``.cursor/`` launch + tasks (build script picker order).
+/// Writes launch + tasks under ``.vscode/`` and/or ``.cursor/`` when requested in ``ide``.
 class VSCodeIDEConfigProcessor extends QueueProcessor {
 	VSCodeIDEConfigProcessor({
 		required Flavourist config,
-	}) : super(
-			[
-				NewFolderProcessor(Constants.vsCodePath, config: config),
-				NewFileStringProcessor(
-					Constants.vsCodeLaunchPath,
-					VSCodeLaunchProcessor(config: config),
-					config: config,
-				),
-				NewFileStringProcessor(
-					Constants.vsCodeTasksPath,
-					VSCodeTasksProcessor(config: config),
-					config: config,
-				),
-				NewFolderProcessor(Constants.cursorPath, config: config),
-				NewFileStringProcessor(
-					Constants.cursorLaunchPath,
-					VSCodeLaunchProcessor(config: config),
-					config: config,
-				),
-				NewFileStringProcessor(
-					Constants.cursorTasksPath,
-					VSCodeTasksProcessor(config: config),
-					config: config,
-				),
-			],
-			config: config,
-		);
+	}) : super(_processorsFor(config), config: config);
+
+	static Iterable<AbstractProcessor> _processorsFor(Flavourist config) {
+		final ides = config.ide ?? const [];
+		final processors = <AbstractProcessor>[];
+
+		if (ides.contains(IDE.vscode)) {
+			processors.addAll(_vscodeFamilyProcessors(
+				config: config,
+				folderPath: Constants.vsCodePath,
+				launchPath: Constants.vsCodeLaunchPath,
+				tasksPath: Constants.vsCodeTasksPath,
+			));
+		}
+		if (ides.contains(IDE.cursor)) {
+			processors.addAll(_vscodeFamilyProcessors(
+				config: config,
+				folderPath: Constants.cursorPath,
+				launchPath: Constants.cursorLaunchPath,
+				tasksPath: Constants.cursorTasksPath,
+			));
+		}
+
+		return processors;
+	}
+
+	static List<AbstractProcessor> _vscodeFamilyProcessors({
+		required Flavourist config,
+		required String folderPath,
+		required String launchPath,
+		required String tasksPath,
+	}) {
+		return [
+			NewFolderProcessor(folderPath, config: config),
+			NewFileStringProcessor(
+				launchPath,
+				VSCodeLaunchProcessor(config: config),
+				config: config,
+			),
+			NewFileStringProcessor(
+				tasksPath,
+				VSCodeTasksProcessor(config: config),
+				config: config,
+			),
+		];
+	}
 }

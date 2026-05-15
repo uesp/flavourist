@@ -24,15 +24,10 @@ Flavourist _$FlavouristFromJson(Map json) {
         .toList(),
     assetsUrl: json['assetsUrl'] as String? ??
         'https://github.com/AngeloAvv/flutter_flavorizr/releases/download/v2.2.3/assets.zip',
-    ide: $enumDecodeNullable(_$IDEEnumMap, json['ide']),
+    ide: Flavourist._ideFromJson(json['ide']),
     platforms: (json['platforms'] as List<dynamic>?)
             ?.map((e) => e as String)
             .toList() ??
         ['android', 'ios', 'macos'],
   );
 }
-
-const _$IDEEnumMap = {
-  IDE.idea: 'idea',
-  IDE.vscode: 'vscode',
-};
