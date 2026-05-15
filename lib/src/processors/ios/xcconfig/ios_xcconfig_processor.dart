@@ -30,6 +30,7 @@ import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/utils/icon_resolver.dart';
 
 class IOSXCConfigProcessor extends StringProcessor {
   final String _flavorName;
@@ -56,14 +57,20 @@ class IOSXCConfigProcessor extends StringProcessor {
 
   void _appendIncludes(StringBuffer buffer) {
     buffer.writeln(
-        '#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.${_target.darwinTarget}.xcconfig"');
+        '#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.${_target.podsXcconfigTarget}.xcconfig"');
     buffer.writeln('#include "Generated.xcconfig"');
   }
 
   void _appendBody(StringBuffer buffer) {
     final Map<String, Variable> variables = LinkedHashMap.from({
       'FLUTTER_TARGET': Variable(value: 'lib/res/configs/$_flavorName/main.dart'),
-      'ASSET_PREFIX': Variable(value: _flavorName),
+      'ASSET_PREFIX': Variable(
+        value: const IconResolver().assetPrefixForTarget(
+          _flavorName,
+          _flavor,
+          _target,
+        ),
+      ),
       'BUNDLE_NAME': Variable(value: _flavor.name),
       'BUNDLE_DISPLAY_NAME': Variable(value: _flavor.name),
     })

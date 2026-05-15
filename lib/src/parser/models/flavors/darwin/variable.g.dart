@@ -22,4 +22,5 @@ const _$TargetEnumMap = {
   Target.debug: 'debug',
   Target.profile: 'profile',
   Target.release: 'release',
+  Target.beta: 'beta',
 };

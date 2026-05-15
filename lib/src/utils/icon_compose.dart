@@ -39,7 +39,9 @@ class IconCompose {
 	static File composeAdaptiveIcon({
 		required String foreground,
 		required String background,
+		String? overlay,
 		required String flavorName,
+		required String outputSuffix,
 	}) {
 		final foregroundFile = File(foreground);
 		final backgroundFile = File(background);
@@ -70,11 +72,69 @@ class IconCompose {
 		final offsetY = (composeSize - fgImage.height) ~/ 2;
 		compositeImage(canvas, fgImage, dstX: offsetX, dstY: offsetY);
 
+		if (overlay != null && overlay.isNotEmpty) {
+			_applyOverlayOnImage(canvas, overlay);
+		}
+
+		return _writeCanvas(
+			canvas,
+			'${flavorName}_$outputSuffix',
+		);
+	}
+
+	/// Composites [overlay] onto [foreground] and writes a temp PNG for adaptive layers.
+	static File composeForegroundWithOverlay({
+		required String foreground,
+		required String overlay,
+		required String flavorName,
+		required String outputSuffix,
+	}) {
+		final foregroundFile = File(foreground);
+		if (!foregroundFile.existsSync()) {
+			throw FileNotFoundException(foreground);
+		}
+
+		final fgImage = decodeImage(foregroundFile.readAsBytesSync());
+		if (fgImage == null) {
+			throw FileNotFoundException(foreground);
+		}
+
+		final canvas = Image.from(fgImage);
+		_applyOverlayOnImage(canvas, overlay);
+
+		return _writeCanvas(canvas, '${flavorName}_fg_$outputSuffix');
+	}
+
+	static void _applyOverlayOnImage(Image canvas, String overlayPath) {
+		final overlayFile = File(overlayPath);
+		if (!overlayFile.existsSync()) {
+			throw FileNotFoundException(overlayPath);
+		}
+
+		final overlayImage = decodeImage(overlayFile.readAsBytesSync());
+		if (overlayImage == null) {
+			throw FileNotFoundException(overlayPath);
+		}
+
+		final resized = overlayImage.width == canvas.width &&
+				overlayImage.height == canvas.height
+			? overlayImage
+			: copyResize(
+					overlayImage,
+					width: canvas.width,
+					height: canvas.height,
+					interpolation: Interpolation.average,
+				);
+
+		compositeImage(canvas, resized);
+	}
+
+	static File _writeCanvas(Image canvas, String nameStem) {
 		final outputDir = Directory(Constants.tempPath);
 		if (!outputDir.existsSync()) {
 			outputDir.createSync(recursive: true);
 		}
-		final outputPath = '${Constants.tempPath}/${flavorName}_composed_icon.png';
+		final outputPath = '${Constants.tempPath}/$nameStem.png';
 		final encoded = encodePng(canvas);
 		return File(outputPath)..writeAsBytesSync(encoded);
 	}

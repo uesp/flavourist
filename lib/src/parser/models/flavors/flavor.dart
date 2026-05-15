@@ -46,6 +46,15 @@ class Flavor {
 	@JsonKey(fromJson: flavorIconFromJson)
 	final FlavorIcon? icon;
 
+	@JsonKey(name: 'debug', fromJson: flavorVariantIconFromJson)
+	final FlavorIcon? debugIcon;
+
+	@JsonKey(name: 'beta', fromJson: flavorVariantIconFromJson)
+	final FlavorIcon? betaIcon;
+
+	@JsonKey(name: 'profile', fromJson: flavorVariantIconFromJson)
+	final FlavorIcon? profileIcon;
+
 	@JsonKey(required: false, disallowNullValue: false, defaultValue: Constants.defaultPlatforms)
 	final List<String>? platforms;
 
@@ -62,6 +71,9 @@ class Flavor {
 		required this.applicationID,
 		required this.name,
 		this.icon,
+		this.debugIcon,
+		this.betaIcon,
+		this.profileIcon,
 		this.platforms,
 		this.android,
 		this.ios,

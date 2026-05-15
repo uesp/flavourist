@@ -44,25 +44,30 @@ class MacOSIconsProcessor extends AbstractProcessor {
 			if (!resolver.hasIconConfig(flavor)) {
 				continue;
 			}
-			if (!resolver.iconSourcesReady(flavor, ios: false)) {
-				stdout.writeln(
-					'⚠️  Skipping macos:icons for $flavorName: icon source files not found',
-				);
-				continue;
-			}
 
-			final source = resolver.resolveFlatLauncherSource(
-				flavor,
-				flavorName: flavorName,
-				ios: false,
-			);
-			processors.add(
-				MacOSIconTargetProcessor(
-					source,
-					flavorName,
-					config: config,
-				),
-			);
+			for (final variant in IconResolver.variantsToGenerate(flavor)) {
+				if (!resolver.iconSourcesReady(flavor, variant, ios: false)) {
+					stdout.writeln(
+						'⚠️  Skipping macos:icons for $flavorName (${variant.name}): icon source files not found',
+					);
+					continue;
+				}
+
+				final source = resolver.resolveFlatLauncherSource(
+					flavor,
+					flavorName: flavorName,
+					variant: variant,
+					ios: false,
+				);
+				final assetPrefix = resolver.darwinAssetPrefix(flavorName, variant);
+				processors.add(
+					MacOSIconTargetProcessor(
+						source,
+						assetPrefix,
+						config: config,
+					),
+				);
+			}
 		}
 
 		if (processors.isNotEmpty) {

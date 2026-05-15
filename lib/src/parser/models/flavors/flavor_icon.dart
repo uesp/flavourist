@@ -33,11 +33,13 @@ class FlavorIcon {
 	final String? foreground;
 	final String? background;
 	final String? monochrome;
+	final String? overlay;
 
 	const FlavorIcon({
 		this.foreground,
 		this.background,
 		this.monochrome,
+		this.overlay,
 	});
 
 	factory FlavorIcon.fromJson(Map<String, dynamic> json) =>
@@ -51,6 +53,21 @@ class FlavorIcon {
 
 	bool get hasForeground =>
 			foreground != null && foreground!.isNotEmpty;
+
+	bool get hasOverlay => overlay != null && overlay!.isNotEmpty;
+
+	/// Field-wise merge: non-null [override] fields replace this icon's fields.
+	FlavorIcon merge(FlavorIcon? override) {
+		if (override == null) {
+			return this;
+		}
+		return FlavorIcon(
+			foreground: override.foreground ?? foreground,
+			background: override.background ?? background,
+			monochrome: override.monochrome ?? monochrome,
+			overlay: override.overlay ?? overlay,
+		);
+	}
 }
 
 /// Parses `icon:` as a map or legacy single path (treated as [FlavorIcon.foreground]).
@@ -65,4 +82,12 @@ FlavorIcon? flavorIconFromJson(Object? json) {
 		return FlavorIcon.fromJson(Map<String, dynamic>.from(json));
 	}
 	return null;
+}
+
+/// Parses `debug:` / `beta:` / `profile:` blocks with nested `icon:`.
+FlavorIcon? flavorVariantIconFromJson(Object? json) {
+	if (json == null || json is! Map) {
+		return null;
+	}
+	return flavorIconFromJson(json['icon']);
 }

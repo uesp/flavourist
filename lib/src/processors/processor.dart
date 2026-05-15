@@ -39,6 +39,7 @@ import 'package:flavourist/src/processors/commons/existing_file_string_processor
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/commons/unzip_file_processor.dart';
 import 'package:flavourist/src/processors/darwin/darwin_schemas_processor.dart';
+import 'package:flavourist/src/processors/darwin/darwin_scripts_patch_processor.dart';
 import 'package:flavourist/src/processors/darwin/podfile_processor.dart';
 import 'package:flavourist/src/processors/flutter/target/flutter_targets_file_processor.dart';
 import 'package:flavourist/src/processors/ide/ide_processor.dart';
@@ -139,9 +140,15 @@ class Processor extends AbstractProcessor<void> {
 				Constants.assetsZipPath,
 				config: flavourist,
 			),
-		'assets:extract': () => UnzipFileProcessor(
-				Constants.assetsZipPath,
-				Constants.tempPath,
+		'assets:extract': () => QueueProcessor(
+				[
+					UnzipFileProcessor(
+						Constants.assetsZipPath,
+						Constants.tempPath,
+						config: flavourist,
+					),
+					DarwinScriptsPatchProcessor(flavourist),
+				],
 				config: flavourist,
 			),
 		'assets:clean': () => QueueProcessor(

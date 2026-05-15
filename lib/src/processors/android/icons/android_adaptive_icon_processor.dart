@@ -7,27 +7,33 @@ import 'package:sprintf/sprintf.dart';
 class AndroidAdaptiveIconProcessor extends QueueProcessor {
   String foregroundSource;
   String backgroundSource;
-  String flavorName;
+  String sourceSetName;
   String folder;
   Size size;
 
   AndroidAdaptiveIconProcessor(
     this.foregroundSource,
     this.backgroundSource,
-    this.flavorName,
+    this.sourceSetName,
     this.folder,
     this.size, {
     required Flavourist config,
   }) : super([
           ImageResizerProcessor(
             foregroundSource,
-            sprintf(Constants.androidAdaptiveIconForegroundPath, [flavorName, folder]),
+            sprintf(Constants.androidAdaptiveIconForegroundPath, [
+              sourceSetName,
+              folder,
+            ]),
             size,
             config: config,
           ),
           ImageResizerProcessor(
             backgroundSource,
-            sprintf(Constants.androidAdaptiveIconBackgroundPath, [flavorName, folder]),
+            sprintf(Constants.androidAdaptiveIconBackgroundPath, [
+              sourceSetName,
+              folder,
+            ]),
             size,
             config: config,
           ),

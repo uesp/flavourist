@@ -15,7 +15,7 @@ class AndroidMonochromeProcessor extends QueueProcessor {
 
 	AndroidMonochromeProcessor(
 		String monochromeSource,
-		String flavorName, {
+		String sourceSetName, {
 		required Flavourist config,
 	}) : super(
 			_entries
@@ -25,7 +25,7 @@ class AndroidMonochromeProcessor extends QueueProcessor {
 							ImageResizerProcessor(
 								monochromeSource,
 								sprintf(Constants.androidMonochromePath, [
-									flavorName,
+									sourceSetName,
 									folder,
 								]),
 								size,

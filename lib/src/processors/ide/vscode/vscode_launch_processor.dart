@@ -32,18 +32,21 @@ class VSCodeLaunchProcessor extends StringProcessor {
 
 	static const Map<String, String> _buildTypes = {
 		'debug': '--dart-define=BUILD_TYPE=debug',
+		'profile': '--dart-define=BUILD_TYPE=profile',
 		'beta': '--dart-define=BUILD_TYPE=beta',
 		'release': '--dart-define=BUILD_TYPE=release',
 	};
+
+	static const _modes = ['debug', 'profile', 'beta', 'release'];
 
 	@override
   	execute() {
 		final flavors = config.flavors.entries;
 		return Launch(configurations: flavors.expand(
-			(flavor) => [ 'debug', 'beta', 'release' ].map(
+			(flavor) => _modes.map(
 				(mode) => Configuration(
 					name: '${flavor.value.name} ${_buildLabel(mode)}',
-					flutterMode: mode == 'beta' ? 'release' : mode,
+					flutterMode: _flutterMode(mode),
 					request: 'launch',
 					type: 'dart',
 					program: 'lib/res/configs/${flavor.key}/main.dart',
@@ -61,10 +64,19 @@ class VSCodeLaunchProcessor extends StringProcessor {
 	@override
 	String toString() => "VSCodeLaunchProcessor";
 
+	String _flutterMode(String mode) {
+		if (mode == 'beta') {
+			return 'release';
+		}
+		return mode;
+	}
+
 	String _buildLabel(String mode) {
 		switch (mode) {
 			case 'debug':
 				return '(Dev)';
+			case 'profile':
+				return '(Profile)';
 			case 'beta':
 				return '(Beta)';
 			default:

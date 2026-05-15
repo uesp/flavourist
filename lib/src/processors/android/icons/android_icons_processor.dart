@@ -46,56 +46,69 @@ class AndroidIconsProcessor extends AbstractProcessor {
 			if (!resolver.hasIconConfig(flavor)) {
 				continue;
 			}
-			if (!resolver.iconSourcesReady(flavor, ios: false)) {
-				stdout.writeln(
-					'⚠️  Skipping android:icons for $flavorName: icon source files not found',
+
+			for (final variant in IconResolver.variantsToGenerate(flavor)) {
+				if (!resolver.iconSourcesReady(flavor, variant, ios: false)) {
+					stdout.writeln(
+						'⚠️  Skipping android:icons for $flavorName (${variant.name}): icon source files not found',
+					);
+					continue;
+				}
+
+				final sourceSetName =
+						resolver.androidSourceSetName(flavorName, variant);
+				final legacySource = resolver.resolveFlatLauncherSource(
+					flavor,
+					flavorName: flavorName,
+					variant: variant,
+					ios: false,
 				);
-				continue;
-			}
 
-			final layers = resolver.adaptiveLayers(flavor);
-			final legacySource = resolver.resolveFlatLauncherSource(
-				flavor,
-				flavorName: flavorName,
-				ios: false,
-			);
-
-			final processors = <AbstractProcessor>[
-				AndroidIconProcessor(
-					legacySource,
-					flavorName,
-					config: config,
-				),
-			];
-
-			if (layers != null) {
-				processors.addAll([
-					AndroidAdaptiveIconXmlProcessor(
-						flavorName,
-						includeMonochrome: resolver.monochromeSourceReady(flavor),
+				final processors = <AbstractProcessor>[
+					AndroidIconProcessor(
+						legacySource,
+						sourceSetName,
 						config: config,
 					),
-					AndroidAdaptiveIconsProcessor(
-						layers.foreground,
-						layers.background,
-						flavorName,
-						config: config,
-					),
-				]);
-			}
+				];
 
-			final monochrome = resolver.monochromePath(flavor);
-			if (monochrome != null && resolver.monochromeSourceReady(flavor)) {
-				processors.add(
-					AndroidMonochromeProcessor(
-						monochrome,
-						flavorName,
-						config: config,
-					),
-				);
-			}
+				if (resolver.hasAdaptiveLayers(flavor, variant)) {
+					final layers = resolver.adaptiveLayers(flavor, variant)!;
+					final foregroundSource = resolver.adaptiveForegroundSource(
+						flavor,
+						variant,
+						flavorName: flavorName,
+					);
+					processors.addAll([
+						AndroidAdaptiveIconXmlProcessor(
+							sourceSetName,
+							includeMonochrome:
+									resolver.monochromeSourceReady(flavor, variant),
+							config: config,
+						),
+						AndroidAdaptiveIconsProcessor(
+							foregroundSource,
+							layers.background,
+							sourceSetName,
+							config: config,
+						),
+					]);
+				}
 
-			QueueProcessor(processors, config: config).execute();
+				final monochrome = resolver.monochromePath(flavor, variant);
+				if (monochrome != null &&
+						resolver.monochromeSourceReady(flavor, variant)) {
+					processors.add(
+						AndroidMonochromeProcessor(
+							monochrome,
+							sourceSetName,
+							config: config,
+						),
+					);
+				}
+
+				QueueProcessor(processors, config: config).execute();
+			}
 		}
 	}
 

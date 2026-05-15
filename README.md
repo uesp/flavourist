@@ -13,29 +13,116 @@ Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ide
 Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr)
 
 - Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
-- VSCode launch profiles are pretty-printed in launch.json
-- Default platforms are now defined in a root-level "platforms" key in ``flavors.yaml``
+- VSCode launch profiles are pretty-printed in ``launch.json`` (debug, profile, beta, release per flavor).
+- Default platforms are now defined in a root-level ``platforms`` key in ``flavors.yaml``.
 - ``flavors.yaml`` is now streamlined, with each platform implied from the platform array above.
+- **Icon overlays** and per-build-variant icons (**debug**, **beta**, **profile**) with separate Android source sets and Darwin asset catalogs.
+- **``Target.beta``** — ``Beta-{flavor}`` Xcode build configurations and ``{flavor}Beta.xcconfig`` (separate from Profile; not repurposed for beta builds).
+- Patched ``add_build_configuration.rb`` after assets extract so Beta configurations clone from Release.
 
 ## Icon configuration (`flavors.yaml`)
 
 Per-flavor ``icon:`` block (consumer apps such as wiki_app):
 
 ```yaml
-icon:
-    foreground: assets/flavors/myflavor/icons/foreground.png   # Android adaptive layer
-    background: assets/flavors/myflavor/icons/background.png
-    monochrome: assets/flavors/myflavor/icons/monochrome.png   # optional, Android 13+
+myflavor:
+    name: My App
+    applicationID: com.example.myflavor
+
+    icon:
+        foreground: assets/flavors/myflavor/icons/foreground.png   # Android adaptive layer
+        background: assets/flavors/myflavor/icons/background.png
+        monochrome: assets/flavors/myflavor/icons/monochrome.png   # optional, Android 13+
+        overlay: assets/flavors/common/overlays/badge.png            # optional PNG, 1024×1024
+
+    debug:
+        icon:
+            overlay: assets/flavors/common/overlays/debug.png
+
+    beta:
+        icon:
+            overlay: assets/flavors/common/overlays/beta.png
+
+    profile:
+        icon:
+            overlay: assets/flavors/common/overlays/profile.png
+            # or full replacement: foreground / background / monochrome
 ```
 
-- **Android:** raw ``foreground`` / ``background`` in ``drawable-*``; legacy ``mipmap`` icons use a **composed** flat PNG when both layers exist.
-- **iOS / macOS:** ``AppIcon.appiconset`` from composed fg+bg (background fills canvas; foreground at source size, centered — not scaled). Optional ``ios.icon`` / ``macos.icon`` flat PNG overrides.
-- **IDs:** flavor ``applicationID`` mirrors to Android and default Darwin bundle IDs; use ``ios.applicationID`` / ``macos.applicationID`` (not ``bundleId``) to override per platform.
-- **Platforms:** icons generate only for platforms listed on the flavor (``platforms: [ android, ios, macos ]``).
+### Base icon fields
+
+| Field | Role |
+|-------|------|
+| ``foreground`` | Android adaptive foreground; composed with ``background`` for flat launcher PNGs |
+| ``background`` | Android adaptive background |
+| ``monochrome`` | Optional Android 13+ monochrome layer |
+| ``overlay`` | Optional PNG composited on top of composed flat icons and adaptive foreground (authored at launcher size, transparency OK) |
 
 Legacy ``icon: path/to.png`` (string) is still supported (treated as ``foreground`` only).
 
-Run: ``dart run flavourist`` (icons are included in the default instruction set). To run only icon tasks: ``dart run flavourist -p android:icons,ios:icons,macos:icons``
+Optional ``ios.icon`` / ``macos.icon`` flat PNG paths override the composed Darwin launcher master.
+
+### Build variant blocks
+
+Optional ``debug:``, ``beta:``, and ``profile:`` blocks each contain a nested ``icon:`` map. Fields merge **onto the base** ``icon:`` (non-null override fields replace the same field on the base icon).
+
+If a variant block is omitted, that variant’s dedicated assets are **not** generated; the platform uses release icons for that mode where applicable.
+
+| Variant | Android source set | Darwin asset catalog | Xcode configuration | Flutter CLI |
+|---------|-------------------|----------------------|---------------------|-------------|
+| release (base) | ``src/{flavor}/`` | ``{flavor}AppIcon`` | ``Release-{flavor}`` | ``flutter … --release`` |
+| debug | ``src/{flavor}Debug/`` | ``{flavor}DebugAppIcon`` | ``Debug-{flavor}`` | ``flutter … --debug`` |
+| profile | ``src/{flavor}Profile/`` | ``{flavor}ProfileAppIcon`` | ``Profile-{flavor}`` | ``flutter … --profile`` |
+| beta | ``src/{flavor}Beta/`` | ``{flavor}BetaAppIcon`` | ``Beta-{flavor}`` | See [Beta builds](#beta-builds) |
+
+When a variant ``icon:`` block is present, ``ASSET_PREFIX`` in the matching xcconfig is set to ``{flavor}Debug``, ``{flavor}Profile``, or ``{flavor}Beta`` as appropriate. Release keeps ``{flavor}``.
+
+**Profile is not beta.** Store / production builds must use ``--release`` → ``Release-{flavor}`` only.
+
+### Platform behaviour
+
+- **Android:** raw ``foreground`` / ``background`` in ``drawable-*`` per source set; legacy ``mipmap`` icons use a **composed** flat PNG when both layers exist; ``overlay`` is applied during composition.
+- **iOS / macOS:** ``AppIcon.appiconset`` per variant prefix from composed fg+bg (+ overlay when set). Background fills the canvas; foreground is centered at source size (not scaled).
+- **IDs:** flavor ``applicationID`` mirrors to Android and default Darwin bundle IDs; use ``ios.applicationID`` / ``macos.applicationID`` (not ``bundleId``) to override per platform.
+- **Platforms:** icons generate only for platforms listed on the flavor (``platforms: [ android, ios, macos ]``).
+
+### VS Code launch configurations
+
+``ide:config`` generates four launch entries per flavor:
+
+| Label suffix | ``flutterMode`` | ``BUILD_TYPE`` |
+|--------------|-----------------|----------------|
+| (Dev) | ``debug`` | ``debug`` |
+| (Profile) | ``profile`` | ``profile`` |
+| (Beta) | ``release`` | ``beta`` |
+| (no suffix) | ``release`` | ``release`` |
+
+Beta launches use ``flutterMode: release`` for Dart; the **home-screen icon** on iOS still requires a ``Beta-{flavor}`` native build (see below).
+
+### Beta builds
+
+Flutter has no ``--beta`` CLI mode. Beta launcher assets use ``Beta-{flavor}`` in Xcode and ``src/{flavor}Beta/`` on Android.
+
+Consumer apps (e.g. wiki_app) typically wire beta through ``scripts/build.sh --beta``:
+
+- **Android:** ``flutter build apk --config-only`` then ``./gradlew assemble{Flavor}Beta`` (requires a ``beta`` buildType in ``build.gradle``).
+- **iOS / macOS:** ``flutter build … --config-only`` then ``xcodebuild -configuration Beta-{flavor}``.
+
+``pod install`` may be needed after flavourist updates the Podfile with ``Beta-*`` mappings.
+
+### Running icon generation
+
+```bash
+dart run flavourist
+```
+
+Icons are included in the default instruction set. Icons only:
+
+```bash
+dart run flavourist -p android:icons,ios:icons,macos:icons
+```
+
+See also [``.cursor/rules/flavourist-icons.mdc``](.cursor/rules/flavourist-icons.mdc) for agent-oriented reference.
 
 # Original ReadMe
 A flutter utility to easily create flavors in your flutter application

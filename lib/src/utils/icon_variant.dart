@@ -23,22 +23,33 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-enum Target {
-  debug('debug'),
-  profile('profile'),
-  release('release'),
-  beta('beta');
+import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 
-  final String darwinTarget;
+/// Launcher icon build variant (maps to Android source sets and Darwin asset catalogs).
+enum IconVariant {
+	release,
+	debug,
+	beta,
+	profile;
 
-  const Target(this.darwinTarget);
+	String androidSourceSetSuffix() => switch (this) {
+				IconVariant.release => '',
+				IconVariant.debug => 'Debug',
+				IconVariant.beta => 'Beta',
+				IconVariant.profile => 'Profile',
+			};
 
-  /// CocoaPods `project 'Runner', { ... }` must use only `:debug` and `:release`
-  /// (Xcodeproj `PROJECT_DEFAULT_BUILD_SETTINGS`); `:profile` crashes pod install.
-  String get cocoapodsProjectMapping =>
-      this == Target.profile || this == Target.beta ? 'release' : darwinTarget;
+	String darwinAssetPrefixSuffix() => switch (this) {
+				IconVariant.release => '',
+				IconVariant.debug => 'Debug',
+				IconVariant.beta => 'Beta',
+				IconVariant.profile => 'Profile',
+			};
 
-  /// Pods xcconfig filename segment (`Pods-Runner.<segment>.xcconfig`).
-  String get podsXcconfigTarget =>
-      this == Target.beta ? 'release' : darwinTarget;
+	static IconVariant? fromTarget(Target target) => switch (target) {
+				Target.debug => IconVariant.debug,
+				Target.profile => IconVariant.profile,
+				Target.release => IconVariant.release,
+				Target.beta => IconVariant.beta,
+			};
 }

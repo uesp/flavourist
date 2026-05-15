@@ -18,16 +18,20 @@ config_name = "#{mode}-#{flavor}"
 config_mode = mode.downcase == 'debug' ? :debug : :release
 file_ref = project.files.detect { |file| file.path == file_path }
 
-# Build configuration list for PBXNativeTarget "Runner"
-native_target = project.native_targets.first
-target_config = native_target.add_build_configuration(config_name, config_mode)
-target_config.base_configuration_reference = file_ref
-target_config.build_settings = {
-  'PRODUCT_NAME' => '$(TARGET_NAME)',
-}
+base_mode = case mode
+            when 'Beta' then 'Release'
+            when 'Profile' then 'Profile'
+            when 'Debug' then 'Debug'
+            when 'Release' then 'Release'
+            else 'Release'
+            end
 
-# Build configuration list for PBXProject "Runner"
-base_config = project.build_configuration_list.build_configurations.detect { |config| config.name == mode }
+base_config = project.build_configuration_list.build_configurations.detect { |config| config.name == base_mode }
+if base_config.nil?
+  puts "Could not find base configuration '#{base_mode}' in #{project_path}"
+  exit 1
+end
+
 build_config = project.add_build_configuration(config_name, config_mode)
 build_config.base_configuration_reference = file_ref
 build_config.build_settings = base_config.build_settings.clone

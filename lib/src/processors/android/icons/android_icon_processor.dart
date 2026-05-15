@@ -40,7 +40,7 @@ class AndroidIconProcessor extends QueueProcessor {
 
   AndroidIconProcessor(
     String source,
-    String flavorName, {
+    String sourceSetName, {
     required Flavourist config,
   }) : super(
           _entries
@@ -49,7 +49,7 @@ class AndroidIconProcessor extends QueueProcessor {
                   folder,
                   ImageResizerProcessor(
                     source,
-                    sprintf(Constants.androidIconPath, [flavorName, folder]),
+                    sprintf(Constants.androidIconPath, [sourceSetName, folder]),
                     size,
                     config: config,
                   ),

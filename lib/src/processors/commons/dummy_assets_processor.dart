@@ -27,6 +27,7 @@ import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/copy_folder_processor.dart';
 import 'package:flavourist/src/utils/icon_resolver.dart';
+import 'package:flavourist/src/utils/icon_variant.dart';
 
 class DummyAssetsProcessor extends CopyFolderProcessor {
   final OS _os;
@@ -51,7 +52,11 @@ class DummyAssetsProcessor extends CopyFolderProcessor {
     if (_flavor != null) {
       const resolver = IconResolver();
       if (resolver.hasIconConfig(_flavor!) &&
-          resolver.iconSourcesReady(_flavor!, ios: _ios)) {
+          resolver.iconSourcesReady(
+            _flavor!,
+            IconVariant.release,
+            ios: _ios,
+          )) {
         return;
       }
     }

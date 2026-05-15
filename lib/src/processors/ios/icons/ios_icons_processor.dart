@@ -44,25 +44,30 @@ class IOSIconsProcessor extends AbstractProcessor {
 			if (!resolver.hasIconConfig(flavor)) {
 				continue;
 			}
-			if (!resolver.iconSourcesReady(flavor, ios: true)) {
-				stdout.writeln(
-					'⚠️  Skipping ios:icons for $flavorName: icon source files not found',
-				);
-				continue;
-			}
 
-			final source = resolver.resolveFlatLauncherSource(
-				flavor,
-				flavorName: flavorName,
-				ios: true,
-			);
-			processors.add(
-				IOSIconTargetProcessor(
-					source,
-					flavorName,
-					config: config,
-				),
-			);
+			for (final variant in IconResolver.variantsToGenerate(flavor)) {
+				if (!resolver.iconSourcesReady(flavor, variant, ios: true)) {
+					stdout.writeln(
+						'⚠️  Skipping ios:icons for $flavorName (${variant.name}): icon source files not found',
+					);
+					continue;
+				}
+
+				final source = resolver.resolveFlatLauncherSource(
+					flavor,
+					flavorName: flavorName,
+					variant: variant,
+					ios: true,
+				);
+				final assetPrefix = resolver.darwinAssetPrefix(flavorName, variant);
+				processors.add(
+					IOSIconTargetProcessor(
+						source,
+						assetPrefix,
+						config: config,
+					),
+				);
+			}
 		}
 
 		if (processors.isNotEmpty) {

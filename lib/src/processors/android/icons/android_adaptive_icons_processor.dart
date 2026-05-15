@@ -14,12 +14,12 @@ class AndroidAdaptiveIconsProcessor extends QueueProcessor {
 
   String foregroundSource;
   String backgroundSource;
-  String flavorName;
+  String sourceSetName;
 
   AndroidAdaptiveIconsProcessor(
     this.foregroundSource,
     this.backgroundSource,
-    this.flavorName, {
+    this.sourceSetName, {
     required Flavourist config,
   }) : super(
           _entries.map(
@@ -29,7 +29,7 @@ class AndroidAdaptiveIconsProcessor extends QueueProcessor {
                 AndroidAdaptiveIconProcessor(
                   foregroundSource,
                   backgroundSource,
-                  flavorName,
+                  sourceSetName,
                   folder,
                   size,
                   config: config,

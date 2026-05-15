@@ -19,10 +19,36 @@ icon:
     foreground: path/to/foreground.png   # Android adaptive (usually transparent)
     background: path/to/background.png
     monochrome: path/to/monochrome.png   # optional, Android 13+
+    overlay: path/to/overlay.png         # optional PNG badge, 1024×1024, composited on top
 ```
 
 - Legacy **`icon: path`** string → `foreground` only.
 - Platform overrides: **`ios.icon`**, **`macos.icon`** (optional flat PNG paths).
+
+## Build variant blocks (per flavor)
+
+Optional **`debug`**, **`beta`**, and **`profile`** blocks with nested **`icon:`** (field-level merge onto base `icon:`):
+
+```yaml
+debug:
+    icon:
+        overlay: path/to/debug-badge.png
+beta:
+    icon:
+        overlay: path/to/beta-badge.png
+profile:
+    icon:
+        overlay: path/to/profile-badge.png
+```
+
+| Variant | Android source set | Darwin asset catalog | Xcode / Flutter |
+|---------|-------------------|----------------------|-----------------|
+| release (base) | `src/{flavor}/` | `{flavor}AppIcon` | `Release-{flavor}`, `flutter --release` |
+| debug | `src/{flavor}Debug/` | `{flavor}DebugAppIcon` | `Debug-{flavor}`, `flutter --debug` |
+| profile | `src/{flavor}Profile/` | `{flavor}ProfileAppIcon` | `Profile-{flavor}`, `flutter --profile` |
+| beta | `src/{flavor}Beta/` | `{flavor}BetaAppIcon` | `Beta-{flavor}`, xcodebuild / Gradle `assemble{Flavor}Beta` |
+
+**Profile is not beta.** Store builds use **`--release`** only. Beta on iOS/macOS uses **`Beta-{flavor}`** via `xcodebuild` (Flutter has no `--beta` CLI mode).
 
 ## IDs
 
@@ -35,21 +61,23 @@ One `icon:` block per flavor. Processors run only for platforms in that flavor�
 
 | Instruction | Output |
 |-------------|--------|
-| `android:icons` | Adaptive drawables + legacy mipmaps + optional monochrome |
-| `ios:icons` | `ios/Runner/Assets.xcassets/<flavor>AppIcon.appiconset/` |
-| `macos:icons` | `macos/Runner/Assets.xcassets/<flavor>AppIcon.appiconset/` |
+| `android:icons` | Adaptive drawables + legacy mipmaps per variant source set |
+| `ios:icons` | `ios/Runner/Assets.xcassets/<prefix>AppIcon.appiconset/` |
+| `macos:icons` | `macos/Runner/Assets.xcassets/<prefix>AppIcon.appiconset/` |
 
 ## Asset roles
 
 - **`foreground` / `background`**: Android adaptive layers — not the Darwin launcher master alone.
-- **Darwin legacy `AppIcon`**: composed square via `lib/src/utils/icon_compose.dart` (background resized to canvas; foreground at source size, centered), unless `ios.icon` / `macos.icon` override.
-- **iOS 26+ layered icons (phase 2)**: use separate layers; do not flatten for Icon Composer.
+- **`overlay`**: PNG composited on composed flat icons and adaptive foreground (`icon_compose.dart`).
+- **Darwin legacy `AppIcon`**: composed square via `icon_compose.dart` unless `ios.icon` / `macos.icon` override.
+- **`ASSET_PREFIX`** in xcconfig: `{flavor}`, `{flavor}Debug`, `{flavor}Profile`, `{flavor}Beta` when variant `icon:` is configured.
 
 ## Implementation
 
-- Resolve paths in **`IconResolver`** (`lib/src/utils/icon_resolver.dart`); do not duplicate logic in processors.
+- Resolve paths in **`IconResolver`** (`lib/src/utils/icon_resolver.dart`); variants via **`IconVariant`** (`lib/src/utils/icon_variant.dart`).
 - Adaptive Android XML: `AndroidGenerateIclauncherXmlProcessor` adds `<monochrome>` only when `icon.monochrome` is set.
 - After parser/model changes: `dart run build_runner build` in flavourist; consumers run `dart run flavourist`.
+- Wiki-app builds: **`scripts/build.sh`** supports `--release`, `--debug`, `--profile`, `--beta`.
 - Do not remove `android:buildGradle` magic comments.
 
 ## Out of scope
