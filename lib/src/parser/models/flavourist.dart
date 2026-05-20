@@ -34,6 +34,9 @@ import 'flavors/flavor.dart';
 
 part 'flavourist.g.dart';
 
+/// Parsed ``flavors.yaml`` root. Processors (e.g. ``ios:icons`` / ``macos:icons``)
+/// consume this model; Darwin icon processors write ``Contents.json`` into each
+/// ``*.appiconset`` next to the resized PNGs (see [DarwinIconTargetProcessor]).
 @JsonSerializable(anyMap: true, createToJson: false)
 class Flavourist {
 	final App? app;

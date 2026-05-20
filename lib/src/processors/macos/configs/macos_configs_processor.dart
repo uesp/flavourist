@@ -53,14 +53,13 @@ class MacOSConfigsProcessor extends StringProcessor {
 
     _appendIncludes(buffer);
     _appendBody(buffer);
-
+    buffer.writeln('#include "Warnings.xcconfig"');
     return buffer.toString();
   }
 
   void _appendIncludes(StringBuffer buffer) {
     buffer.writeln(
         '#include "../../Flutter/$_flavorName${_target.name.capitalize}.xcconfig"');
-    buffer.writeln('#include "Warnings.xcconfig"');
   }
 
   void _appendBody(StringBuffer buffer) {

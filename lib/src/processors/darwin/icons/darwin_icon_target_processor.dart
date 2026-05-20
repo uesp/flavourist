@@ -23,19 +23,26 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import 'dart:io';
+
 import 'package:flavourist/src/parser/models/flavourist.dart';
+import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/image_resizer_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/processors/darwin/icons/darwin_app_iconset_manifest.dart';
 import 'package:sprintf/sprintf.dart';
 
-abstract class DarwinIconTargetProcessor extends QueueProcessor {
+abstract class DarwinIconTargetProcessor extends AbstractProcessor<void> {
   DarwinIconTargetProcessor(
     String source, {
     required String flavorName,
     required Map<String, Size> iconSet,
     required String appIconPath,
     required Flavourist config,
-  }) : super(
+    required this.ios,
+  })  : _assetPrefix = flavorName,
+        _appIconPath = appIconPath,
+        _resizeQueue = QueueProcessor(
           iconSet
               .map(
                 (fileName, size) => MapEntry(
@@ -50,7 +57,24 @@ abstract class DarwinIconTargetProcessor extends QueueProcessor {
               )
               .values,
           config: config,
-        );
+        ),
+        super(config);
+
+  final QueueProcessor _resizeQueue;
+  final String _assetPrefix;
+  final String _appIconPath;
+
+  /// When true, writes the iOS marketing / iPhone / iPad manifest; otherwise macOS.
+  final bool ios;
+
+  @override
+  void execute() {
+    _resizeQueue.execute();
+    final String contentsPath = sprintf(_appIconPath, [_assetPrefix, 'Contents.json']);
+    File(contentsPath).writeAsStringSync(
+      ios ? DarwinAppIconsetManifest.ios : DarwinAppIconsetManifest.macos,
+    );
+  }
 
   @override
   String toString() => 'DarwinIconProcessor';

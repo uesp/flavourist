@@ -41,6 +41,11 @@ class Configuration {
 
   final String program;
 
+  /// Passed to the Flutter/Dart debug adapter as [env] (not [toolEnv], which the
+  /// editor overwrites). Used for ``FLUTTER_XCODE_*`` build-setting overrides.
+  @JsonKey(includeIfNull: false)
+  final Map<String, String>? env;
+
   Configuration({
     required this.name,
     required this.request,
@@ -48,6 +53,7 @@ class Configuration {
     required this.flutterMode,
     required this.args,
     required this.program,
+    this.env,
   });
 
   Map<String, dynamic> toJson() => _$ConfigurationToJson(this);

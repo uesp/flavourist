@@ -46,6 +46,7 @@ class MacOSIconTargetProcessor extends DarwinIconTargetProcessor {
           flavorName: flavorName,
           iconSet: _entries,
           appIconPath: Constants.macOSAppIconPath,
+          ios: false,
         );
 
   @override

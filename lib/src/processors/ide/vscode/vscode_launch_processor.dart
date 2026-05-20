@@ -24,6 +24,7 @@
  */
 
 import 'package:flavourist/src/processors/commons/string_processor.dart';
+import 'package:flavourist/src/utils/darwin_xcode_env.dart';
 import 'package:flavourist/src/utils/flavor_display_name.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/configuration.dart';
 import 'package:flavourist/src/processors/ide/vscode/models/launch.dart';
@@ -56,6 +57,11 @@ class VSCodeLaunchProcessor extends StringProcessor {
 						"lib/res/configs/${flavor.key}/main.dart",
 						_buildTypes[mode] ?? _buildTypes['release']!,
 					],
+					env: darwinXcodeToolEnvForLaunchMode(
+						flavorKey: flavor.key,
+						flavor: flavor.value,
+						launchMode: mode,
+					),
 				)
 		)).toList()).toString();
 	}

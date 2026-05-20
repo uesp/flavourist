@@ -54,6 +54,7 @@ class IOSIconTargetProcessor extends DarwinIconTargetProcessor {
           flavorName: flavorName,
           iconSet: _entries,
           appIconPath: Constants.iOSAppIconPath,
+          ios: true,
         );
 
   @override
