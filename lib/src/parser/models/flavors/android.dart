@@ -26,39 +26,30 @@
 import 'package:flavourist/src/parser/models/flavors/android/adaptive_icon.dart';
 import 'package:flavourist/src/parser/models/flavors/android/build_config_field.dart';
 import 'package:flavourist/src/parser/models/flavors/android/res_value.dart';
+import 'package:flavourist/src/parser/models/flavors/android_json.dart';
 import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
-import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
-import 'package:json_annotation/json_annotation.dart';
 
-part 'android.g.dart';
-
-@JsonSerializable(anyMap: true, createToJson: false)
 class Android extends OS {
-	@JsonKey(required: true, disallowNullValue: true)
-	final String applicationId;
+	final String applicationID;
 
-	@JsonKey(disallowNullValue: true, defaultValue: {})
 	final Map<String, dynamic> customConfig;
 
-	@JsonKey(disallowNullValue: true, defaultValue: {})
 	final Map<String, ResValue> resValues;
 
-	@JsonKey(disallowNullValue: true, defaultValue: {})
 	final Map<String, BuildConfigField> buildConfigFields;
 
-	@JsonKey(disallowNullValue: true)
 	final AdaptiveIcon? adaptiveIcon;
 
 	Android({
-		required this.applicationId,
+		required this.applicationID,
 		this.customConfig = const {},
 		this.resValues = const {},
 		this.buildConfigFields = const {},
 		super.generateDummyAssets,
-		@JsonKey(name: 'icon', fromJson: platformIconConfigFromJson)
 		super.icon,
 		this.adaptiveIcon,
 	});
 
-  	factory Android.fromJson(Map<String, dynamic> json) => _$AndroidFromJson(json);
+	factory Android.fromJson(Map<String, dynamic> json) =>
+			androidFromJson(json);
 }

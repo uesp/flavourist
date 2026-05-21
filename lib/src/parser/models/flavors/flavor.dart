@@ -27,44 +27,32 @@
 
 import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
 import 'package:flavourist/src/utils/constants.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import 'android.dart';
+import 'android_json.dart';
 import 'darwin.dart';
+import 'darwin_json.dart';
 
-part 'flavor.g.dart';
-
-@JsonSerializable(anyMap: true, createToJson: false)
 class Flavor {
 
-	@JsonKey(required: true, disallowNullValue: true)
 	final String applicationID;
 
-	@JsonKey(required: true, disallowNullValue: true)
 	final String name;
 
-	@JsonKey(fromJson: flavorIconFromJson)
 	final FlavorIcon? icon;
 
-	@JsonKey(name: 'debug', fromJson: flavorVariantIconFromJson)
 	final FlavorIcon? debugIcon;
 
-	@JsonKey(name: 'beta', fromJson: flavorVariantIconFromJson)
 	final FlavorIcon? betaIcon;
 
-	@JsonKey(name: 'profile', fromJson: flavorVariantIconFromJson)
 	final FlavorIcon? profileIcon;
 
-	@JsonKey(required: false, disallowNullValue: false, defaultValue: Constants.defaultPlatforms)
 	final List<String>? platforms;
 
-	@JsonKey(required: false, disallowNullValue: true)
 	Android? android;
 
-	@JsonKey(required: false, disallowNullValue: true)
 	Darwin? ios;
 
-	@JsonKey(required: false, disallowNullValue: true)
 	Darwin? macos;
 
 	Flavor({
@@ -80,15 +68,47 @@ class Flavor {
 		this.macos,
 	}) {
 		android ??= platforms!.contains("android")
-				? Android(applicationId: applicationID)
+				? Android(applicationID: applicationID)
 				: null;
 		ios ??= platforms!.contains("ios")
-				? Darwin(bundleId: applicationID)
+				? Darwin(applicationID: applicationID)
 				: null;
 		macos ??= platforms!.contains("macos")
-				? Darwin(bundleId: applicationID)
+				? Darwin(applicationID: applicationID)
 				: null;
 	}
 
-	factory Flavor.fromJson(Map<String, dynamic> json) => _$FlavorFromJson(json);
+	factory Flavor.fromJson(Map<String, dynamic> json) {
+		final applicationID = json['applicationID'] as String;
+		return Flavor(
+			applicationID: applicationID,
+			name: json['name'] as String,
+			icon: flavorIconFromJson(json['icon']),
+			debugIcon: flavorVariantIconFromJson(json['debug']),
+			betaIcon: flavorVariantIconFromJson(json['beta']),
+			profileIcon: flavorVariantIconFromJson(json['profile']),
+			platforms: (json['platforms'] as List<dynamic>?)
+					?.map((e) => e as String)
+					.toList() ??
+				Constants.defaultPlatforms,
+			android: json['android'] == null
+					? null
+					: androidFromJson(
+							Map<String, dynamic>.from(json['android'] as Map),
+							fallbackApplicationId: applicationID,
+						),
+			ios: json['ios'] == null
+					? null
+					: darwinFromJson(
+							Map<String, dynamic>.from(json['ios'] as Map),
+							fallbackApplicationId: applicationID,
+						),
+			macos: json['macos'] == null
+					? null
+					: darwinFromJson(
+							Map<String, dynamic>.from(json['macos'] as Map),
+							fallbackApplicationId: applicationID,
+						),
+		);
+	}
 }

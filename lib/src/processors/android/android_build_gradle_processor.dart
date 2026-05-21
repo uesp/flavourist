@@ -169,7 +169,7 @@ class AndroidBuildGradleProcessor extends StringProcessor {
       buffer.writeln('        $name {');
       buffer.writeln('            dimension "$flavorDimension"');
       buffer.writeln(
-          '            applicationId "${flavor.applicationID}"');
+          '            applicationId "${flavor.android?.applicationID ?? flavor.applicationID}"');
 
       flavor.android?.customConfig.forEach((key, value) {
         buffer.writeln('            $key $value');

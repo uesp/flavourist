@@ -76,8 +76,43 @@ flavors:
 		});
 	});
 
-	group('Darwin applicationID', () {
-		test('ios block accepts applicationID', () {
+	group('Platform applicationID', () {
+		test('android block accepts applicationID override', () {
+			const yaml = '''
+flavors:
+  uesp:
+    name: UESP
+    applicationID: com.example.app
+    platforms: [android]
+    android:
+      applicationID: com.example.android
+''';
+			final config = Flavourist.parse(yaml);
+			expect(
+				config.androidFlavors['uesp']?.android?.applicationID,
+				'com.example.android',
+			);
+		});
+
+		test('android block inherits flavor applicationID', () {
+			const yaml = '''
+flavors:
+  uesp:
+    name: UESP
+    applicationID: com.example.app
+    platforms: [android]
+    android:
+      icon:
+        foregroundScale: 1.5
+''';
+			final config = Flavourist.parse(yaml);
+			expect(
+				config.androidFlavors['uesp']?.android?.applicationID,
+				'com.example.app',
+			);
+		});
+
+		test('ios block accepts applicationID override', () {
 			const yaml = '''
 flavors:
   uesp:
@@ -88,7 +123,43 @@ flavors:
       applicationID: com.example.ios
 ''';
 			final config = Flavourist.parse(yaml);
-			expect(config.iosFlavors['uesp']?.ios?.bundleId, 'com.example.ios');
+			expect(config.iosFlavors['uesp']?.ios?.applicationID, 'com.example.ios');
+		});
+
+		test('ios block inherits flavor applicationID', () {
+			const yaml = '''
+flavors:
+  uesp:
+    name: UESP
+    applicationID: com.example.app
+    platforms: [ios]
+    ios:
+      icon:
+        foregroundScale: 1.5
+''';
+			final config = Flavourist.parse(yaml);
+			expect(
+				config.iosFlavors['uesp']?.ios?.applicationID,
+				'com.example.app',
+			);
+		});
+
+		test('macos block inherits flavor applicationID', () {
+			const yaml = '''
+flavors:
+  uesp:
+    name: UESP
+    applicationID: com.example.app
+    platforms: [macos]
+    macos:
+      icon:
+        foregroundScale: 1.5
+''';
+			final config = Flavourist.parse(yaml);
+			expect(
+				config.macosFlavors['uesp']?.macos?.applicationID,
+				'com.example.app',
+			);
 		});
 	});
 
@@ -104,7 +175,7 @@ flavors:
 					background: 'bg.png',
 				),
 				ios: Darwin(
-					bundleId: 'com.ios',
+					applicationID: 'com.ios',
 					icon: const PlatformIconConfig(flatPath: 'ios_override.png'),
 				),
 			);
@@ -131,13 +202,13 @@ flavors:
 					foregroundScale: 1.0,
 				),
 				ios: Darwin(
-					bundleId: 'com.ios',
+					applicationID: 'com.ios',
 					icon: const PlatformIconConfig(
 						partial: FlavorIcon(foregroundScale: 1.5),
 					),
 				),
 				macos: Darwin(
-					bundleId: 'com.macos',
+					applicationID: 'com.macos',
 					icon: const PlatformIconConfig(
 						partial: FlavorIcon(foregroundScale: 0.5),
 					),

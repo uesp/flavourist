@@ -74,8 +74,8 @@ Base label is the flavor **`name:`** in `flavors.yaml`. Non-release builds appen
 
 ## IDs
 
-- Flavor **`applicationID`** → Android `applicationId`; default **ios/macos** `bundleId` when platform blocks omitted.
-- Use **`ios.applicationID`** / **`macos.applicationID`** in YAML (not `bundleId`); parser maps in `darwin_json.dart`.
+- Flavor **`applicationID`** is the base ID for all platforms. **android**, **ios**, and **macos** blocks inherit it when they omit **`applicationID`**.
+- Each platform block may override with its own **`applicationID`** (e.g. `android.applicationID`, `ios.applicationID`, `macos.applicationID`). Parser fallbacks live in `android_json.dart` and `darwin_json.dart`.
 
 ## Platform gating
 

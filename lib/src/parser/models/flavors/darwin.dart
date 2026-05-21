@@ -29,19 +29,19 @@ import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin_json.dart';
 
 class Darwin extends OS with BuildSettingsMixin {
-	final String bundleId;
+	final String applicationID;
 
 	final Map<String, Variable> variables;
 
 	Darwin({
-		required this.bundleId,
+		required this.applicationID,
 		this.variables = const {},
 		Map<String, dynamic> buildSettings = const {},
 		super.generateDummyAssets,
 		super.icon,
 	}) {
 		this.buildSettings = {
-			"PRODUCT_BUNDLE_IDENTIFIER": bundleId,
+			"PRODUCT_BUNDLE_IDENTIFIER": applicationID,
 		};
 		this.buildSettings.addAll(buildSettings);
 	}

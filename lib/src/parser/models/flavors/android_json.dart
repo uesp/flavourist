@@ -23,13 +23,15 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:flavourist/src/parser/models/flavors/darwin.dart';
-import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
+import 'package:flavourist/src/parser/models/flavors/android.dart';
+import 'package:flavourist/src/parser/models/flavors/android/adaptive_icon.dart';
+import 'package:flavourist/src/parser/models/flavors/android/build_config_field.dart';
+import 'package:flavourist/src/parser/models/flavors/android/res_value.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
 
-/// Parses [Darwin] from YAML. [fallbackApplicationId] is the flavor-level
+/// Parses [Android] from YAML. [fallbackApplicationId] is the flavor-level
 /// `applicationID` when the platform block omits it.
-Darwin darwinFromJson(
+Android androidFromJson(
 	Map<String, dynamic> json, {
 	String? fallbackApplicationId,
 }) {
@@ -37,28 +39,42 @@ Darwin darwinFromJson(
 			fallbackApplicationId;
 	if (applicationID == null || applicationID.isEmpty) {
 		throw ArgumentError(
-			'Darwin requires "applicationID" in flavors.yaml or on the flavor.',
+			'Android requires "applicationID" in flavors.yaml or on the flavor.',
 		);
 	}
 
-	final variables = (json['variables'] as Map?)?.map(
-				(k, e) => MapEntry(
-					k as String,
-					Variable.fromJson(Map<String, dynamic>.from(e as Map)),
-				),
-			) ??
-			<String, Variable>{};
-
-	final buildSettings = (json['buildSettings'] as Map?)?.map(
+	final customConfig = (json['customConfig'] as Map?)?.map(
 			(k, e) => MapEntry(k as String, e),
 		) ??
 		<String, dynamic>{};
 
-	return Darwin(
+	final resValues = (json['resValues'] as Map?)?.map(
+			(k, e) => MapEntry(
+				k as String,
+				ResValue.fromJson(Map<String, dynamic>.from(e as Map)),
+			),
+		) ??
+		<String, ResValue>{};
+
+	final buildConfigFields = (json['buildConfigFields'] as Map?)?.map(
+			(k, e) => MapEntry(
+				k as String,
+				BuildConfigField.fromJson(Map<String, dynamic>.from(e as Map)),
+			),
+		) ??
+		<String, BuildConfigField>{};
+
+	return Android(
 		applicationID: applicationID,
-		variables: variables,
-		buildSettings: Map<String, dynamic>.from(buildSettings),
+		customConfig: Map<String, dynamic>.from(customConfig),
+		resValues: resValues,
+		buildConfigFields: buildConfigFields,
 		generateDummyAssets: json['generateDummyAssets'] as bool? ?? true,
 		icon: platformIconConfigFromJson(json['icon']),
+		adaptiveIcon: json['adaptiveIcon'] == null
+				? null
+				: AdaptiveIcon.fromJson(
+						Map<String, dynamic>.from(json['adaptiveIcon'] as Map),
+					),
 	);
 }
