@@ -71,9 +71,7 @@ class IconCompose {
 		);
 
 		final scaledForeground = _scaleImage(fgImage, foregroundScale);
-		final offsetX = (composeSize - scaledForeground.width) ~/ 2;
-		final offsetY = (composeSize - scaledForeground.height) ~/ 2;
-		compositeImage(canvas, scaledForeground, dstX: offsetX, dstY: offsetY);
+		_compositeCentered(canvas, scaledForeground);
 
 		if (overlay != null && overlay.isNotEmpty) {
 			_applyOverlayOnImage(canvas, overlay);
@@ -104,12 +102,50 @@ class IconCompose {
 		}
 
 		final scaledForeground = _scaleImage(fgImage, foregroundScale);
-		final canvas = Image.from(scaledForeground);
+		final canvas = Image(
+			width: composeSize,
+			height: composeSize,
+			numChannels: 4,
+		);
+		fill(canvas, color: ColorRgba8(0, 0, 0, 0));
+		_compositeCentered(canvas, scaledForeground);
 		if (overlay != null && overlay.isNotEmpty) {
 			_applyOverlayOnImage(canvas, overlay);
 		}
 
 		return _writeCanvas(canvas, '${flavorName}_fg_$outputSuffix');
+	}
+
+	static void _compositeCentered(Image canvas, Image layer) {
+		final canvasW = canvas.width;
+		final canvasH = canvas.height;
+		final layerW = layer.width;
+		final layerH = layer.height;
+
+		if (layerW <= canvasW && layerH <= canvasH) {
+			compositeImage(
+				canvas,
+				layer,
+				dstX: (canvasW - layerW) ~/ 2,
+				dstY: (canvasH - layerH) ~/ 2,
+			);
+			return;
+		}
+
+		final srcX = (layerW - canvasW) ~/ 2;
+		final srcY = (layerH - canvasH) ~/ 2;
+		compositeImage(
+			canvas,
+			layer,
+			dstX: 0,
+			dstY: 0,
+			dstW: canvasW,
+			dstH: canvasH,
+			srcX: srcX,
+			srcY: srcY,
+			srcW: canvasW,
+			srcH: canvasH,
+		);
 	}
 
 	static Image _scaleImage(Image image, double scale) {
