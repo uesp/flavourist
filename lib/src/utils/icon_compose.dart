@@ -26,13 +26,14 @@
 import 'dart:io';
 
 import 'package:flavourist/src/exception/file_not_found_exception.dart';
+import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
 import 'package:flavourist/src/utils/constants.dart';
 import 'package:image/image.dart';
 
 /// Composes Android adaptive [foreground] and [background] into a square launcher PNG.
 ///
-/// [foreground] is composited at its source size (already scaled in the asset), centered
-/// on a [composeSize] canvas. [background] is resized to fill the canvas.
+/// [foreground] is scaled by [foregroundScale], then composited centered on a
+/// [composeSize] canvas. [background] is resized to fill the canvas.
 class IconCompose {
 	static const int composeSize = 1024;
 
@@ -40,6 +41,7 @@ class IconCompose {
 		required String foreground,
 		required String background,
 		String? overlay,
+		double foregroundScale = FlavorIcon.DEFAULT_FOREGROUND_SCALE,
 		required String flavorName,
 		required String outputSuffix,
 	}) {
@@ -68,9 +70,10 @@ class IconCompose {
 			interpolation: Interpolation.average,
 		);
 
-		final offsetX = (composeSize - fgImage.width) ~/ 2;
-		final offsetY = (composeSize - fgImage.height) ~/ 2;
-		compositeImage(canvas, fgImage, dstX: offsetX, dstY: offsetY);
+		final scaledForeground = _scaleImage(fgImage, foregroundScale);
+		final offsetX = (composeSize - scaledForeground.width) ~/ 2;
+		final offsetY = (composeSize - scaledForeground.height) ~/ 2;
+		compositeImage(canvas, scaledForeground, dstX: offsetX, dstY: offsetY);
 
 		if (overlay != null && overlay.isNotEmpty) {
 			_applyOverlayOnImage(canvas, overlay);
@@ -82,10 +85,11 @@ class IconCompose {
 		);
 	}
 
-	/// Composites [overlay] onto [foreground] and writes a temp PNG for adaptive layers.
-	static File composeForegroundWithOverlay({
+	/// Scales and optionally overlays [foreground], writing a temp PNG for adaptive layers.
+	static File prepareForeground({
 		required String foreground,
-		required String overlay,
+		String? overlay,
+		double foregroundScale = FlavorIcon.DEFAULT_FOREGROUND_SCALE,
 		required String flavorName,
 		required String outputSuffix,
 	}) {
@@ -99,10 +103,25 @@ class IconCompose {
 			throw FileNotFoundException(foreground);
 		}
 
-		final canvas = Image.from(fgImage);
-		_applyOverlayOnImage(canvas, overlay);
+		final scaledForeground = _scaleImage(fgImage, foregroundScale);
+		final canvas = Image.from(scaledForeground);
+		if (overlay != null && overlay.isNotEmpty) {
+			_applyOverlayOnImage(canvas, overlay);
+		}
 
 		return _writeCanvas(canvas, '${flavorName}_fg_$outputSuffix');
+	}
+
+	static Image _scaleImage(Image image, double scale) {
+		if (scale == FlavorIcon.DEFAULT_FOREGROUND_SCALE) {
+			return image;
+		}
+		return copyResize(
+			image,
+			width: (image.width * scale).round(),
+			height: (image.height * scale).round(),
+			interpolation: Interpolation.average,
+		);
 	}
 
 	static void _applyOverlayOnImage(Image canvas, String overlayPath) {

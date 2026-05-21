@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 /*
  * Copyright (c) 2024 Angelo Cassano
  *
@@ -34,12 +36,14 @@ class FlavorIcon {
 	final String? background;
 	final String? monochrome;
 	final String? overlay;
+	final double? foregroundScale;
 
 	const FlavorIcon({
 		this.foreground,
 		this.background,
 		this.monochrome,
 		this.overlay,
+		this.foregroundScale,
 	});
 
 	factory FlavorIcon.fromJson(Map<String, dynamic> json) =>
@@ -66,8 +70,51 @@ class FlavorIcon {
 			background: override.background ?? background,
 			monochrome: override.monochrome ?? monochrome,
 			overlay: override.overlay ?? overlay,
+			foregroundScale: override.foregroundScale ?? foregroundScale,
 		);
 	}
+
+	/// Effective foreground scale; defaults to [FlavorIcon.DEFAULT_FOREGROUND_SCALE].
+	double get effectiveForegroundScale =>
+			foregroundScale ?? DEFAULT_FOREGROUND_SCALE;
+
+	static const double DEFAULT_FOREGROUND_SCALE = 1.0;
+
+	bool get needsForegroundProcessing =>
+			hasOverlay || effectiveForegroundScale != DEFAULT_FOREGROUND_SCALE;
+}
+
+/// Platform `icon:` entry — flat PNG path or partial [FlavorIcon] override map.
+class PlatformIconConfig {
+	final String? flatPath;
+	final FlavorIcon? partial;
+
+	const PlatformIconConfig({
+		this.flatPath,
+		this.partial,
+	});
+
+	factory PlatformIconConfig.fromJson(Object? json) {
+		if (json == null) {
+			return const PlatformIconConfig();
+		}
+		if (json is String) {
+			return PlatformIconConfig(flatPath: json);
+		}
+		if (json is Map) {
+			return PlatformIconConfig(
+				partial: FlavorIcon.fromJson(Map<String, dynamic>.from(json)),
+			);
+		}
+		return const PlatformIconConfig();
+	}
+}
+
+PlatformIconConfig? platformIconConfigFromJson(Object? json) {
+	if (json == null) {
+		return null;
+	}
+	return PlatformIconConfig.fromJson(json);
 }
 
 /// Parses `icon:` as a map or legacy single path (treated as [FlavorIcon.foreground]).

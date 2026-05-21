@@ -32,7 +32,7 @@ import 'package:flavourist/src/utils/icon_variant.dart';
 class DummyAssetsProcessor extends CopyFolderProcessor {
   final OS _os;
   final Flavor? _flavor;
-  final bool _ios;
+  final IconPlatform _platform;
 
   DummyAssetsProcessor(
     super.source,
@@ -40,9 +40,9 @@ class DummyAssetsProcessor extends CopyFolderProcessor {
     this._os, {
     required super.config,
     Flavor? flavor,
-    bool ios = false,
+    IconPlatform platform = IconPlatform.android,
   })  : _flavor = flavor,
-        _ios = ios;
+        _platform = platform;
 
   @override
   void execute() {
@@ -55,7 +55,7 @@ class DummyAssetsProcessor extends CopyFolderProcessor {
           resolver.iconSourcesReady(
             _flavor!,
             IconVariant.release,
-            ios: _ios,
+            platform: _platform,
           )) {
         return;
       }

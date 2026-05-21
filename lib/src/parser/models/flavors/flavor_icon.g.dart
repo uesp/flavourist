@@ -11,4 +11,5 @@ FlavorIcon _$FlavorIconFromJson(Map json) => FlavorIcon(
       background: json['background'] as String?,
       monochrome: json['monochrome'] as String?,
       overlay: json['overlay'] as String?,
+      foregroundScale: (json['foregroundScale'] as num?)?.toDouble(),
     );

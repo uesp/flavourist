@@ -23,11 +23,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import 'package:json_annotation/json_annotation.dart';
-
-part 'configuration.g.dart';
-
-@JsonSerializable(createFactory: false)
 class Configuration {
   final String name;
 
@@ -43,7 +38,6 @@ class Configuration {
 
   /// Passed to the Flutter/Dart debug adapter as [env] (not [toolEnv], which the
   /// editor overwrites). Used for ``FLUTTER_XCODE_*`` build-setting overrides.
-  @JsonKey(includeIfNull: false)
   final Map<String, String>? env;
 
   Configuration({
@@ -56,5 +50,18 @@ class Configuration {
     this.env,
   });
 
-  Map<String, dynamic> toJson() => _$ConfigurationToJson(this);
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'name': name,
+      'request': request,
+      'type': type,
+      'flutterMode': flutterMode,
+      'args': args,
+      'program': program,
+    };
+    if (env != null) {
+      json['env'] = env;
+    }
+    return json;
+  }
 }

@@ -27,6 +27,7 @@ import 'package:flavourist/src/parser/models/flavors/android/adaptive_icon.dart'
 import 'package:flavourist/src/parser/models/flavors/android/build_config_field.dart';
 import 'package:flavourist/src/parser/models/flavors/android/res_value.dart';
 import 'package:flavourist/src/parser/models/flavors/commons/os.dart';
+import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'android.g.dart';
@@ -54,6 +55,7 @@ class Android extends OS {
 		this.resValues = const {},
 		this.buildConfigFields = const {},
 		super.generateDummyAssets,
+		@JsonKey(name: 'icon', fromJson: platformIconConfigFromJson)
 		super.icon,
 		this.adaptiveIcon,
 	});

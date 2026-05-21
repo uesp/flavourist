@@ -23,17 +23,23 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class OS {
 	@JsonKey(defaultValue: true)
 	final bool generateDummyAssets;
 
-	@JsonKey(disallowNullValue: true)
-	final String? icon;
+	final PlatformIconConfig? iconConfig;
 
 	const OS({
 		this.generateDummyAssets = true,
-		this.icon,
-	});
+		PlatformIconConfig? icon,
+	}) : iconConfig = icon;
+
+	/// Flat PNG override when platform `icon:` is a string path.
+	String? get icon => iconConfig?.flatPath;
+
+	/// Partial icon overrides when platform `icon:` is a map.
+	FlavorIcon? get iconPartial => iconConfig?.partial;
 }

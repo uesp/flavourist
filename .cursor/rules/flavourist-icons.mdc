@@ -20,10 +20,11 @@ icon:
     background: path/to/background.png
     monochrome: path/to/monochrome.png   # optional, Android 13+
     overlay: path/to/overlay.png         # optional PNG badge, 1024×1024, composited on top
+    foregroundScale: 1.0                 # optional; scales foreground (e.g. 0.5, 1.5) before compose
 ```
 
 - Legacy **`icon: path`** string → `foreground` only.
-- Platform overrides: **`ios.icon`**, **`macos.icon`** (optional flat PNG paths).
+- Platform overrides: **`ios.icon`**, **`macos.icon`**, **`android.icon`** — flat PNG path (string) or partial map (e.g. `foregroundScale` only).
 
 ## Build variant blocks (per flavor)
 
@@ -33,12 +34,14 @@ Optional **`debug`**, **`beta`**, and **`profile`** blocks with nested **`icon:`
 debug:
     icon:
         overlay: path/to/debug-badge.png
+        foregroundScale: 1.1
 beta:
     icon:
         overlay: path/to/beta-badge.png
 profile:
     icon:
         overlay: path/to/profile-badge.png
+        foregroundScale: 0.9
 ```
 
 | Variant | Android source set | Darwin asset catalog | Xcode / Flutter |

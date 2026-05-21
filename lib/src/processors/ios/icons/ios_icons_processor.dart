@@ -29,6 +29,7 @@ import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/ios/icons/ios_icon_target_processor.dart';
 import 'package:flavourist/src/utils/icon_resolver.dart';
+import 'package:flavourist/src/utils/icon_variant.dart';
 
 class IOSIconsProcessor extends AbstractProcessor {
 	IOSIconsProcessor(super.config);
@@ -46,7 +47,11 @@ class IOSIconsProcessor extends AbstractProcessor {
 			}
 
 			for (final variant in IconResolver.variantsToGenerate(flavor)) {
-				if (!resolver.iconSourcesReady(flavor, variant, ios: true)) {
+				if (!resolver.iconSourcesReady(
+					flavor,
+					variant,
+					platform: IconPlatform.ios,
+				)) {
 					stdout.writeln(
 						'⚠️  Skipping ios:icons for $flavorName (${variant.name}): icon source files not found',
 					);
@@ -57,7 +62,7 @@ class IOSIconsProcessor extends AbstractProcessor {
 					flavor,
 					flavorName: flavorName,
 					variant: variant,
-					ios: true,
+					platform: IconPlatform.ios,
 				);
 				final assetPrefix = resolver.darwinAssetPrefix(flavorName, variant);
 				processors.add(

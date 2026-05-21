@@ -11,7 +11,6 @@ Android _$AndroidFromJson(Map json) {
     json,
     requiredKeys: const ['applicationId'],
     disallowNullValues: const [
-      'icon',
       'applicationId',
       'customConfig',
       'resValues',
@@ -36,7 +35,8 @@ Android _$AndroidFromJson(Map json) {
         ) ??
         {},
     generateDummyAssets: json['generateDummyAssets'] as bool? ?? true,
-    icon: json['icon'] as String?,
+    icon:
+        json['icon'] == null ? null : PlatformIconConfig.fromJson(json['icon']),
     adaptiveIcon: json['adaptiveIcon'] == null
         ? null
         : AdaptiveIcon.fromJson(

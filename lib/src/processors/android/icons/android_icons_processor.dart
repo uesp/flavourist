@@ -32,6 +32,7 @@ import 'package:flavourist/src/processors/android/icons/android_monochrome_proce
 import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/utils/icon_resolver.dart';
+import 'package:flavourist/src/utils/icon_variant.dart';
 
 class AndroidIconsProcessor extends AbstractProcessor {
 	AndroidIconsProcessor(super.config);
@@ -48,7 +49,11 @@ class AndroidIconsProcessor extends AbstractProcessor {
 			}
 
 			for (final variant in IconResolver.variantsToGenerate(flavor)) {
-				if (!resolver.iconSourcesReady(flavor, variant, ios: false)) {
+				if (!resolver.iconSourcesReady(
+					flavor,
+					variant,
+					platform: IconPlatform.android,
+				)) {
 					stdout.writeln(
 						'⚠️  Skipping android:icons for $flavorName (${variant.name}): icon source files not found',
 					);
@@ -61,7 +66,7 @@ class AndroidIconsProcessor extends AbstractProcessor {
 					flavor,
 					flavorName: flavorName,
 					variant: variant,
-					ios: false,
+					platform: IconPlatform.android,
 				);
 
 				final processors = <AbstractProcessor>[
@@ -72,18 +77,30 @@ class AndroidIconsProcessor extends AbstractProcessor {
 					),
 				];
 
-				if (resolver.hasAdaptiveLayers(flavor, variant)) {
-					final layers = resolver.adaptiveLayers(flavor, variant)!;
+				if (resolver.hasAdaptiveLayers(
+					flavor,
+					variant,
+					platform: IconPlatform.android,
+				)) {
+					final layers = resolver.adaptiveLayers(
+						flavor,
+						variant,
+						platform: IconPlatform.android,
+					)!;
 					final foregroundSource = resolver.adaptiveForegroundSource(
 						flavor,
 						variant,
 						flavorName: flavorName,
+						platform: IconPlatform.android,
 					);
 					processors.addAll([
 						AndroidAdaptiveIconXmlProcessor(
 							sourceSetName,
-							includeMonochrome:
-									resolver.monochromeSourceReady(flavor, variant),
+							includeMonochrome: resolver.monochromeSourceReady(
+								flavor,
+								variant,
+								platform: IconPlatform.android,
+							),
 							config: config,
 						),
 						AndroidAdaptiveIconsProcessor(
@@ -95,9 +112,17 @@ class AndroidIconsProcessor extends AbstractProcessor {
 					]);
 				}
 
-				final monochrome = resolver.monochromePath(flavor, variant);
+				final monochrome = resolver.monochromePath(
+					flavor,
+					variant,
+					platform: IconPlatform.android,
+				);
 				if (monochrome != null &&
-						resolver.monochromeSourceReady(flavor, variant)) {
+						resolver.monochromeSourceReady(
+							flavor,
+							variant,
+							platform: IconPlatform.android,
+						)) {
 					processors.add(
 						AndroidMonochromeProcessor(
 							monochrome,

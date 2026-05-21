@@ -25,6 +25,13 @@
 
 import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 
+/// Target platform when resolving launcher icon sources.
+enum IconPlatform {
+	android,
+	ios,
+	macos;
+}
+
 /// Launcher icon build variant (maps to Android source sets and Darwin asset catalogs).
 enum IconVariant {
 	release,

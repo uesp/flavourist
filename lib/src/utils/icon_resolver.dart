@@ -56,7 +56,11 @@ class IconResolver {
 		}
 	}
 
-	FlavorIcon? resolveIcon(Flavor flavor, IconVariant variant) {
+	FlavorIcon? resolveIcon(
+		Flavor flavor,
+		IconVariant variant, {
+		IconPlatform? platform,
+	}) {
 		final base = flavor.icon;
 		if (base == null) {
 			return null;
@@ -67,7 +71,14 @@ class IconResolver {
 			IconVariant.beta => flavor.betaIcon,
 			IconVariant.profile => flavor.profileIcon,
 		};
-		return base.merge(override);
+		var icon = base.merge(override);
+		final platformPartial = platform == null
+				? null
+				: platformIconPartial(flavor, platform);
+		if (platformPartial != null) {
+			icon = icon.merge(platformPartial);
+		}
+		return icon;
 	}
 
 	String androidSourceSetName(String flavorName, IconVariant variant) =>
@@ -100,19 +111,19 @@ class IconResolver {
 	bool iconSourcesReady(
 		Flavor flavor,
 		IconVariant variant, {
-		required bool ios,
+		required IconPlatform platform,
 	}) {
-		final icon = resolveIcon(flavor, variant);
+		final icon = resolveIcon(flavor, variant, platform: platform);
 		if (icon == null) {
 			return false;
 		}
 
-		final override = platformIconOverride(flavor, ios: ios);
+		final override = platformFlatIconOverride(flavor, platform);
 		if (override != null) {
 			return _fileExists(override);
 		}
 
-		final layers = adaptiveLayers(flavor, variant);
+		final layers = adaptiveLayers(flavor, variant, platform: platform);
 		if (layers != null) {
 			return _fileExists(layers.foreground) && _fileExists(layers.background);
 		}
@@ -125,18 +136,31 @@ class IconResolver {
 		return false;
 	}
 
-	bool monochromeSourceReady(Flavor flavor, IconVariant variant) {
-		final path = monochromePath(flavor, variant);
+	bool monochromeSourceReady(
+		Flavor flavor,
+		IconVariant variant, {
+		IconPlatform? platform,
+	}) {
+		final path = monochromePath(flavor, variant, platform: platform);
 		return path != null && _fileExists(path);
 	}
 
 	bool _fileExists(String path) => File(path).existsSync();
 
-	bool hasAdaptiveLayers(Flavor flavor, IconVariant variant) =>
-			resolveIcon(flavor, variant)?.hasAdaptiveLayers ?? false;
+	bool hasAdaptiveLayers(
+		Flavor flavor,
+		IconVariant variant, {
+		IconPlatform? platform,
+	}) =>
+			resolveIcon(flavor, variant, platform: platform)?.hasAdaptiveLayers ??
+			false;
 
-	AdaptiveLayers? adaptiveLayers(Flavor flavor, IconVariant variant) {
-		final icon = resolveIcon(flavor, variant);
+	AdaptiveLayers? adaptiveLayers(
+		Flavor flavor,
+		IconVariant variant, {
+		IconPlatform? platform,
+	}) {
+		final icon = resolveIcon(flavor, variant, platform: platform);
 		if (icon == null || !icon.hasAdaptiveLayers) {
 			return null;
 		}
@@ -146,66 +170,79 @@ class IconResolver {
 		);
 	}
 
-	/// Foreground path for adaptive icons (overlay applied when configured).
+	/// Foreground path for adaptive icons (scale and overlay applied when configured).
 	String adaptiveForegroundSource(
 		Flavor flavor,
 		IconVariant variant, {
 		required String flavorName,
+		required IconPlatform platform,
 	}) {
-		final icon = resolveIcon(flavor, variant)!;
+		final icon = resolveIcon(flavor, variant, platform: platform)!;
 		final foreground = icon.foreground!;
-		if (!icon.hasOverlay) {
+		if (!icon.needsForegroundProcessing) {
 			return foreground;
 		}
-		return IconCompose.composeForegroundWithOverlay(
+		return IconCompose.prepareForeground(
 			foreground: foreground,
-			overlay: icon.overlay!,
+			overlay: icon.hasOverlay ? icon.overlay : null,
+			foregroundScale: icon.effectiveForegroundScale,
 			flavorName: flavorName,
 			outputSuffix: '${variant.name}_fg',
 		).path;
 	}
 
-	String? monochromePath(Flavor flavor, IconVariant variant) {
-		final path = resolveIcon(flavor, variant)?.monochrome;
+	String? monochromePath(
+		Flavor flavor,
+		IconVariant variant, {
+		IconPlatform? platform,
+	}) {
+		final path = resolveIcon(flavor, variant, platform: platform)?.monochrome;
 		if (path == null || path.isEmpty) {
 			return null;
 		}
 		return path;
 	}
 
-	String? platformIconOverride(Flavor flavor, {required bool ios}) {
-		final path = ios ? flavor.ios?.icon : flavor.macos?.icon;
-		if (path == null || path.isEmpty) {
-			return null;
-		}
-		return path;
-	}
+	FlavorIcon? platformIconPartial(Flavor flavor, IconPlatform platform) =>
+			switch (platform) {
+				IconPlatform.android => flavor.android?.iconPartial,
+				IconPlatform.ios => flavor.ios?.iconPartial,
+				IconPlatform.macos => flavor.macos?.iconPartial,
+			};
+
+	String? platformFlatIconOverride(Flavor flavor, IconPlatform platform) =>
+			switch (platform) {
+				IconPlatform.android => flavor.android?.icon,
+				IconPlatform.ios => flavor.ios?.icon,
+				IconPlatform.macos => flavor.macos?.icon,
+			};
 
 	/// Flat PNG for Darwin [AppIcon.appiconset] or Android legacy mipmaps.
 	String resolveFlatLauncherSource(
 		Flavor flavor, {
 		required String flavorName,
 		required IconVariant variant,
-		required bool ios,
+		required IconPlatform platform,
 	}) {
-		final override = platformIconOverride(flavor, ios: ios);
+		final override = platformFlatIconOverride(flavor, platform);
 		if (override != null) {
 			return override;
 		}
 
-		final icon = resolveIcon(flavor, variant);
+		final icon = resolveIcon(flavor, variant, platform: platform);
 		if (icon == null) {
 			throw StateError(
 				'Flavor "$flavorName" has no icon sources for variant $variant.',
 			);
 		}
 
-		final layers = adaptiveLayers(flavor, variant);
+		final layers = adaptiveLayers(flavor, variant, platform: platform);
 		if (layers != null) {
 			return IconCompose.composeAdaptiveIcon(
 				foreground: layers.foreground,
 				background: layers.background,
 				overlay: icon.hasOverlay ? icon.overlay : null,
+				foregroundScale: icon.effectiveForegroundScale,
 				flavorName: flavorName,
 				outputSuffix: variant.name,
 			).path;
@@ -213,12 +250,13 @@ class IconResolver {
 
 		final foreground = icon.foreground;
 		if (foreground != null && foreground.isNotEmpty) {
-			if (!icon.hasOverlay) {
+			if (!icon.needsForegroundProcessing) {
 				return foreground;
 			}
-			return IconCompose.composeForegroundWithOverlay(
+			return IconCompose.prepareForeground(
 				foreground: foreground,
-				overlay: icon.overlay!,
+				overlay: icon.hasOverlay ? icon.overlay : null,
+				foregroundScale: icon.effectiveForegroundScale,
 				flavorName: flavorName,
 				outputSuffix: '${variant.name}_flat',
 			).path;

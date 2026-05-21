@@ -28,6 +28,7 @@ import 'package:flavourist/src/parser/models/flavors/darwin.dart';
 import 'package:flavourist/src/parser/models/flavors/flavor.dart';
 import 'package:flavourist/src/processors/commons/dummy_assets_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
+import 'package:flavourist/src/utils/icon_variant.dart';
 
 class MacOSDummyAssetsProcessor extends QueueProcessor {
   MacOSDummyAssetsProcessor(
@@ -44,7 +45,7 @@ class MacOSDummyAssetsProcessor extends QueueProcessor {
               '$destination/${flavorName}AppIcon.appiconset',
               os,
               flavor: flavor,
-              ios: false,
+              platform: IconPlatform.macos,
               config: config,
             ),
           ],

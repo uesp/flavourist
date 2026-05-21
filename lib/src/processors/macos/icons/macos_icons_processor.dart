@@ -29,6 +29,7 @@ import 'package:flavourist/src/processors/commons/abstract_processor.dart';
 import 'package:flavourist/src/processors/commons/queue_processor.dart';
 import 'package:flavourist/src/processors/macos/icons/macos_icon_target_processor.dart';
 import 'package:flavourist/src/utils/icon_resolver.dart';
+import 'package:flavourist/src/utils/icon_variant.dart';
 
 class MacOSIconsProcessor extends AbstractProcessor {
 	MacOSIconsProcessor(super.config);
@@ -46,7 +47,11 @@ class MacOSIconsProcessor extends AbstractProcessor {
 			}
 
 			for (final variant in IconResolver.variantsToGenerate(flavor)) {
-				if (!resolver.iconSourcesReady(flavor, variant, ios: false)) {
+				if (!resolver.iconSourcesReady(
+					flavor,
+					variant,
+					platform: IconPlatform.macos,
+				)) {
 					stdout.writeln(
 						'⚠️  Skipping macos:icons for $flavorName (${variant.name}): icon source files not found',
 					);
@@ -57,7 +62,7 @@ class MacOSIconsProcessor extends AbstractProcessor {
 					flavor,
 					flavorName: flavorName,
 					variant: variant,
-					ios: false,
+					platform: IconPlatform.macos,
 				);
 				final assetPrefix = resolver.darwinAssetPrefix(flavorName, variant);
 				processors.add(

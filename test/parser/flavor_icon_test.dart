@@ -14,11 +14,14 @@ void main() {
 				'background': 'assets/bg.png',
 				'monochrome': 'assets/mono.png',
 				'overlay': 'assets/overlay.png',
+				'foregroundScale': 1.5,
 			});
 			expect(icon?.foreground, 'assets/fg.png');
 			expect(icon?.background, 'assets/bg.png');
 			expect(icon?.monochrome, 'assets/mono.png');
 			expect(icon?.overlay, 'assets/overlay.png');
+			expect(icon?.foregroundScale, 1.5);
+			expect(icon?.effectiveForegroundScale, 1.5);
 			expect(icon?.hasAdaptiveLayers, isTrue);
 			expect(icon?.hasOverlay, isTrue);
 		});
@@ -33,11 +36,16 @@ void main() {
 			const base = FlavorIcon(
 				foreground: 'fg.png',
 				background: 'bg.png',
+				foregroundScale: 1.0,
 			);
-			const override = FlavorIcon(overlay: 'badge.png');
+			const override = FlavorIcon(
+				overlay: 'badge.png',
+				foregroundScale: 1.5,
+			);
 			final merged = base.merge(override);
 			expect(merged.foreground, 'fg.png');
 			expect(merged.overlay, 'badge.png');
+			expect(merged.foregroundScale, 1.5);
 		});
 	});
 
@@ -95,16 +103,79 @@ flavors:
 					foreground: 'fg.png',
 					background: 'bg.png',
 				),
-				ios: Darwin(bundleId: 'com.ios', icon: 'ios_override.png'),
+				ios: Darwin(
+					bundleId: 'com.ios',
+					icon: const PlatformIconConfig(flatPath: 'ios_override.png'),
+				),
 			);
 			expect(
 				resolver.resolveFlatLauncherSource(
 					flavor,
 					flavorName: 'test',
 					variant: IconVariant.release,
-					ios: true,
+					platform: IconPlatform.ios,
 				),
 				'ios_override.png',
+			);
+		});
+
+		test('resolveIcon merges platform foregroundScale', () {
+			const resolver = IconResolver();
+			final flavor = Flavor(
+				applicationID: 'com.app',
+				name: 'Test',
+				platforms: ['ios', 'macos'],
+				icon: const FlavorIcon(
+					foreground: 'fg.png',
+					background: 'bg.png',
+					foregroundScale: 1.0,
+				),
+				ios: Darwin(
+					bundleId: 'com.ios',
+					icon: const PlatformIconConfig(
+						partial: FlavorIcon(foregroundScale: 1.5),
+					),
+				),
+				macos: Darwin(
+					bundleId: 'com.macos',
+					icon: const PlatformIconConfig(
+						partial: FlavorIcon(foregroundScale: 0.5),
+					),
+				),
+			);
+			expect(
+				resolver.resolveIcon(
+					flavor,
+					IconVariant.release,
+					platform: IconPlatform.ios,
+				)?.foregroundScale,
+				1.5,
+			);
+			expect(
+				resolver.resolveIcon(
+					flavor,
+					IconVariant.release,
+					platform: IconPlatform.macos,
+				)?.foregroundScale,
+				0.5,
+			);
+		});
+
+		test('resolveIcon merges variant foregroundScale onto base', () {
+			const resolver = IconResolver();
+			final flavor = Flavor(
+				applicationID: 'com.app',
+				name: 'Test',
+				platforms: ['android'],
+				icon: const FlavorIcon(
+					foreground: 'fg.png',
+					background: 'bg.png',
+				),
+				betaIcon: const FlavorIcon(foregroundScale: 1.25),
+			);
+			expect(
+				resolver.resolveIcon(flavor, IconVariant.beta)?.foregroundScale,
+				1.25,
 			);
 		});
 

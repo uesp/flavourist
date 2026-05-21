@@ -25,6 +25,7 @@
 
 import 'package:flavourist/src/parser/models/flavors/darwin.dart';
 import 'package:flavourist/src/parser/models/flavors/darwin/variable.dart';
+import 'package:flavourist/src/parser/models/flavors/flavor_icon.dart';
 
 /// Parses [Darwin] from YAML using `applicationID` (wiki_app) or legacy `bundleId`.
 Darwin darwinFromJson(Map<String, dynamic> json) {
@@ -54,6 +55,6 @@ Darwin darwinFromJson(Map<String, dynamic> json) {
 		variables: variables,
 		buildSettings: Map<String, dynamic>.from(buildSettings),
 		generateDummyAssets: json['generateDummyAssets'] as bool? ?? true,
-		icon: json['icon'] as String?,
+		icon: platformIconConfigFromJson(json['icon']),
 	);
 }
