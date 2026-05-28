@@ -28,10 +28,10 @@ void main() {
 	});
 
 	group('launchBuildModes', () {
-		test('order is release beta debug profile', () {
+		test('order is release debug beta profile', () {
 			expect(
 				launchBuildModes,
-				['release', 'beta', 'debug', 'profile'],
+				['release', 'debug', 'beta', 'profile'],
 			);
 		});
 

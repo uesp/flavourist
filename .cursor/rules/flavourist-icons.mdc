@@ -70,7 +70,7 @@ Base label is the flavor **`name:`** in `flavors.yaml`. Non-release builds appen
 - **Android:** `AndroidBuildGradleProcessor` → `flavorDisplayNames` / `app_name` resValue per variant.
 - **iOS / macOS:** `IOSXCConfigProcessor` / `MacOSConfigsProcessor` → `BUNDLE_NAME`, `BUNDLE_DISPLAY_NAME`, `PRODUCT_NAME` (macOS dock / `.app` name).
 - **macOS dock:** `MacOSPbxprojProductNameProcessor` sets Runner target `PRODUCT_NAME = "$(BUNDLE_NAME)"` (CocoaPods defaults to `Runner`).
-- **IDE:** `VSCodeLaunchProcessor` / `VSCodeTasksProcessor` → `.vscode/` and `.cursor/` `launch.json` + `tasks.json`. Per flavor, configs are ordered **release → beta → debug → profile** (`launchBuildModes` in `flavor_display_name.dart`).
+- **IDE:** `VSCodeLaunchProcessor` / `VSCodeTasksProcessor` → `.vscode/` and `.cursor/` `launch.json` + `tasks.json`. Per flavor, configs are ordered **release → debug → beta → profile** (`launchBuildModes` in `flavor_display_name.dart`).
 
 ## IDs
 

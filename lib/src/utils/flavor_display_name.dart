@@ -28,8 +28,8 @@ import 'package:flavourist/src/parser/models/flavors/darwin/enums.dart';
 /// Launch configurations and build-script mode picker order (per flavor).
 const List<String> launchBuildModes = [
 	'release',
-	'beta',
 	'debug',
+	'beta',
 	'profile',
 ];
 

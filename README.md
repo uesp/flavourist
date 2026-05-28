@@ -13,7 +13,7 @@ Upstream also hard-rewrites the ``main.dart`` file, a behaviour which wasn't ide
 Flavourist is a streamlined fork of [flutter_flavorizr](https://github.com/AngeloAvv/flutter_flavorizr)
 
 - Flavours are now defined in a more neutral, root-level ``flavors.yaml`` file.
-- VS Code / Cursor launch profiles and build tasks in ``.vscode/`` and ``.cursor/`` (release, beta, debug, profile per flavor).
+- VS Code / Cursor launch profiles and build tasks in ``.vscode/`` and ``.cursor/`` (release, debug, beta, profile per flavor).
 - Default platforms are now defined in a root-level ``platforms`` key in ``flavors.yaml``.
 - ``flavors.yaml`` is now streamlined, with each platform implied from the platform array above.
 - **Icon overlays** and per-build-variant icons (**debug**, **beta**, **profile**) with separate Android source sets and Darwin asset catalogs.
@@ -109,7 +109,7 @@ Use **``(Debug)``**, not ``(Dev)``. Do not hand-edit per-variant ``name:`` under
 
 ### VS Code launch configurations
 
-``ide:config`` generates four launch entries per flavor, in this order: **release → beta → debug → profile**. The same order is used for the **Build (Interactive)** task ``buildMode`` picker (``scripts/build.sh`` flags).
+``ide:config`` generates four launch entries per flavor, in this order: **release → debug → beta → profile**. The same order is used for the **Build (Interactive)** task ``buildMode`` picker (``scripts/build.sh`` flags).
 
 | Launch name suffix | ``flutterMode`` | ``BUILD_TYPE`` |
 |--------------------|-----------------|----------------|
